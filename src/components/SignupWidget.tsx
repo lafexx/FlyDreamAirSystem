@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { isEmptyOrWhitespace } from '../utils/StringUtils';
+
 const SignupWidget = () => {
     const navigate = useNavigate();
 
@@ -9,6 +11,8 @@ const SignupWidget = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
+    
+    
     
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -20,12 +24,18 @@ const SignupWidget = () => {
             password
         }
     
+        if (isEmptyOrWhitespace(username) || isEmptyOrWhitespace(email) || isEmptyOrWhitespace(password)) {
+            console.log("invalid username, password, or email");
+            setIsDisabled(false);
+            return;
+        }
+
         try {
-            console.log("signed up");
+            localStorage.setItem(`${username}`, `${password}`);
             setIsDisabled(false);
         } catch (error) {
+            console.log(error);
             setIsDisabled(false);
-            console.error(`sign up failed: ${error}`);
         }
     };
 
@@ -41,7 +51,7 @@ const SignupWidget = () => {
                             <input
                                 type="text"
                                 id="username"
-                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-white block w-full p-2.5 text-sm`}
+                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
                                 placeholder={`Enter username...`}
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
@@ -55,7 +65,7 @@ const SignupWidget = () => {
                             <input
                                 type="email"
                                 id="email"
-                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-white block w-full p-2.5 text-sm`}
+                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
                                 placeholder={`Enter email...`}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -69,7 +79,7 @@ const SignupWidget = () => {
                             <input
                                 type="password"
                                 id="password"
-                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-white block w-full p-2.5 text-sm`}
+                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
                                 placeholder={`Enter password...`}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}

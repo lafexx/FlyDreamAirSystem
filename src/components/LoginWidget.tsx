@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { isEmptyOrWhitespace } from '../utils/StringUtils';
+
 const LoginWidget = () => {
     const navigate = useNavigate();
 
@@ -17,16 +19,29 @@ const LoginWidget = () => {
             username,
             password
         }
+
+        if (isEmptyOrWhitespace(username) || isEmptyOrWhitespace(password)) {
+            console.log("invalid username or password");
+            setIsDisabled(false);
+            return;
+        }
     
         try {
-            console.log("logged in");
-            setIsDisabled(false);
+            if (password == localStorage.getItem(username))
+            {
+                navigate("/");
+                setIsDisabled(false);
+            }
+            else
+            {
+                console.log("incorrect username or password");
+                setIsDisabled(false);
+            }
         } catch (error) {
+            console.error(error);
             setIsDisabled(false);
-            console.error(`login failed: ${error}`);
         }
     };
-
 
     return (
         <div className='w-full p-5 flex justify-center'>
@@ -39,7 +54,7 @@ const LoginWidget = () => {
                             <input
                                 type="text"
                                 id="username"
-                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-white block w-full p-2.5 text-sm`}
+                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
                                 placeholder={`Enter username...`}
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
@@ -53,7 +68,7 @@ const LoginWidget = () => {
                             <input
                                 type="password"
                                 id="password"
-                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-white block w-full p-2.5 text-sm`}
+                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
                                 placeholder={`Enter password...`}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
