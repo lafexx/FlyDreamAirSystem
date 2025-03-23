@@ -3,14 +3,22 @@ import { useNavigate } from "react-router-dom";
 
 import { Flight } from "../../types/Flight";
 
-import { FlightContextType } from "../../contexts/FlightContext";
+import { BookingContextType } from "../../contexts/BookingContext";
 
 import Navbar from "../../components/Navbar";
 import FlightSettingsWidget from "../../components/FlightSettingsWidget";
+import FlightListWidget from "../../components/FlightListWidget";
 
-export const FlightContext = createContext<FlightContextType | null>(null);
+export const BookingContext = createContext<BookingContextType | null>(null);
 
-const BookFlights = () => {
+const BookFlights = () => { 
+    enum WindowType {
+        FlightSettings = 0,
+        FlightList = 1,
+        SeatSelection = 2
+    }
+
+    const [activeWindow, setActiveWindow] = useState<WindowType>(WindowType.FlightSettings);
     const [flight, setFlight] = useState<Flight | null>(null);
     const [isSearching, setIsSearching] = useState<boolean>(false);
     
@@ -22,6 +30,32 @@ const BookFlights = () => {
         }   
     }, []);
 
+    useEffect(() => {
+        if (isSearching) {
+            setTimeout(() => {
+                setIsSearching(false);
+                setActiveWindow(WindowType.FlightList);
+            }, 1000);
+        }
+    }, [isSearching]);
+
+    const renderActiveWindow = () => {
+        switch (activeWindow) {
+            case WindowType.FlightSettings: {
+                return <FlightSettingsWidget/>
+            }
+            case WindowType.FlightList: {
+                return <FlightListWidget/>
+            }
+            case WindowType.SeatSelection: {
+                return <></>
+            }
+            default: {
+                return <FlightSettingsWidget/>
+            }
+        }
+    }
+
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden bg-neutral-200">
             <Navbar/>
@@ -32,9 +66,9 @@ const BookFlights = () => {
                     <p className="text-neutral-500">Here you can book flights, input flight information, select a flight and then choose your seats!</p>
                 </div>
 
-               <FlightContext.Provider value={{flight, setFlight}}>
-                <FlightSettingsWidget/>
-               </FlightContext.Provider>
+               <BookingContext.Provider value={{flight, setFlight, isSearching, setIsSearching}}>
+                {renderActiveWindow()}
+               </BookingContext.Provider>
             </div>
         </div>
     );

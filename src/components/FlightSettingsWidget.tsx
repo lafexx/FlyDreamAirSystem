@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 
-import { FlightContext } from "../app/routes/BookFlights";
+import { BookingContext } from "../app/routes/BookFlights";
 
 import Calendar from 'react-calendar';
 import '../../node_modules/react-calendar/dist/Calendar.css';
@@ -13,8 +13,8 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const FlightSettingsWidget = () => {
-    const flightContext = useContext(FlightContext);
-    const { setFlight } = flightContext!; 
+    const bookingContext = useContext(BookingContext);
+    const { setFlight, isSearching, setIsSearching } = bookingContext!; 
 
     const [departureLocation, setDepartureLocation] = useState<{
         country: string,
@@ -150,12 +150,15 @@ const FlightSettingsWidget = () => {
     };
 
     const searchFlights = () => {
-        setIsDisabled(true);
-        setIsLoading(true);
+        if (departureLocation && destination && departureDate) {
+            if (departureLocation.airport !== destination.airport) {
+                setIsSearching(true);
+            }
+        }
     };
 
     const renderWidget = () => {
-        if (isLoading)
+        if (isSearching)
             return (
                 <div className="text-center space-y-5">
                     <h1 className="text-neutral-600 text-xl">Searching flights...</h1>
