@@ -1,4 +1,5 @@
 import Navbar from "../../components/Navbar";
+import SignupWidget from "../../components/SignupWidget";
 
 const Signup = () => {
     return (
@@ -6,7 +7,7 @@ const Signup = () => {
             <Navbar/>
     
             <div className="flex flex-grow flex-col relative h-full items-center justify-center">
-                <h1 className='text-3xl text-center text-neutral-400'>this is the signup page</h1>
+                <SignupWidget/>
             </div>
         </div>
     );
