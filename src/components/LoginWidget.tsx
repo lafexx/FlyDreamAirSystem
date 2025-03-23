@@ -29,6 +29,7 @@ const LoginWidget = () => {
         try {
             if (password == localStorage.getItem(username))
             {
+                localStorage.setItem("currentUser", username);
                 navigate("/");
                 setIsDisabled(false);
             }
