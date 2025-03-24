@@ -111,7 +111,9 @@ const FlightSettingsWidget = () => {
         setFlight!({
             departureLocation: departureLocation,
             destination: destination,
-            departureDate: calendarValue?.toLocaleString()!.split(",")[0]!
+            departureDate: calendarValue?.toLocaleString()!.split(",")[0]!,
+            price: undefined,
+            airline: undefined
         });
     }, [departureLocation, destination, calendarValue])
 

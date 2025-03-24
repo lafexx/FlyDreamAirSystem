@@ -4,17 +4,30 @@ import { Flight } from "../types/Flight";
 
 import { getRandomInt } from "../utils/MathUtils";
 
-const renderFlights = (flight: Flight) => {
+const renderFlights = () => {
+    const bookingContext = useContext(BookingContext)!;
+    const { flight, setSelectedFlight } = bookingContext;
+
+    if (!flight)
+        return;
+
     const airlines = ["Delta", "Omega", "Alpha", "Beta"];
+    let prices: number[] = [];
+
+    for (let i = 0; i < airlines.length; i++) {
+        prices.push(getRandomInt(700, 1000));
+    }
+
     return airlines.map((airline, index) => (
-        <button key={index} 
+        <button onClick={() => setSelectedFlight(new Flight(flight.departureLocation, flight.destination, flight.departureDate, prices[index], airline))} 
+                key={index} 
                 className={`${index % 2 === 0 ? "bg-neutral-300" : "bg-neutral-400"} p-2 flex flex-col w-full text-left hover:scale-[101%] hover:border-b duration-200 ease-linear rounded-xl`}>
             <div className="flex justify-between">
-                <h1 className="text-neutral-800 font-semibold">{flight.departureLocation!.city} {">"} {flight.destination!.city}</h1>
-                <h1 className="text-neutral-800 font-semibold">${getRandomInt(700, 1000)}</h1>
+                <h1 className="text-neutral-800 font-semibold">{flight?.departureLocation!.city} {">"} {flight?.destination!.city}</h1>
+                <h1 className="text-neutral-800 font-semibold">${prices[index]}</h1>
             </div>
             <div className="flex justify-between">
-                <p className="text-sm text-neutral-600">{flight.departureDate}</p>
+                <p className="text-sm text-neutral-600">{flight?.departureDate}</p>
                 <p className="text-sm text-neutral-600">{airline} Airline</p>
             </div>
         </button>
@@ -37,7 +50,7 @@ const FlightListWidget = () => {
             <div>
                 {flight && (
                     <>
-                    {renderFlights(flight)}
+                    {renderFlights()}
                     </>
                 )}
             </div>

@@ -15,12 +15,12 @@ const BookFlights = () => {
     enum WindowType {
         FlightSettings = 0,
         FlightList = 1,
-        SeatSelection = 2
     }
 
     const [activeWindow, setActiveWindow] = useState<WindowType>(WindowType.FlightSettings);
     const [flight, setFlight] = useState<Flight | null>(null);
     const [isSearching, setIsSearching] = useState<boolean>(false);
+    const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
     
     const navigate = useNavigate();
 
@@ -39,6 +39,13 @@ const BookFlights = () => {
         }
     }, [isSearching]);
 
+    useEffect(() => {
+        if (selectedFlight) {
+            localStorage.setItem(`${localStorage.getItem("currentUser")}:flight`, JSON.stringify(selectedFlight));
+            navigate("/select-seats");
+        }
+    }, [selectedFlight]);
+
     const renderActiveWindow = () => {
         switch (activeWindow) {
             case WindowType.FlightSettings: {
@@ -46,9 +53,6 @@ const BookFlights = () => {
             }
             case WindowType.FlightList: {
                 return <FlightListWidget/>
-            }
-            case WindowType.SeatSelection: {
-                return <></>
             }
             default: {
                 return <FlightSettingsWidget/>
@@ -66,7 +70,10 @@ const BookFlights = () => {
                     <p className="text-neutral-500">Here you can book flights, input flight information, select a flight and then choose your seats!</p>
                 </div>
 
-               <BookingContext.Provider value={{flight, setFlight, isSearching, setIsSearching}}>
+               <BookingContext.Provider value={{flight, setFlight, 
+                                                isSearching, setIsSearching,
+                                                selectedFlight, setSelectedFlight
+                }}>
                 {renderActiveWindow()}
                </BookingContext.Provider>
             </div>

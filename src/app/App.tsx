@@ -6,6 +6,7 @@ import Home from "./routes/Home";
 import BookFlights from "./routes/BookFlights";
 import ManageFlights from "./routes/ManageFlights";
 import FlightServices from "./routes/FlightServices";
+import SelectSeats from "./routes/SelectSeats";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/book-flights" element={<BookFlights/>}/>
       <Route path="/manage-flights" element={<ManageFlights/>}/>
       <Route path="/flight-services" element={<FlightServices/>}/>
+      <Route path="/select-seats" element={<SelectSeats/>}/>
     </Routes>
   );
 }

@@ -20,7 +20,7 @@ const LoginWidget = () => {
             password
         }
 
-        if (isEmptyOrWhitespace(username) || isEmptyOrWhitespace(password)) {
+        if (isEmptyOrWhitespace(username) || isEmptyOrWhitespace(password) || username.includes(":")) {
             console.log("invalid username or password");
             setIsDisabled(false);
             return;
