@@ -1,4 +1,5 @@
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import SignupWidget from "../../components/SignupWidget";
 
 const Signup = () => {
@@ -8,6 +9,10 @@ const Signup = () => {
     
             <div className="flex flex-grow flex-col relative h-full items-center justify-center">
                 <SignupWidget/>
+            </div>
+
+            <div className="pb-4">
+                <Footer/>
             </div>
         </div>
     );
