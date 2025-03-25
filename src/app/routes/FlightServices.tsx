@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 const FlightServices = () => {
     const navigate = useNavigate();
@@ -21,6 +22,10 @@ const FlightServices = () => {
                     <h1 className="inline text-4xl text-center text-neutral-600">In-Flight Services</h1>
                     <p>this is the in-flight services page</p>
                 </div>
+            </div>
+
+            <div className="pb-4">
+                <Footer/>
             </div>
         </div>
     );

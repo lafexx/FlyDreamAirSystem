@@ -1,9 +1,41 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+
 import { Flight } from "../../types/Flight";
 
+import { getStoredData } from "../../utils/ObjUtils";
 import { getRandomInt } from "../../utils/MathUtils";
+
+export const aisleMap: Record<number, [string]> = {
+    0: ["A"],
+    1: ["B"],
+    2: ["C"],
+    3: ["D"],
+    4: ["E"],
+    5: ["F"],
+};
+
+export const renderSeats = (seats: number[][], addSeatToSelection?: (rowIndex: number, columnIndex: number) => void) => {
+    return seats.map((row, rowIndex) => (
+        <div key={rowIndex} className={`bg-neutral-300 rounded-xl w-[50px] h-[50px] space-y-2 ${rowIndex == 2 ? "mr-15" : "mr-2"}`}>
+            {row.map((state, columnIndex) => (
+                <button onClick={() => {
+                    if (addSeatToSelection) {
+                        addSeatToSelection(rowIndex, columnIndex)
+                    }
+                }} key={columnIndex} className={`${state === -1 ? "bg-red-400" : state === 0 ? "bg-neutral-200" : "bg-emerald-500"} hover:scale-[110%] shadow rounded-xl w-[50px] h-[50px] duration-200 ease-linear`}>
+                   
+                    <div className="h-full flex flex-col flex-grow relative justify-center items-center">
+                        <p className="text-center drop-shadow text-neutral-700">{aisleMap[rowIndex]}{columnIndex}</p>
+                    </div>
+                </button>
+            ))}
+        </div>
+    ));
+};
 
 const SelectSeats = () => {
     const [flight, setFlight] = useState<Flight>(); 
@@ -11,19 +43,7 @@ const SelectSeats = () => {
     const [reservedSeats, setReservedSeats] = useState<number>(0);
     const [selectedSeats, setSelectedSeats] = useState<[x: number, y: number][]>([]);
 
-    const getStoredData = <T,>(key: string): T | null => {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) as T : null;
-    };
-    
-    const aisleMap: Record<number, [string]> = {
-        0: ["A"],
-        1: ["B"],
-        2: ["C"],
-        3: ["D"],
-        4: ["E"],
-        5: ["F"],
-    }
+    const navigate = useNavigate();
 
     const addSeatToSelection = (rowIndex: number, columnIndex: number) => {
         setSeats((prev) => {
@@ -50,23 +70,6 @@ const SelectSeats = () => {
     
             return prev;
         });
-    };
-    
-
-    const renderSeats = () => {
-
-        return seats.map((row, rowIndex) => (
-            <div key={rowIndex} className={`bg-neutral-300 rounded-xl w-[50px] h-[50px] space-y-2 ${rowIndex == 2 ? "mr-15" : "mr-2"}`}>
-                {row.map((state, columnIndex) => (
-                    <button onClick={() => addSeatToSelection(rowIndex, columnIndex)} key={columnIndex} className={`${state === -1 ? "bg-red-400" : state === 0 ? "bg-neutral-200" : "bg-emerald-500"} hover:scale-[110%] shadow rounded-xl w-[50px] h-[50px] duration-200 ease-linear`}>
-                       
-                        <div className="h-full flex flex-col flex-grow relative justify-center items-center">
-                            <p className="text-center drop-shadow text-neutral-700">{aisleMap[rowIndex]}</p>
-                        </div>
-                    </button>
-                ))}
-            </div>
-        ));
     };
 
     const generateRandomSeatData = () => {
@@ -100,6 +103,19 @@ const SelectSeats = () => {
         setSeats(generateRandomSeatData());
     }, []);
 
+    const getSeatLocationFromIndecies = (x: number, y: number) => {
+        return `${aisleMap[x]}${y}`;
+    }
+
+    const checkout = () => {
+        if (flight) {
+            flight.seats = seats;
+            flight.price = flight.price! * selectedSeats.length;
+            localStorage.setItem(`${localStorage.getItem("currentUser")}:flight`, JSON.stringify(flight));
+            navigate("/booking-confirmation");
+        }
+    };
+
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden bg-neutral-200">
             <Navbar/>
@@ -113,7 +129,7 @@ const SelectSeats = () => {
 
                 <div className="grid grid-rows-1 grid-cols-[auto_auto] h-full gap-2">
                     <div className="bg-neutral-300 min-h-[375px] flex justify-center rounded-xl shadow p-4">
-                        {renderSeats()}
+                        {renderSeats(seats, addSeatToSelection)}
                     </div>
 
                     <div className="bg-neutral-300 rounded-xl shadow p-4 min-w-[300px] flex flex-col justify-between">
@@ -141,24 +157,29 @@ const SelectSeats = () => {
                             <h2 className="text-xl text-neutral-700 font-semibold">Seats</h2>
                             <div className="grid grid-rows-1 grid-cols-[auto_auto]">
                                 <ul className="list-disc px-10">
-                                    <li className="text-neutral-700">E5</li>
-                                    <li className="text-neutral-700">E5</li>
+                                    {selectedSeats.length > 0 && <li className="text-neutral-700">{getSeatLocationFromIndecies(selectedSeats[0][0], selectedSeats[0][1])}</li>}
+                                    {selectedSeats.length > 1 && <li className="text-neutral-700">{getSeatLocationFromIndecies(selectedSeats[1][0], selectedSeats[1][1])}</li>}
                                 </ul>
                                 <ul className="list-disc px-10">
-                                    <li className="text-neutral-700">E5</li>
-                                    <li className="text-neutral-700">E5</li>
+                                    {selectedSeats.length > 2 && <li className="text-neutral-700">{getSeatLocationFromIndecies(selectedSeats[2][0], selectedSeats[2][1])}</li>}
+                                    {selectedSeats.length > 3 && <li className="text-neutral-700">{getSeatLocationFromIndecies(selectedSeats[3][0], selectedSeats[3][1])}</li>}
                                 </ul>
                             </div>
                         </div>
 
                         <div className="flex justify-center mt-auto">
-                            <button className="bg-blue-400 w-full shadow drop-shadow hover:bg-blue-500 rounded-xl px-10 py-1 text-neutral-200 duration-200 ease-linear">
+                            <button onClick={() => checkout()} disabled={selectedSeats.length === 0 ? true : false} 
+                                    className={`bg-blue-400 w-full shadow drop-shadow rounded-xl px-10 py-1 text-neutral-200 duration-200 ease-linear ${selectedSeats.length  === 0 ? "opacity-[0.5]" : "hover:bg-blue-500 "}`}>
                                 <p className="drop-shadow">Checkout</p>
-                                <p className="drop-shadow">$3008</p>
+                                <p className="drop-shadow">${flight?.price! * selectedSeats.length}</p>
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div className="pb-4">
+                <Footer/>
             </div>
         </div>
     );

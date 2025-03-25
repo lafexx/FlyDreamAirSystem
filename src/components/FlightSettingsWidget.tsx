@@ -113,7 +113,8 @@ const FlightSettingsWidget = () => {
             destination: destination,
             departureDate: calendarValue?.toLocaleString()!.split(",")[0]!,
             price: undefined,
-            airline: undefined
+            airline: undefined,
+            seats: undefined
         });
     }, [departureLocation, destination, calendarValue])
 

@@ -92,7 +92,7 @@ const SignupWidget = () => {
                     <div className='flex justify-center text-center rounded-3xl'>
                             <div className='space-y-2'>
                                 <button type='submit'
-                                        className="text-white bg-[#11111185] hover:bg-[#1b1b1b] rounded-lg text-lg px-14 py-2.5 text-center inline-flex items-center duration-200 ease-linear"
+                                        className="text-white bg-[#11111185] hover:bg-blue-400 rounded-lg text-lg px-14 py-2.5 text-center inline-flex items-center duration-200 ease-linear"
                                         disabled={isDisabled}
                                 >
                                     Signup

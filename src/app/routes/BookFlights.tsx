@@ -6,6 +6,7 @@ import { Flight } from "../../types/Flight";
 import { BookingContextType } from "../../contexts/BookingContext";
 
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import FlightSettingsWidget from "../../components/FlightSettingsWidget";
 import FlightListWidget from "../../components/FlightListWidget";
 
@@ -76,6 +77,10 @@ const BookFlights = () => {
                 }}>
                 {renderActiveWindow()}
                </BookingContext.Provider>
+            </div>
+
+            <div className="pb-4">
+                <Footer/>
             </div>
         </div>
     );
