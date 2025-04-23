@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState, createContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Flight } from "../../types/Flight";
@@ -19,9 +19,10 @@ const BookFlights = () => {
     }
 
     const [activeWindow, setActiveWindow] = useState<WindowType>(WindowType.FlightSettings);
-    const [flight, setFlight] = useState<Flight | null>(null);
+    const emptyFlight: Flight = useMemo(() =>  new Flight("", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
+    const [flight, setFlight] = useState<Flight>(emptyFlight);
     const [isSearching, setIsSearching] = useState<boolean>(false);
-    const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+    const [selectedFlight, setSelectedFlight] = useState<Flight>(emptyFlight);
     
     const navigate = useNavigate();
 
@@ -41,7 +42,7 @@ const BookFlights = () => {
     }, [isSearching]);
 
     useEffect(() => {
-        if (selectedFlight) {
+        if (selectedFlight != emptyFlight) {
             localStorage.setItem(`${localStorage.getItem("currentUser")}:flight`, JSON.stringify(selectedFlight));
             navigate("/select-seats");
         }
@@ -75,7 +76,7 @@ const BookFlights = () => {
                                                 isSearching, setIsSearching,
                                                 selectedFlight, setSelectedFlight
                 }}>
-                {renderActiveWindow()}
+                    {renderActiveWindow()}
                </BookingContext.Provider>
             </div>
 

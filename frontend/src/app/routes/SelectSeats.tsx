@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
@@ -8,6 +8,8 @@ import { Flight } from "../../types/Flight";
 
 import { getStoredData } from "../../utils/ObjUtils";
 import { getRandomInt } from "../../utils/MathUtils";
+
+import { BookFlight } from "../../services/flight/api/FlightInterface";
 
 export const aisleMap: Record<number, [string]> = {
     0: ["A"],
@@ -38,7 +40,9 @@ export const renderSeats = (seats: number[][], addSeatToSelection?: (rowIndex: n
 };
 
 const SelectSeats = () => {
-    const [flight, setFlight] = useState<Flight>(); 
+    const emptyFlight: Flight = useMemo(() =>  new Flight("", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
+    const [flight, setFlight] = useState<Flight>(emptyFlight); 
+
     const [seats, setSeats] = useState<number[][]>([]); // 6x6 matrix
     const [reservedSeats, setReservedSeats] = useState<number>(0);
     const [selectedSeats, setSelectedSeats] = useState<[x: number, y: number][]>([]);
@@ -107,11 +111,27 @@ const SelectSeats = () => {
         return `${aisleMap[x]}${y}`;
     }
 
-    const checkout = () => {
+    const checkout = async () => {
         if (flight) {
+            const currentUser: string | null = localStorage.getItem("currentUser");
+
+            if (!currentUser) {
+                console.warn("invalid user information");
+                return;
+            }
+                
+            flight.username = currentUser;
             flight.seats = seats;
             flight.price = flight.price! * selectedSeats.length;
-            localStorage.setItem(`${localStorage.getItem("currentUser")}:flight`, JSON.stringify(flight));
+                
+            const res: boolean = await BookFlight(flight);
+            if (!res) {
+                console.warn("Failed to book flight.");
+                return;
+            }
+
+            console.log("Successfully booked flight.");
+            localStorage.setItem(`${currentUser}:flight`, JSON.stringify(flight));
             navigate("/booking-confirmation");
         }
     };
@@ -123,7 +143,7 @@ const SelectSeats = () => {
             <div className="flex flex-grow flex-col relative h-full items-center justify-center space-y-10">
                 <div className="text-center space-y-2 px-10">
                     <h1 className="text-4xl text-center text-neutral-600 font-semibold">Select your seats</h1>
-                    <p className="text-neutral-500">{`Flight: ${flight?.departureLocation?.city} to ${flight?.destination?.city} on ${flight?.departureDate} via ${flight?.airline} Airline`}</p>
+                    <p className="text-neutral-500">{`Flight: ${flight.departureLocation.city} to ${flight.destination.city} on ${flight.departureDate} via ${flight.airline} Airline`}</p>
                     <p className="text-center text-neutral-500">({36 - reservedSeats} available)</p>
                 </div>
 

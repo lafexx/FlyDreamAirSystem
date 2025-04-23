@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -8,12 +8,13 @@ import { Flight } from "../../types/Flight";
 
 import { getStoredData } from "../../utils/ObjUtils";
 
-import { aisleMap } from "./SelectSeats";
 import { renderSeats } from "./SelectSeats";
 
 const BookingConfirmation = () => {
     const navigate = useNavigate();
-    const [flight, setFlight] = useState<Flight>();
+
+    const emptyFlight: Flight = useMemo(() =>  new Flight("", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
+    const [flight, setFlight] = useState<Flight>(emptyFlight);
 
     useEffect(() => {
         if (!localStorage.getItem("currentUser")) {

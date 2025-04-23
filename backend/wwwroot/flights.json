@@ -1,3 +1,68 @@
-{
-
-}
+[
+  {
+    "username": "lafe",
+    "departureLocation": {
+      "country": "Australia",
+      "city": "Sydney",
+      "airport": "Sydney Kingsford Smith Airport"
+    },
+    "destination": {
+      "country": "Japan",
+      "city": "Tokyo",
+      "airport": "Haneda Airport"
+    },
+    "departureDate": "25/04/2025",
+    "price": 3840.0,
+    "airline": "Beta",
+    "seats": [
+      [
+        1,
+        0,
+        0,
+        0,
+        -1,
+        0
+      ],
+      [
+        1,
+        -1,
+        0,
+        -1,
+        -1,
+        0
+      ],
+      [
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        -1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        -1,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        -1,
+        0,
+        1
+      ]
+    ]
+  }
+]

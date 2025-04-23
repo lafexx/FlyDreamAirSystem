@@ -36,6 +36,7 @@ const LoginWidget = () => {
         }
             
         setIsDisabled(false);
+        localStorage.setItem("currentUser", request.username);
         navigate("/");
     };
 

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useMemo } from "react";
 
 import { BookingContext } from "../app/routes/BookFlights";
 
@@ -16,17 +16,19 @@ const FlightSettingsWidget = () => {
     const bookingContext = useContext(BookingContext);
     const { setFlight, isSearching, setIsSearching } = bookingContext!; 
 
+
+    const emptyLocation: {country: string, city: string, airport: string} = useMemo(() => ({country: "", city: "", airport: ""}), []);
     const [departureLocation, setDepartureLocation] = useState<{
         country: string,
         city: string,
         airport: string
-    } | null>(null);
+    }>(emptyLocation);
 
     const [destination, setDestination] = useState<{
         country: string,
         city: string,
         airport: string
-    } | null>(null);
+    }>(emptyLocation);
 
     type ValuePiece = Date | null;
     type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -109,12 +111,13 @@ const FlightSettingsWidget = () => {
         }
 
         setFlight!({
+            username: "",
             departureLocation: departureLocation,
             destination: destination,
             departureDate: calendarValue?.toLocaleString()!.split(",")[0]!,
-            price: undefined,
-            airline: undefined,
-            seats: undefined
+            price: 0,
+            airline: "",
+            seats: []
         });
     }, [departureLocation, destination, calendarValue])
 
@@ -178,7 +181,7 @@ const FlightSettingsWidget = () => {
                 }} className="flex justify-between w-full max-w-[500px] border hover:scale-[101%] shadow border-neutral-500 rounded-xl p-4 items-center">
                     <div className="space-x-4">
                         <PiAirplaneTakeoffFill className="inline text-neutral-700 text-4xl"/>
-                        <h1 className="inline text-sm text-neutral-600">{departureLocation !== null ? `${departureLocation.airport}, ${departureLocation.city}, ${departureLocation.country}` : `Select departure location...`}</h1>
+                        <h1 className="inline text-sm text-neutral-600">{departureLocation !== emptyLocation ? `${departureLocation.airport}, ${departureLocation.city}, ${departureLocation.country}` : `Select departure location...`}</h1>
                     </div>
                     {(() => {
                         if (departureLocationDropdownEnabled)
@@ -201,7 +204,7 @@ const FlightSettingsWidget = () => {
                 }} className="flex justify-between w-full max-w-[500px] border hover:scale-[101%] shadow border-neutral-500 rounded-xl p-4 items-center">
                     <div className="space-x-4">
                         <PiAirplaneLandingFill className="inline text-neutral-700 text-4xl"/>
-                        <h1 className="inline text-sm text-neutral-600">{destination !== null ? `${destination.airport}, ${destination.city}, ${destination.country}` : `Select destination...`}</h1>
+                        <h1 className="inline text-sm text-neutral-600">{destination !== emptyLocation ? `${destination.airport}, ${destination.city}, ${destination.country}` : `Select destination...`}</h1>
                     </div>
                     {(() => {
                         if (destinationDropdownEnabled)
