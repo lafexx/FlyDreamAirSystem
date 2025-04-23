@@ -1,7 +1,9 @@
 # FlyDreamAir System
+
 This is the FlyDreamAir software artefact for CSIT214. The system can manage customers, let them book flights, manage flight reservations, choose and manage their seat selections, and use in-flight services such as the food and drink service.
 
 ## Showcase
+
 ![image](https://github.com/user-attachments/assets/4ca6b0bf-186e-4179-8cb5-c0e4f4a6c202)
 
 ![image](https://github.com/user-attachments/assets/26d1643b-a3e5-477a-b634-0beea9cba5de)

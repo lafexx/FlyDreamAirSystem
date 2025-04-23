@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { isEmptyOrWhitespace } from '../utils/StringUtils';
+import { Signup } from '../api/AuthInterface';
+
+import { isEmptyOrWhitespace } from '../../../utils/StringUtils';
 
 const SignupWidget = () => {
     const navigate = useNavigate();
@@ -11,8 +13,6 @@ const SignupWidget = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
-    
-    
     
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -30,13 +30,15 @@ const SignupWidget = () => {
             return;
         }
 
-        try {
-            localStorage.setItem(`${username}`, `${password}`);
+        const res: boolean = await Signup(request);
+        if (!res) {
+            console.log("Failed to signup.");
             setIsDisabled(false);
-        } catch (error) {
-            console.log(error);
-            setIsDisabled(false);
+            return;
         }
+
+        setIsDisabled(false);
+        navigate("/login");
     };
 
 
