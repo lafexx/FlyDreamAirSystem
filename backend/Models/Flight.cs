@@ -4,8 +4,9 @@ namespace backend.Models
 {
     public class Flight
     {
-        public Flight(string username, Location departureLocation, Location destination, string departureDate, double price, string airline, int[][] seats)
+        public Flight(Guid id, string username, Location departureLocation, Location destination, string departureDate, double price, string airline, int[][] seats)
         {
+            this.id = id;
             this.username = username;
             this.departureLocation = departureLocation;
             this.destination = destination;
@@ -15,6 +16,7 @@ namespace backend.Models
             this.seats = seats;
         }
 
+        public Guid id { get; set; }
         public string username { get; set; }
 
         public Location departureLocation { get; set; }

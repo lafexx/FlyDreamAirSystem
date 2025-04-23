@@ -13,7 +13,7 @@ import { renderSeats } from "./SelectSeats";
 const BookingConfirmation = () => {
     const navigate = useNavigate();
 
-    const emptyFlight: Flight = useMemo(() =>  new Flight("", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
+    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
     const [flight, setFlight] = useState<Flight>(emptyFlight);
 
     useEffect(() => {
@@ -39,8 +39,9 @@ const BookingConfirmation = () => {
                     <div className="font-semibold text-center space-y-2">
                         <h1 className="text-4xl text-center text-neutral-600">Flight Booked!</h1>
                         <p className="text-neutral-500 font-normal">Your flight has been succesfully booked. You can view your flight details below and manage your flight from the home page.</p>
-                        <div className="flex justify-center">
+                        <div className="flex justify-center space-x-10">
                             <button onClick={() => navigate("/flight-services")} className="text-neutral-500 hover:text-blue-400 underline duration-200 ease-linear">Browse in-flight services</button>
+                            <button onClick={() => navigate("/manage-flights")} className="text-neutral-500 hover:text-blue-400 underline duration-200 ease-linear">Manage your flights</button>
                         </div>
                     </div>
 

@@ -19,7 +19,7 @@ const BookFlights = () => {
     }
 
     const [activeWindow, setActiveWindow] = useState<WindowType>(WindowType.FlightSettings);
-    const emptyFlight: Flight = useMemo(() =>  new Flight("", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
+    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
     const [flight, setFlight] = useState<Flight>(emptyFlight);
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [selectedFlight, setSelectedFlight] = useState<Flight>(emptyFlight);
@@ -70,6 +70,9 @@ const BookFlights = () => {
                 <div className="text-center space-y-2 px-10">
                     <h1 className="text-4xl text-center text-neutral-600 font-semibold">Book a Flight</h1>
                     <p className="text-neutral-500">Here you can book flights, input flight information, select a flight and then choose your seats!</p>
+                    <div className="flex justify-center">
+                        <button onClick={() => navigate("/")} className="text-neutral-500 hover:text-blue-400 underline duration-200 ease-linear">Return to home page.</button>
+                    </div>
                 </div>
 
                <BookingContext.Provider value={{flight, setFlight, 

@@ -19,7 +19,7 @@ const renderFlights = () => {
     }
 
     return airlines.map((airline, index) => (
-        <button onClick={() => setSelectedFlight(new Flight("", flight.departureLocation, flight.destination, flight.departureDate, prices[index], airline, []))} 
+        <button onClick={() => setSelectedFlight(new Flight("", "", flight.departureLocation, flight.destination, flight.departureDate, prices[index], airline, []))} 
                 key={index} 
                 className={`${index % 2 === 0 ? "bg-neutral-300" : "bg-neutral-400"} p-2 flex flex-col w-full text-left hover:scale-[101%] hover:border-b duration-200 ease-linear rounded-xl`}>
             <div className="flex justify-between">

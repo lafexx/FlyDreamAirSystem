@@ -40,7 +40,7 @@ export const renderSeats = (seats: number[][], addSeatToSelection?: (rowIndex: n
 };
 
 const SelectSeats = () => {
-    const emptyFlight: Flight = useMemo(() =>  new Flight("", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
+    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
     const [flight, setFlight] = useState<Flight>(emptyFlight); 
 
     const [seats, setSeats] = useState<number[][]>([]); // 6x6 matrix

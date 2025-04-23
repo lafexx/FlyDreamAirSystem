@@ -4,6 +4,7 @@ namespace backend.Models
 {
     public class BookFlightRequest
     {
+        public string id { get; set; }
         public string username { get; set; }
         public Location departureLocation { get; set; }
         public Location destination { get; set; }
