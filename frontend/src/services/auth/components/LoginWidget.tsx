@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { isEmptyOrWhitespace } from '../utils/StringUtils';
+import { Login } from '../api/AuthInterface';
+
+import { isEmptyOrWhitespace } from '../../../utils/StringUtils';
 
 const LoginWidget = () => {
     const navigate = useNavigate();
@@ -26,22 +28,15 @@ const LoginWidget = () => {
             return;
         }
     
-        try {
-            if (password == localStorage.getItem(username))
-            {
-                localStorage.setItem("currentUser", username);
-                navigate("/");
-                setIsDisabled(false);
-            }
-            else
-            {
-                console.log("incorrect username or password");
-                setIsDisabled(false);
-            }
-        } catch (error) {
-            console.error(error);
+        const res: boolean = await Login(request);
+        if (!res) {
+            console.log("invalid username or password");
             setIsDisabled(false);
+            return;
         }
+            
+        setIsDisabled(false);
+        navigate("/");
     };
 
     return (

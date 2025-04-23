@@ -18,9 +18,9 @@ const ManageFlights = () => {
             <Navbar/>
     
             <div className="flex flex-grow flex-col relative h-full items-center justify-center space-y-15">
-                <div className="font-semibold">
-                    <h1 className="inline text-4xl text-center text-neutral-600">Manage your Flights</h1>
-                    <p>this is the flight managing page</p>
+                <div className="font-semibold text-center">
+                    <h1 className="text-4xl text-center text-neutral-600">Manage your Flights</h1>
+                    <p className="text-neutral-500 font-normal">this is the flight managing page</p>
                 </div>
             </div>
 
