@@ -1,4 +1,5 @@
 using backend.Services.Auth;
+using backend.Services.Flight;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddCors(context =>
 });
 
 builder.Services.AddSingleton<IAuthService, AuthService>();
+builder.Services.AddSingleton<IFlightService, FlightService>();
     
 var app = builder.Build();
 

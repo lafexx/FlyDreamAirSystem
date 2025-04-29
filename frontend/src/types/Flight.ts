@@ -1,17 +1,23 @@
 export class Flight {
-    public departureLocation: {country: string, city: string, airport: string} | null;
-    public destination: {country: string, city: string, airport: string} | null;
-    public departureDate: string | null;
-    public price: number | undefined;
-    public airline: string | undefined;
-    public seats: number[][] | undefined;
+    public id: string;
+    public username: string;
+    public departureLocation: {country: string, city: string, airport: string};
+    public destination: {country: string, city: string, airport: string};
+    public departureDate: string;
+    public price: number;
+    public airline: string;
+    public seats: number[][];
 
-    public constructor(departureLocation: {country: string, city: string, airport: string} | null, 
-                       destination: {country: string, city: string, airport: string} | null,
-                       departureDate: string | null,
-                       price: number | undefined = undefined,
-                       airline: string | undefined = undefined,
-                       seats: number[][] | undefined = undefined) {
+    public constructor(id: string,
+                        username: string,
+                       departureLocation: {country: string, city: string, airport: string}, 
+                       destination: {country: string, city: string, airport: string},
+                       departureDate: string,
+                       price: number,
+                       airline: string,
+                       seats: number[][]) {
+        this.id = id;
+        this.username = username;
         this.departureLocation = departureLocation;
         this.destination = destination;
         this.departureDate = departureDate;

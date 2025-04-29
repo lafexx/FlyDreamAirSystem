@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState, createContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Flight } from "../../types/Flight";
@@ -19,9 +19,10 @@ const BookFlights = () => {
     }
 
     const [activeWindow, setActiveWindow] = useState<WindowType>(WindowType.FlightSettings);
-    const [flight, setFlight] = useState<Flight | null>(null);
+    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
+    const [flight, setFlight] = useState<Flight>(emptyFlight);
     const [isSearching, setIsSearching] = useState<boolean>(false);
-    const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+    const [selectedFlight, setSelectedFlight] = useState<Flight>(emptyFlight);
     
     const navigate = useNavigate();
 
@@ -41,10 +42,8 @@ const BookFlights = () => {
     }, [isSearching]);
 
     useEffect(() => {
-        if (selectedFlight) {
-            localStorage.setItem(`${localStorage.getItem("currentUser")}:flight`, JSON.stringify(selectedFlight));
-            navigate("/select-seats");
-        }
+        localStorage.setItem(`${localStorage.getItem("currentUser")}:flight`, JSON.stringify(selectedFlight));
+        navigate("/select-seats");
     }, [selectedFlight]);
 
     const renderActiveWindow = () => {
@@ -69,13 +68,16 @@ const BookFlights = () => {
                 <div className="text-center space-y-2 px-10">
                     <h1 className="text-4xl text-center text-neutral-600 font-semibold">Book a Flight</h1>
                     <p className="text-neutral-500">Here you can book flights, input flight information, select a flight and then choose your seats!</p>
+                    <div className="flex justify-center">
+                        <button onClick={() => navigate("/")} className="text-neutral-500 hover:text-blue-400 underline duration-200 ease-linear">Return to home page.</button>
+                    </div>
                 </div>
 
                <BookingContext.Provider value={{flight, setFlight, 
                                                 isSearching, setIsSearching,
                                                 selectedFlight, setSelectedFlight
                 }}>
-                {renderActiveWindow()}
+                    {renderActiveWindow()}
                </BookingContext.Provider>
             </div>
 

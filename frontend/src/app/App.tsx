@@ -8,6 +8,7 @@ import ManageFlights from "./routes/ManageFlights";
 import FlightServices from "./routes/FlightServices";
 import SelectSeats from "./routes/SelectSeats";
 import BookingConfirmation from "./routes/BookingConfirmation";
+import ManageFlight from "./routes/ManageFlight";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/signup" element={<Signup/>}/>
       <Route path="/book-flights" element={<BookFlights/>}/>
       <Route path="/manage-flights" element={<ManageFlights/>}/>
+      <Route path="/manage-flights/:flightId" element={<ManageFlight/>}/>
       <Route path="/flight-services" element={<FlightServices/>}/>
       <Route path="/select-seats" element={<SelectSeats/>}/>
       <Route path="/booking-confirmation" element={<BookingConfirmation/>}/>
