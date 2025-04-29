@@ -26,7 +26,7 @@ export const renderSeats = (seats: number[][], addSeatToSelection?: (rowIndex: n
             {row.map((state, columnIndex) => (
                 <button onClick={() => {
                     if (addSeatToSelection) {
-                        addSeatToSelection(rowIndex, columnIndex)
+                        addSeatToSelection(columnIndex, rowIndex)
                     }
                 }} key={columnIndex} className={`${state === -1 ? "bg-red-400" : state === 0 ? "bg-neutral-200" : "bg-emerald-500"} hover:scale-[110%] shadow rounded-xl w-[50px] h-[50px] duration-200 ease-linear`}>
                    
