@@ -42,8 +42,10 @@ const BookFlights = () => {
     }, [isSearching]);
 
     useEffect(() => {
-        localStorage.setItem(`${localStorage.getItem("currentUser")}:flight`, JSON.stringify(selectedFlight));
-        navigate("/select-seats");
+        if  (selectedFlight != emptyFlight) {
+            localStorage.setItem(`${localStorage.getItem("currentUser")}:flight`, JSON.stringify(selectedFlight));
+            navigate("/select-seats");
+        }
     }, [selectedFlight]);
 
     const renderActiveWindow = () => {
