@@ -467,5 +467,72 @@
         1
       ]
     ]
+  },
+  {
+    "id": "8ab37086-40c1-4bff-a832-5f4f82431b0d",
+    "username": "lafe",
+    "departureLocation": {
+      "country": "China",
+      "city": "Beijing",
+      "airport": "Beijing Capital International Airport"
+    },
+    "destination": {
+      "country": "Australia",
+      "city": "Sydney",
+      "airport": "Sydney Kingsford Smith Airport"
+    },
+    "departureDate": "14/05/2025",
+    "price": 3800.0,
+    "airline": "Delta",
+    "seats": [
+      [
+        -1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        -1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        -1,
+        0,
+        0,
+        -1,
+        0
+      ],
+      [
+        0,
+        -1,
+        -1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        -1,
+        0
+      ]
+    ]
   }
 ]
