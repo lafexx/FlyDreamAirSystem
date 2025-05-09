@@ -4,14 +4,18 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     return (
-        <div className='w-[100%] bg-neutral-100 p-5'>
-            <button onClick={() => navigate("/")}>
-                <h1 className='inline text-3xl font-bold text-neutral-500 drop-shadow'>
+        <div className='w-full bg-neutral-100 shadow p-5 flex items-center justify-between'>
+            <button onClick={() => navigate("/")} className="flex-shrink-0">
+                <h1 className='inline text-3xl font-bold text-neutral-700 drop-shadow'>
                     FlyDream
                 </h1>
-                <h1 className='inline text-3xl font-bold text-blue-400 drop-shadow'>
+                <h1 className='inline text-3xl font-bold text-neutral-700 drop-shadow'>
                     Air
                 </h1>
+            </button>
+
+            <button onClick={() => navigate("/login")} type='submit' className="text-white bg-blue-600 rounded-xl hover:bg-blue-500 text-lg px-8 py-1.5 text-center inline-flex items-center duration-200 ease-linear flex-shrink-0">
+                Login
             </button>
         </div>
     );

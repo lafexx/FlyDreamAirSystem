@@ -111,6 +111,7 @@ const FlightSettingsWidget = () => {
         }
 
         setFlight!({
+            id: "",
             username: "",
             departureLocation: departureLocation,
             destination: destination,
@@ -131,7 +132,7 @@ const FlightSettingsWidget = () => {
                 });
                 setDepartureLocationDropdownEnabled((prev) => !prev);
             }} key={index} 
-                    className={`${index % 2 === 0 ? "bg-neutral-300" : "bg-neutral-400"} p-2 flex flex-col w-full text-left hover:scale-[101%] hover:border-b duration-200 ease-linear`}>
+                    className={`rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
                 <h1 className="text-neutral-800 font-semibold">{location.city}, {location.country}</h1>
                 <p className="text-sm text-neutral-600">{location.airport}</p>
             </button>
@@ -148,7 +149,7 @@ const FlightSettingsWidget = () => {
                 });
                 setDestinationDropdownEnabled((prev) => !prev)
             }} key={index} 
-                    className={`${index % 2 === 0 ? "bg-neutral-300" : "bg-neutral-400"} p-2 flex flex-col w-full text-left hover:scale-[101%] hover:border-b duration-200 ease-linear`}>
+                    className={`rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
                 <h1 className="text-neutral-800 font-semibold">{location.city}, {location.country}</h1>
                 <p className="text-sm text-neutral-600">{location.airport}</p>
             </button>
@@ -173,7 +174,7 @@ const FlightSettingsWidget = () => {
             );
 
         return (
-            <div className="w-full flex flex-col gap-2 items-center justify-center px-10 duration-200 ease-linear">
+            <div className="w-full max-w-[550px] flex flex-col gap-2 justify-center px-10 duration-200 ease-linear">
                 <button disabled={isDisabled} onClick={() => {
                     setDestinationDropdownEnabled(false);
                     setDepartureDateDropdownEnabled(false);
@@ -183,12 +184,12 @@ const FlightSettingsWidget = () => {
                         <PiAirplaneTakeoffFill className="inline text-neutral-700 text-4xl"/>
                         <h1 className="inline text-sm text-neutral-600">{departureLocation !== emptyLocation ? `${departureLocation.airport}, ${departureLocation.city}, ${departureLocation.country}` : `Select departure location...`}</h1>
                     </div>
-                    {(() => {
-                        if (departureLocationDropdownEnabled)
-                            return <FaChevronUp className="text-neutral-700 text-3xl"/>
-                        else
-                            return <FaChevronDown className="text-neutral-700 text-3xl"/>
-                    })()}
+
+                    {departureLocationDropdownEnabled ? (
+                        <FaChevronUp className="text-neutral-700 text-3xl"/>
+                    ) : (
+                        <FaChevronDown className="text-neutral-700 text-3xl"/>
+                    )}
                 </button>
 
                 {departureLocationDropdownEnabled && (
@@ -229,25 +230,16 @@ const FlightSettingsWidget = () => {
                         <MdOutlineDateRange className="inline text-neutral-700 text-4xl"/>
                         <h1 className="inline text-sm text-neutral-600">{departureDate !== null ? departureDate : `Select departure date...`}</h1>
                     </div>
-                    {(() => {
-                        if (departureDateDropdownEnabled)
-                            return <FaChevronUp className="text-neutral-700 text-3xl"/>
-                        else
-                            return <FaChevronDown className="text-neutral-700 text-3xl"/>
-                    })()}
+                    {departureDateDropdownEnabled ? ( <FaChevronUp className="text-neutral-700 text-3xl"/> ) : (  <FaChevronDown className="text-neutral-700 text-3xl"/> )}
                 </button>
 
-                {(() => {
-                    if (departureDateDropdownEnabled) {
-                        return (
-                            <div className="w-full max-w-[500px] max-h-[400px] overflow-y-auto  border shadow border-neutral-500 rounded-xl items-center">
-                                <Calendar minDate={new Date()} onChange={calenderOnChange} value={calendarValue}/>
-                            </div>
-                        );
-                    }
-                })()}
+                {departureDateDropdownEnabled && (
+                    <div className="w-full max-w-[450px] max-h-[400px] overflow-y-auto  border shadow border-neutral-500 rounded-xl items-center">
+                        <Calendar minDate={new Date()} onChange={calenderOnChange} value={calendarValue}/>
+                    </div>
+                )}
 
-                <button onClick={() => searchFlights()} disabled={isDisabled} className="bg-blue-400 p-3 rounded-lg shadow drop-shadow text-white px-15 mt-2 hover:bg-blue-500 duration-200 ease-linear">
+                <button onClick={() => searchFlights()} disabled={isDisabled} className="bg-blue-700 p-3 rounded-2xl shadow drop-shadow text-white px-15 mt-2 hover:bg-blue-500 duration-100 ease-linear">
                     Search Flights
                 </button>
             </div>

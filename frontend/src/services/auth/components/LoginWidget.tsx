@@ -42,10 +42,10 @@ const LoginWidget = () => {
 
     return (
         <div className='w-full p-5 flex justify-center'>
-            <form onSubmit={handleSubmit} className='flex flex-col items-center space-y-12 w-full h-full'>
-                    <h1 className='text-4xl text-neutral-600 font-semibold text-center'>Login</h1>
+            <form onSubmit={handleSubmit} className='flex flex-col items-center space-y-12 w-full h-full max-w-[400px] rounded-lg bg-neutral-100 px-5 py-15 shadow'>
+                    <h1 className='text-4xl text-neutral-800 font-semibold text-center'>Login</h1>
 
-                    <div className="rounded-3xl space-y-4 w-full flex flex-col items-center">
+                    <div className="rounded-3xl space-y-4 w-full flex flex-col items-center ">
                         <div className='max-w-[400px] w-full'>
                             <label htmlFor="username" className={`block mb-2 text-sm text-neutral-700`}>Username</label>
                             <input
@@ -78,14 +78,14 @@ const LoginWidget = () => {
                     <div className='flex justify-center text-center rounded-3xl'>
                             <div className='space-y-2'>
                                 <button type='submit'
-                                        className="text-white bg-[#11111185] hover:bg-blue-400 rounded-lg text-lg px-14 py-2.5 text-center inline-flex items-center duration-200 ease-linear"
+                                        className="text-white bg-blue-600 rounded-xl hover:bg-blue-500 text-lg px-14 py-2.5 text-center inline-flex items-center duration-200 ease-linear"
                                         disabled={isDisabled}
                                 >
                                     Login
                                 </button>
                     
                                 <div>
-                                    <button className={`text-neutral-400 hover:text-blue-400 duration-200 ease-linear`}
+                                    <button className={`text-neutral-600 hover:text-blue-400 duration-200 ease-linear`}
                                         type='button'
                                         onClick={() => navigate("/signup")}
                                         disabled={isDisabled}

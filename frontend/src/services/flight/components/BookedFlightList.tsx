@@ -37,7 +37,7 @@ const BookedFlightList = () => {
             <button 
                 onClick={() => navigate(`/manage-flights/${flight.id}`)}
                 key={index} 
-                className={`${index % 2 === 0 ? "bg-neutral-300" : "bg-neutral-400"} p-2 flex flex-col w-full text-left hover:scale-[101%] hover:border-b duration-200 ease-linear rounded-xl`}>
+                className={`rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
             <div className="flex justify-between">
                 <div>
                     <h1 className="text-neutral-800 font-semibold">{flight.departureLocation.city} {">"} {flight.destination.city}</h1>

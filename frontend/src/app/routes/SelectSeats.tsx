@@ -99,6 +99,10 @@ const SelectSeats = () => {
     };
 
     useEffect(() => {
+        if (!localStorage.getItem("currentUser")) {
+            navigate("/login");
+        }   
+        
         const storedFlight = getStoredData<Flight>(`${localStorage.getItem("currentUser")}:flight`);
         if (storedFlight) {
             setFlight(storedFlight);
@@ -189,13 +193,17 @@ const SelectSeats = () => {
 
                         <div className="flex justify-center mt-auto">
                             <button onClick={() => checkout()} disabled={selectedSeats.length === 0 ? true : false} 
-                                    className={`bg-blue-400 w-full shadow drop-shadow rounded-xl px-10 py-1 text-neutral-200 duration-200 ease-linear ${selectedSeats.length  === 0 ? "opacity-[0.5]" : "hover:bg-blue-500 "}`}>
+                                    className={`bg-blue-700 w-full shadow drop-shadow rounded-2xl px-10 py-1 text-neutral-200 duration-200 ease-linear ${selectedSeats.length  === 0 ? "opacity-[0.5]" : "hover:bg-blue-500 "}`}>
                                 <p className="drop-shadow">Checkout</p>
                                 <p className="drop-shadow">${flight?.price! * selectedSeats.length}</p>
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div className="absolute bottom-0 left-0 w-full -z-10 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200"><path fill="#4385f0" fill-opacity="1" d="M0,64L80,80C160,96,320,128,480,128C640,128,800,96,960,74.7C1120,53,1280,43,1360,37.3L1440,32L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
             </div>
 
             <div className="pb-4">
