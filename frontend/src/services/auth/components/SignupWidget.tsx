@@ -44,7 +44,7 @@ const SignupWidget = () => {
 
     return (
         <div className='w-full p-5 flex justify-center'>
-            <form onSubmit={handleSubmit} className='flex flex-col items-center space-y-12 w-full h-full max-w-[400px] rounded-lg bg-neutral-100 px-5 py-15 shadow'>
+            <form onSubmit={handleSubmit} className='flex flex-col items-center space-y-12 w-full h-full max-w-[400px] rounded-lg bg-[#f3f3f3] px-5 py-15 shadow'>
                     <h1 className='text-4xl text-neutral-600 font-semibold text-center'>Sign up</h1>
 
                     <div className="rounded-3xl space-y-4 w-full flex flex-col items-center">
