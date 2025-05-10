@@ -1,30 +1,22 @@
-import { useState, useContext, useEffect, useMemo } from "react";
-
-import { BookingContext } from "../services/flight/components/PrimaryWidget";
+import { useState, useEffect, useMemo } from "react";
 
 import Calendar from 'react-calendar';
 import '../../node_modules/react-calendar/dist/Calendar.css';
-
-import LoadingCircleSpinner from "./animations/LoadingCircleSpinner";
 
 import { PiAirplaneTakeoffFill } from "react-icons/pi";
 import { PiAirplaneLandingFill } from "react-icons/pi";
 import { MdOutlineDateRange } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+import { useBooking } from "../contexts/BookingContext";
 
 const FlightSettingsWidget = () => {
-    const bookingContext = useContext(BookingContext);
-    const { setFlight, isSearching, setIsSearching } = bookingContext!; 
-
+    const { setFlight, setIsSearching, departureLocation, setDepartureLocation, destination, setDestination, departureDate, setDepartureDate } = useBooking();
 
     const emptyLocation: {country: string, city: string, airport: string} = useMemo(() => ({country: "", city: "", airport: ""}), []);
-    const [departureLocation, setDepartureLocation] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
-    const [destination, setDestination] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
 
     type ValuePiece = Date | null;
     type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-    const [departureDate, setDepartureDate] = useState<string | null>(null);
     const [calendarValue, calenderOnChange] = useState<Value>();
 
     const [departureLocationDropdownEnabled, setDepartureLocationDropdownEnabled] = useState<boolean>(false);
@@ -105,7 +97,6 @@ const FlightSettingsWidget = () => {
             destination: destination,
             departureDate: calendarValue?.toLocaleString()!.split(",")[0]!,
             price: 0,
-            airline: "",
             seats: []
         });
     }, [departureLocation, destination, calendarValue])
@@ -120,7 +111,7 @@ const FlightSettingsWidget = () => {
                 });
                 setDepartureLocationDropdownEnabled((prev) => !prev);
             }} key={index} 
-                    className={`rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
+                    className={`cursor-pointer rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
                 <h1 className="text-neutral-800 font-semibold">{location.city}, {location.country}</h1>
                 <p className="text-sm text-neutral-600">{location.airport}</p>
             </button>
@@ -137,7 +128,7 @@ const FlightSettingsWidget = () => {
                 });
                 setDestinationDropdownEnabled((prev) => !prev)
             }} key={index} 
-                    className={`rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
+                    className={`cursor-pointer rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
                 <h1 className="text-neutral-800 font-semibold">{location.city}, {location.country}</h1>
                 <p className="text-sm text-neutral-600">{location.airport}</p>
             </button>
@@ -155,7 +146,7 @@ const FlightSettingsWidget = () => {
     const renderWidget = () => {
         return (
             <div>
-                <div className="w-full h-full flex justify-between p-4 space-x-4">
+                <div className="flex justify-between space-x-4">
                     <div className="w-full h-full">
                         <h1>From</h1>
                         <button onClick={() => {
@@ -165,7 +156,7 @@ const FlightSettingsWidget = () => {
                         }} className="flex justify-between h-[70px] w-full border cursor-pointer shadow border-neutral-500  p-4 space-x-4 items-center">
                             <div className="space-x-4">
                                 <PiAirplaneTakeoffFill className="inline text-neutral-700 text-2xl"/>
-                                <h1 className="inline text-xs text-neutral-600">{departureLocation !== emptyLocation ? `${departureLocation.airport}, ${departureLocation.city}, ${departureLocation.country}` : `Select departure location...`}</h1>
+                                <h1 className="inline text-xs text-neutral-600">{departureLocation.country !== ""  ? `${departureLocation.airport}, ${departureLocation.city}, ${departureLocation.country}` : `Select departure location...`}</h1>
                             </div>
                         </button>
                     </div>
@@ -179,7 +170,7 @@ const FlightSettingsWidget = () => {
                         }} className="flex justify-between w-full border cursor-pointer shadow border-neutral-500 h-[70px] p-4 space-x-4 items-center">
                             <div className="space-x-4">
                                 <PiAirplaneLandingFill className="inline text-neutral-700 text-2xl"/>
-                                <h1 className="inline text-xs text-neutral-600">{destination !== emptyLocation ? `${destination.airport}, ${destination.city}, ${destination.country}` : `Select destination...`}</h1>
+                                <h1 className="inline text-xs text-neutral-600">{destination.country !== ""  ? `${destination.airport}, ${destination.city}, ${destination.country}` : `Select destination...`}</h1>
                             </div>
                         </button>
                     </div>
@@ -229,10 +220,10 @@ const FlightSettingsWidget = () => {
                     )}
                 </div>
 
-                <div className="flex justify-center pb-10">
+                <div className="flex justify-center">
                     <button
                         disabled={departureLocation.country == "" || destination.country == "" || departureDate == null}
-                        onClick={() => searchFlights()} className="bg-blue-700 disabled:opacity-50 p-3 rounded-2xl shadow drop-shadow text-white px-15 mt-2 not-disabled:hover:bg-blue-500 duration-100 ease-linear">
+                        onClick={() => searchFlights()} className="bg-blue-700 disabled:opacity-50 p-3 rounded-2xl shadow drop-shadow text-white px-15 mt-2 not-disabled:hover:bg-blue-500 duration-100 ease-linear not-disabled:cursor-pointer">
                         Search Flights
                     </button>
                 </div>

@@ -8,6 +8,12 @@ export type BookingContextType = {
     setIsSearching: Dispatch<SetStateAction<boolean>>;
     selectedFlight: Flight                               // the flight the user selects in the flight list widget used in the seat selection window
     setSelectedFlight: Dispatch<SetStateAction<Flight>>;
+    departureLocation: { country: string, city: string, airport: string};
+    setDepartureLocation: Dispatch<SetStateAction<{ country: string, city: string, airport: string}>>;
+    destination: { country: string, city: string, airport: string};
+    setDestination: Dispatch<SetStateAction<{ country: string, city: string, airport: string}>>;
+    departureDate: string | null;
+    setDepartureDate: Dispatch<SetStateAction<string | null>>;
 };
 
 export const BookingContext = createContext<BookingContextType | null>(null);
@@ -27,10 +33,19 @@ export const BookingProvider = ({children}: {children: React.ReactNode}) => {
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [selectedFlight, setSelectedFlight] = useState<Flight>(emptyFlight);
 
+    const emptyLocation: {country: string, city: string, airport: string} = useMemo(() => ({country: "", city: "", airport: ""}), []);
+    const [departureLocation, setDepartureLocation] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
+    const [destination, setDestination] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
+
+    const [departureDate, setDepartureDate] = useState<string | null>(null);
+
     return (
         <BookingContext.Provider value={{flight, setFlight,
                                          isSearching, setIsSearching,
-                                         selectedFlight, setSelectedFlight
+                                         selectedFlight, setSelectedFlight,
+                                         departureLocation, setDepartureLocation,
+                                         destination, setDestination,
+                                         departureDate, setDepartureDate
         }}>
             {children}
         </BookingContext.Provider>

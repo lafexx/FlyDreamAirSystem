@@ -1,23 +1,9 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import BookFlightsWidget from "../../services/flight/components/BookFlightsWidget";
-import ManageFlightsWidget from "../../services/flight/components/ManageFlightsWidget";
 import PrimaryWidget from "../../services/flight/components/PrimaryWidget";
 import FeaturedWidget from "../../services/flight/components/FeaturedWidget";
 
 const Home = () => {
-    const navigate = useNavigate();
-    const [currentUser, setCurrentUser] = useState<string>(localStorage.getItem("currentUser") || "");
-
-    useEffect(() => {
-        if (!localStorage.getItem("currentUser")) {
-            navigate("/login");
-        }   
-    }, []);
-
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden ">
             <div className="fixed inset-0 h-screen bg-[#fffffffc] blur-sm -z-10" />

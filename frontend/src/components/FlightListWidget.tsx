@@ -1,42 +1,55 @@
-import { useContext } from "react";
-import { BookingContext } from "../services/flight/components/PrimaryWidget";
 import { Flight } from "../types/Flight";
 
 import { getRandomInt } from "../utils/MathUtils";
+import { useBooking } from "../contexts/BookingContext";
 
-const renderFlights = () => {
-    const bookingContext = useContext(BookingContext)!;
-    const { flight, setSelectedFlight } = bookingContext;
-
-    if (!flight)
-        return;
-
-    const airlines = ["Delta", "Omega", "Alpha", "Beta"];
-    let prices: number[] = [];
-
-    for (let i = 0; i < airlines.length; i++) {
-        prices.push(getRandomInt(700, 1000));
-    }
-
-    return airlines.map((airline, index) => (
-        <button onClick={() => setSelectedFlight(new Flight("", "", flight.departureLocation, flight.destination, flight.departureDate, prices[index], airline, []))} 
-                key={index} 
-                className={`rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
-            <div className="flex justify-between">
-                <h1 className="text-neutral-800 font-semibold">{flight?.departureLocation!.city} {">"} {flight?.destination!.city}</h1>
-                <h1 className="text-neutral-800 font-semibold">${prices[index]}</h1>
-            </div>
-            <div className="flex justify-between">
-                <p className="text-sm text-neutral-600">{flight?.departureDate}</p>
-                <p className="text-sm text-neutral-600">{airline} Airline</p>
-            </div>
-        </button>
-    ));
-}
+import { IoAirplane } from "react-icons/io5";
 
 const FlightListWidget = () => {
-    const bookingContext = useContext(BookingContext)!;
-    const { flight } = bookingContext;
+    const { flight, setSelectedFlight } = useBooking();
+
+    const renderFlights = () => {
+    
+        if (!flight)
+            return;
+    
+        let prices: number[] = [];
+    
+        for (let i = 0; i < 3; i++) {
+            prices.push(getRandomInt(300, 500));
+        }
+    
+        return prices.map((price, index) => (
+            <button onClick={() => setSelectedFlight(new Flight("", "", flight.departureLocation, flight.destination, flight.departureDate, price, []))} 
+                    key={index} 
+                    className={`rounded-xl cursor-pointer shadow border border-b bg-white border-neutral-300 mb-2 flex flex-col w-full text-left px-10 py-4 hover:border-b-neutral-600 duration-100 ease-linear`}>
+                <div className="flex justify-between">
+                    <h1 className="text-blue-500 text-xl font-semibold">{flight?.departureLocation!.city}</h1>
+                    <IoAirplane className="text-neutral-700 text-2xl"/>
+                    <h1 className="text-blue-500 text-xl font-semibold">{flight?.destination!.city}</h1>
+                </div>
+
+                <div className="flex justify-between text-neutral-500 text-sm">
+                    <p>{flight?.departureLocation.airport}</p>
+                    <p>{flight?.destination.airport}</p>
+                </div>
+
+                <div className="flex justify-between text-neutral-700 ">
+                    <p>{flight?.departureDate}g</p>
+                    <p>g</p>
+                </div>
+                
+                <div className="py-4">
+                    <div className="w-full px-4 h-[1px] bg-neutral-300"/>
+                </div>
+                
+                <div className="flex justify-center text-neutral-700 space-x-1">
+                    <p className="inline">From</p>
+                    <p className="inline font-semibold text-blue-600">A${price}</p>
+                </div>
+            </button>
+        ));
+    }
 
     return (
         <div className="w-full max-w-[600px]  rounded-xl p-4 space-y-5 ">
@@ -44,7 +57,7 @@ const FlightListWidget = () => {
                 <h1 className="text-xl font-semibold text-neutral-800">Showing flights</h1>
                 <div className="flex justify-between">
                     <p className="text-neutral-700">From: {flight?.departureLocation!.city}&nbsp;&nbsp;To: {flight?.destination!.city}&nbsp;&nbsp;On: {flight?.departureDate!}</p>
-                    <p className="text-neutral-700">(4 results)</p>
+                    <p className="text-neutral-700">(3 results)</p>
                 </div>
             </div>
             <div>

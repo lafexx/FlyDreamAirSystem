@@ -5,7 +5,6 @@ export class Flight {
     public destination: {country: string, city: string, airport: string};
     public departureDate: string;
     public price: number;
-    public airline: string;
     public seats: number[][];
 
     public constructor(id: string,
@@ -14,7 +13,6 @@ export class Flight {
                        destination: {country: string, city: string, airport: string},
                        departureDate: string,
                        price: number,
-                       airline: string,
                        seats: number[][]) {
         this.id = id;
         this.username = username;
@@ -22,7 +20,6 @@ export class Flight {
         this.destination = destination;
         this.departureDate = departureDate;
         this.price = price;
-        this.airline = airline;
         this.seats = seats;
     }
 }
