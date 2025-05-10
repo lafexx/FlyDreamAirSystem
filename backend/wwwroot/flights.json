@@ -201,73 +201,6 @@
     ]
   },
   {
-    "id": "ea29a397-e2d0-4c7c-ad0a-fb6b04046aaf",
-    "username": "lafe",
-    "departureLocation": {
-      "country": "Australia",
-      "city": "Sydney",
-      "airport": "Sydney Kingsford Smith Airport"
-    },
-    "destination": {
-      "country": "Germany",
-      "city": "Frankfurt",
-      "airport": "Frankfurt Airport"
-    },
-    "departureDate": "25/04/2025",
-    "price": 3980.0,
-    "airline": "Delta",
-    "seats": [
-      [
-        1,
-        -1,
-        -1,
-        -1,
-        0,
-        -1
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        0,
-        1,
-        0,
-        0,
-        0
-      ],
-      [
-        -1,
-        1,
-        -1,
-        -1,
-        -1,
-        0
-      ],
-      [
-        0,
-        0,
-        -1,
-        0,
-        0,
-        0
-      ],
-      [
-        1,
-        0,
-        0,
-        0,
-        0,
-        -1
-      ]
-    ]
-  },
-  {
     "id": "0b5bff7a-7bb1-4938-899d-0318a49d0399",
     "username": "lafe",
     "departureLocation": {
@@ -402,73 +335,6 @@
     ]
   },
   {
-    "id": "bfdb5870-9d85-4483-b087-0d74fd8193e9",
-    "username": "lafe",
-    "departureLocation": {
-      "country": "Canada",
-      "city": "Toronto",
-      "airport": "Toronto Pearson International Airport"
-    },
-    "destination": {
-      "country": "Japan",
-      "city": "Tokyo",
-      "airport": "Haneda Airport"
-    },
-    "departureDate": "30/04/2025",
-    "price": 3600.0,
-    "airline": "Alpha",
-    "seats": [
-      [
-        1,
-        -1,
-        0,
-        -1,
-        0,
-        0
-      ],
-      [
-        1,
-        -1,
-        0,
-        0,
-        -1,
-        -1
-      ],
-      [
-        -1,
-        -1,
-        0,
-        0,
-        0,
-        0
-      ],
-      [
-        0,
-        -1,
-        0,
-        0,
-        -1,
-        0
-      ],
-      [
-        0,
-        -1,
-        -1,
-        -1,
-        0,
-        1
-      ],
-      [
-        0,
-        0,
-        0,
-        0,
-        0,
-        1
-      ]
-    ]
-  },
-  {
     "id": "8ab37086-40c1-4bff-a832-5f4f82431b0d",
     "username": "lafe",
     "departureLocation": {
@@ -531,6 +397,73 @@
         0,
         0,
         -1,
+        0
+      ]
+    ]
+  },
+  {
+    "id": "42e35f0f-83a4-4939-9420-9b864eed890a",
+    "username": "lafe",
+    "departureLocation": {
+      "country": "Japan",
+      "city": "Tokyo",
+      "airport": "Haneda Airport"
+    },
+    "destination": {
+      "country": "United Arab Emirates",
+      "city": "Dubai",
+      "airport": "Dubai International Airport"
+    },
+    "departureDate": "16/05/2025",
+    "price": 2349.0,
+    "airline": "Delta",
+    "seats": [
+      [
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        -1,
+        -1
+      ],
+      [
+        0,
+        0,
+        -1,
+        0,
+        0,
+        -1
+      ],
+      [
+        -1,
+        1,
+        -1,
+        -1,
+        0,
+        0
+      ],
+      [
+        1,
+        -1,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        -1,
+        -1,
+        -1,
+        0,
         0
       ]
     ]
