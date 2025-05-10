@@ -30,7 +30,7 @@ const Carousel = ({ children, label, itemsPerPage = 3 }: CarouselProps) => {
 
     return (
         <div className="w-full p-4 space-y-4">
-            <h1 className="text-2xl text-neutral-700">{label}</h1>
+            <h1 className="text-3xl font-semibold text-neutral-700">{label}</h1>
             <div className="grid grid-rows-1 grid-cols-[auto_1fr_auto] items-center">
                 <button
                   onClick={handlePrev}

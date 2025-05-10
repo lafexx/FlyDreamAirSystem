@@ -3,7 +3,7 @@ const Item = ({ name, price, image, addCallback, removeCallback }: { name: strin
         <div className="bg-white shadow drop-shadow w-[180px] rounded-lg space-y-3 p-4">
             <div className="flex justify-between">
                 <h1 className="font-semibold text-neutral-800">{name}</h1>
-                <p className="text-neutral-800">${price}</p>
+                <p className="text-neutral-800">A${price}</p>
             </div>
 
             <div className="flex justify-center">

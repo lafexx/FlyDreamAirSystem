@@ -32,7 +32,7 @@ export const useBooking = () => {
 }
 
 export const BookingProvider = ({children}: {children: React.ReactNode}) => {
-    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, []), []);
+    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", "", 0, []), []);
     const [flight, setFlight] = useState<Flight>(emptyFlight);
 
     const [isSearching, setIsSearching] = useState<boolean>(false);

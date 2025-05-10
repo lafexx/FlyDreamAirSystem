@@ -7,12 +7,32 @@ import Carousel from "../../components/Carousel";
 import Item from "../../services/flight/components/Item";
 
 const SelectAddons = () => {
+    const foodAddons: Record<string, {price: number, image: string}> = {
+        "Soup": {price: 9.95, image: "../../../soup.png"},
+        "Pizza": {price: 12.55, image: "../../../pizza.png"},
+        "Burger": {price: 10.99, image: "../../../burger.png"},
+        "Sushi": {price: 18.00, image: "../../../sushi.png"},
+        "Salad": {price: 9.25, image: "../../../salad.png"},
+        "Pasta": {price: 13.75, image: "../../../pasta.png"},
+        "Ice Cream": {price: 6.55, image: "../../../icecream.png"}
+    };
+
+    const drinkAddons: Record<string, { price: number, image: string }> = {
+        "Coffee": { price: 3.95, image: "../../../coffee.png" },
+        "Tea": { price: 2.95, image: "../../../tea.png" },
+        "Coke": { price: 1.99, image: "../../../soda.png" },
+        "Milkshake": { price: 4.50, image: "../../../milkshake.png" },
+        "Smoothie": { price: 5.25, image: "../../../smoothie.png" },
+        "Water": { price: 0.00, image: "../../../water.png" },
+        "Lemonade": { price: 2.50, image: "../../../lemonade.png" }
+    };
+
     const [addedItems, setAddedItems] = useState<Map<string, number>>(new Map());
 
     const addCallback = (itemName: string) => {
         setAddedItems((prev) => {
-            let newItems = new Map(prev);
-            let count: number | undefined = newItems?.get(itemName);
+            const newItems = new Map(prev);
+            const count: number | undefined = newItems?.get(itemName);
 
             if (count) {
                 newItems?.set(itemName, count + 1);
@@ -27,8 +47,8 @@ const SelectAddons = () => {
 
     const removeCallback = (itemName: string) => {
         setAddedItems((prev) => {
-            let newItems = new Map(prev);
-            let count: number = newItems?.get(itemName) ?? 0;
+            const newItems = new Map(prev);
+            const count: number = newItems?.get(itemName) ?? 0;
 
             if (count > 1) {
                 newItems?.set(itemName, count - 1);
@@ -39,6 +59,20 @@ const SelectAddons = () => {
             return newItems;
         })
     };
+
+    const calculateTotal = () => {
+        let total = 0;
+        const allAddons = { ...foodAddons, ...drinkAddons };
+        
+        addedItems.forEach((quantity, itemName) => {
+            const item = allAddons[itemName];
+            if (item) {
+                total += item.price * quantity;
+            }
+        });
+
+        return total.toFixed(2);
+    }
 
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
@@ -57,42 +91,41 @@ const SelectAddons = () => {
                         <div className="grid grid-cols-1 grid-rows-2">
                             <div className="flex justify-center">
                                 <Carousel label="Food">
-                                    <Item name="Soup" price={9.95} image="../../../soup.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Pizza" price={12.55} image="../../../pizza.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Burger" price={10.99} image="../../../burger.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Sushi" price={18.00} image="../../../sushi.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Salad" price={9.25} image="../../../salad.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Pasta" price={13.75} image="../../../pasta.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Ice Cream" price={6.55} image="../../../icecream.png" addCallback={addCallback} removeCallback={removeCallback}/>
+                                    {Object.entries(foodAddons).map(([key, value]) => (
+                                        <Item key={key} name={key} price={value.price} image={value.image} addCallback={addCallback} removeCallback={removeCallback}/>
+                                    ))}
                                 </Carousel>
                             </div>
 
                             <div className="flex justify-center">
                                 <Carousel label="Drinks">
-                                    <Item name="Coffee" price={3.95} image="../../../coffee.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Tea" price={2.95} image="../../../tea.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Coke" price={1.99} image="../../../soda.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Milkshake" price={4.50} image="../../../milkshake.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Smoothie" price={5.25} image="../../../smoothie.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Water" price={0.00} image="../../../water.png" addCallback={addCallback} removeCallback={removeCallback}/>
-                                    <Item name="Lemonade" price={2.50} image="../../../lemonade.png" addCallback={addCallback} removeCallback={removeCallback}/>
+                                    {Object.entries(drinkAddons).map(([key, value]) => (
+                                        <Item key={key} name={key} price={value.price} image={value.image} addCallback={addCallback} removeCallback={removeCallback}/>
+                                    ))}
                                 </Carousel>
                             </div>
                         </div>
 
-                        <div className="shadow drop-shadow p-5 h-[50%] mt-15 min-w-[250px] space-y-2">
+                        <div className="shadow drop-shadow p-5 h-[60%] mt-15 min-w-[250px] space-y-2">
                             <h1 className="text-2xl">Your addons:</h1>
 
-                            <div className="flex overflow-auto flex-col grow h-[75%]">
-                                <ul>
+                            <div className="w-full  overflow-auto flex h-[275px]">
+                                <ul className="w-full overflow-auto">
                                     {[...addedItems.entries()].map(([key, value]) => (
-                                        <li className="text-neutral-700" key={key}>
-                                            <p className="inline">- {key} </p>
-                                            <p className="inline text-neutral-800">x{value}</p>
+                                        <li className="text-neutral-700 w-full flex justify-between" key={key}>
+                                            <div>
+                                                <p className="inline">- {key} </p>
+                                                <p className="inline text-neutral-800">x{value}</p>
+                                            </div>
+                                            <div>
+                                                <p>A${({...foodAddons, ...drinkAddons}[key].price * value).toFixed(2)}</p>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
+
+                            <h1 className="text-2xl">Total: A${calculateTotal()}</h1>
                             
                             <button className="w-full py-2 bg-blue-500 hover:bg-blue-400 duration-200 ease-linear rounded-lg text-white font-semibold text-lg">
                                 Next
