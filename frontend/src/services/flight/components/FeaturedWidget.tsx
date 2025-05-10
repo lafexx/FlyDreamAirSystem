@@ -1,7 +1,7 @@
 const FeaturedWidget = () => {
     return (
-        <div className="">
-            <h1>Featured</h1>
+        <div className="space-y-5">
+            <h1 className="text-neutral-700 text-3xl">Featured</h1>
             <div className="flex justify-between">
                 <div className="w-[250px] h-[300px] border-2 border-neutral-300 shadow drop-shadow rounded-xl overflow-hidden relative">
                     <h1 className="absolute top-2 left-2 text-3xl font-bold text-white z-10">

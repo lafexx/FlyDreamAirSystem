@@ -1,13 +1,12 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import FlightSettingsWidget from "../../../components/FlightSettingsWidget";
+import LoadingCircleSpinner from "../../../components/animations/LoadingCircleSpinner";
+
 import { FaSuitcase } from "react-icons/fa";
 import { FaTicketAlt } from "react-icons/fa";
-
-import { useState, useMemo , createContext } from "react";
-import FlightSettingsWidget from "../../../components/FlightSettingsWidget";
-
-import { Flight } from "../../../types/Flight";
-import { BookingContextType } from "../../../contexts/BookingContext";
-
-export const BookingContext = createContext<BookingContextType | null>(null);
+import { useBooking } from "../../../contexts/BookingContext";
 
 const PrimaryWidget = () => {
     enum Sections {
@@ -15,13 +14,18 @@ const PrimaryWidget = () => {
         ManageFlights = 1
     }
 
-    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
-    const [flight, setFlight] = useState<Flight>(emptyFlight);
-
-    const [isSearching, setIsSearching] = useState<boolean>(false);
-    const [selectedFlight, setSelectedFlight] = useState<Flight>(emptyFlight);
-
+    const {isSearching} = useBooking();
     const [activeSection, setActiveSection] = useState<Sections>(Sections.BookFlight);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isSearching) {
+            setTimeout(() => {
+                navigate("/flight-list");
+            }, 2000);
+        }
+    }, [isSearching]);
 
     return (
         <div className="w-full h-full bg-white shadow drop-shadow">
@@ -37,14 +41,18 @@ const PrimaryWidget = () => {
                     </button>
             </div>
 
-            <div className="w-full h-full max-h-[200px] bg-neutral-200">
+            <div className="w-full h-[250px] bg-neutral-200">
                 {activeSection === Sections.BookFlight ? (
-                    <BookingContext.Provider value={{flight, setFlight, 
-                                                    isSearching, setIsSearching,
-                                                    selectedFlight, setSelectedFlight
-                                        }}>
-                        <FlightSettingsWidget/>
-                    </BookingContext.Provider>
+                    <div>
+                        {!isSearching ? (
+                            <FlightSettingsWidget/>
+                        ) : (
+                            <div className="h-full flex flex-col relative items-center justify-center space-y-4">
+                                <h1 className="text-neutral-600">Searching for flights...</h1>
+                                <LoadingCircleSpinner/>
+                            </div>
+                        )}
+                    </div>
                 ) : (
                     <h1>hi</h1>
                 )}

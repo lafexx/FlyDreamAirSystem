@@ -11,7 +11,6 @@ import { PiAirplaneTakeoffFill } from "react-icons/pi";
 import { PiAirplaneLandingFill } from "react-icons/pi";
 import { MdOutlineDateRange } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
-import { div } from "motion/react-client";
 
 const FlightSettingsWidget = () => {
     const bookingContext = useContext(BookingContext);
@@ -19,17 +18,8 @@ const FlightSettingsWidget = () => {
 
 
     const emptyLocation: {country: string, city: string, airport: string} = useMemo(() => ({country: "", city: "", airport: ""}), []);
-    const [departureLocation, setDepartureLocation] = useState<{
-        country: string,
-        city: string,
-        airport: string
-    }>(emptyLocation);
-
-    const [destination, setDestination] = useState<{
-        country: string,
-        city: string,
-        airport: string
-    }>(emptyLocation);
+    const [departureLocation, setDepartureLocation] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
+    const [destination, setDestination] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
 
     type ValuePiece = Date | null;
     type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -40,8 +30,6 @@ const FlightSettingsWidget = () => {
     const [departureLocationDropdownEnabled, setDepartureLocationDropdownEnabled] = useState<boolean>(false);
     const [destinationDropdownEnabled, setDestinationDropdownEnabled] = useState<boolean>(false);
     const [departureDateDropdownEnabled, setDepartureDateDropdownEnabled] = useState<boolean>(false);
-
-    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const locations = [
         {
@@ -165,14 +153,6 @@ const FlightSettingsWidget = () => {
     };
 
     const renderWidget = () => {
-        if (isSearching)
-            return (
-                <div className="text-center space-y-5">
-                    <h1 className="text-neutral-600 text-xl">Searching flights...</h1>
-                    <LoadingCircleSpinner/>
-                </div>
-            );
-
         return (
             <div>
                 <div className="w-full h-full flex justify-between p-4 space-x-4">

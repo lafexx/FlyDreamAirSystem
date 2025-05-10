@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { BookingContext } from "../app/routes/BookFlights";
+import { BookingContext } from "../services/flight/components/PrimaryWidget";
 import { Flight } from "../types/Flight";
 
 import { getRandomInt } from "../utils/MathUtils";
