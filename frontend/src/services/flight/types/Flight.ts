@@ -4,6 +4,7 @@ export class Flight {
     public departureLocation: {country: string, city: string, airport: string};
     public destination: {country: string, city: string, airport: string};
     public departureDate: string;
+    public arrivalDate: string;
     public price: number;
     public seats: number[][];
 
@@ -12,6 +13,7 @@ export class Flight {
                        departureLocation: {country: string, city: string, airport: string}, 
                        destination: {country: string, city: string, airport: string},
                        departureDate: string,
+                       arrivalDate: string,
                        price: number,
                        seats: number[][]) {
         this.id = id;
@@ -19,6 +21,7 @@ export class Flight {
         this.departureLocation = departureLocation;
         this.destination = destination;
         this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
         this.price = price;
         this.seats = seats;
     }

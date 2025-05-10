@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import { Flight } from '../../../types/Flight';
+import { Flight } from '../types/Flight';
 import { GetBookedFlights } from '../api/FlightInterface';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';

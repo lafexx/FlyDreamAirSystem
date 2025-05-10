@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
 import { useParams } from "react-router-dom";
-import { Flight } from "../../types/Flight";
+import { Flight } from "../../services/flight/types/Flight";
 
 import { renderSeats } from "./SelectSeats";
 

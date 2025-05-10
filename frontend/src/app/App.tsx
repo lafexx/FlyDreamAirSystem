@@ -9,6 +9,8 @@ import SelectSeats from "./routes/SelectSeats";
 import BookingConfirmation from "./routes/BookingConfirmation";
 import ManageFlight from "./routes/ManageFlight";
 import FlightList from "./routes/FlightList";
+import SelectAddons from "./routes/SelectAddons";
+
 import { BookingProvider } from "../contexts/BookingContext";
 
 export const ContextProvider = ({children}: {children: React.ReactNode}) => {
@@ -32,6 +34,7 @@ function App() {
         <Route path="/flight-services" element={<FlightServices/>}/>
         <Route path="/select-seats" element={<SelectSeats/>}/>
         <Route path="/booking-confirmation" element={<BookingConfirmation/>}/>
+        <Route path="/select-addons" element={<SelectAddons/>}/>
       </Routes>
     </ContextProvider>
   );

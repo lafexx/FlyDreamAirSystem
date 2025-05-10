@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 import Calendar from 'react-calendar';
 import '../../node_modules/react-calendar/dist/Calendar.css';
@@ -10,14 +10,7 @@ import { IoMdClose } from "react-icons/io";
 import { useBooking } from "../contexts/BookingContext";
 
 const FlightSettingsWidget = () => {
-    const { setFlight, setIsSearching, departureLocation, setDepartureLocation, destination, setDestination, departureDate, setDepartureDate } = useBooking();
-
-    const emptyLocation: {country: string, city: string, airport: string} = useMemo(() => ({country: "", city: "", airport: ""}), []);
-
-    type ValuePiece = Date | null;
-    type Value = ValuePiece | [ValuePiece, ValuePiece];
-
-    const [calendarValue, calenderOnChange] = useState<Value>();
+    const { setIsSearching, departureLocation, setDepartureLocation, destination, setDestination, departureDate, setDepartureDate, calendarValue, calendarOnChange } = useBooking();
 
     const [departureLocationDropdownEnabled, setDepartureLocationDropdownEnabled] = useState<boolean>(false);
     const [destinationDropdownEnabled, setDestinationDropdownEnabled] = useState<boolean>(false);
@@ -89,17 +82,7 @@ const FlightSettingsWidget = () => {
         if (departureDateDropdownEnabled) {
             setDepartureDateDropdownEnabled((prev) => !prev);
         }
-
-        setFlight!({
-            id: "",
-            username: "",
-            departureLocation: departureLocation,
-            destination: destination,
-            departureDate: calendarValue?.toLocaleString()!.split(",")[0]!,
-            price: 0,
-            seats: []
-        });
-    }, [departureLocation, destination, calendarValue])
+    }, [departureLocation, destination, calendarValue]);
 
     const renderDepartureLocations = () => {
         return locations.map((location, index) => (
@@ -214,16 +197,16 @@ const FlightSettingsWidget = () => {
                     )}
 
                     {departureDateDropdownEnabled && (
-                        <div className="absolute z-10 left-149 top-40 blur-none w-full max-w-[500px] max-h-[400px] overflow-y-auto bg-white border shadow border-neutral-500 space-y-4  p-4 items-center">
-                            <Calendar minDate={new Date()} onChange={calenderOnChange} value={calendarValue}/>
+                        <div className="absolute z-10 left-149 top-40 blur-none w-full max-w-[500px] max-h-[250px] overflow-y-auto bg-white border shadow border-neutral-500 space-y-4  items-center">
+                            <Calendar minDate={new Date()} onChange={calendarOnChange} value={calendarValue}/>
                         </div>
                     )}
                 </div>
 
-                <div className="flex justify-center">
+                <div className="flex justify-center pt-7">
                     <button
                         disabled={departureLocation.country == "" || destination.country == "" || departureDate == null}
-                        onClick={() => searchFlights()} className="bg-blue-700 disabled:opacity-50 p-3 rounded-2xl shadow drop-shadow text-white px-15 mt-2 not-disabled:hover:bg-blue-500 duration-100 ease-linear not-disabled:cursor-pointer">
+                        onClick={() => searchFlights()} className="bg-blue-600 disabled:opacity-50 p-3 rounded-2xl shadow drop-shadow text-white px-15 not-disabled:hover:bg-blue-500 duration-100 ease-linear not-disabled:cursor-pointer">
                         Search Flights
                     </button>
                 </div>

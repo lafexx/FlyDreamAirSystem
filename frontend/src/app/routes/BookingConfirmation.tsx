@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
-import { Flight } from "../../types/Flight";
+import { Flight } from "../../services/flight/types/Flight";
 
 import { getStoredData } from "../../utils/ObjUtils";
 

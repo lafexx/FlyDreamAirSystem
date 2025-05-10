@@ -1,8 +1,21 @@
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import FlightListWidget from "../../components/FlightListWidget";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useBooking } from "../../contexts/BookingContext";
 
 const FlightList = () => {
+    const navigate = useNavigate();
+
+    const {departureLocation} = useBooking();
+
+    useEffect(() => {
+        if (departureLocation.country == "") {
+            navigate("/");
+        }
+    }, [departureLocation]);
+
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
             <div className="fixed inset-0 h-screen bg-[#fffffffc] blur-sm -z-10" />

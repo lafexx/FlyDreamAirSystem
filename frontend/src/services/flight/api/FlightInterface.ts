@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Flight } from "../../../types/Flight";
+import { Flight } from "../types/Flight";
 
 const flightBaseEndpoint = "https://localhost:7082/Flights";
 
@@ -8,8 +8,8 @@ interface BookFlightRequest {
     departureLocation: {country: string, city: string, airport: string};
     destination: {country: string, city: string, airport: string};
     departureDate: string;
+    arrivalDate: string;
     price: number;
-    airline: string;
     seats: number[][];
 }
 

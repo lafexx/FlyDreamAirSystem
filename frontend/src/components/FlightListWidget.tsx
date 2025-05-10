@@ -1,15 +1,35 @@
-import { Flight } from "../types/Flight";
+import { Flight } from "../services/flight/types/Flight";
+import { Value } from "../contexts/BookingContext";
 
 import { getRandomInt } from "../utils/MathUtils";
 import { useBooking } from "../contexts/BookingContext";
 
 import { IoAirplane } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const FlightListWidget = () => {
-    const { flight, setSelectedFlight } = useBooking();
-
-    const renderFlights = () => {
+    const { flight, setSelectedFlight, calendarValue, departureLocation, destination } = useBooking();
+    const navigate = useNavigate();
     
+    function addDays(date: Date, days: number): Date {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+    }
+
+    function applyAddDays(value: Value, days: number): Value {
+        if (value instanceof Date) return addDays(value, days);
+        if (Array.isArray(value)) {
+          const [start, end] = value;
+          return [
+            start instanceof Date ? addDays(start, days) : null,
+            end instanceof Date ? addDays(end, days) : null,
+          ];
+        }
+        return null;
+    }
+    
+    const renderFlights = () => {
         if (!flight)
             return;
     
@@ -20,23 +40,26 @@ const FlightListWidget = () => {
         }
     
         return prices.map((price, index) => (
-            <button onClick={() => setSelectedFlight(new Flight("", "", flight.departureLocation, flight.destination, flight.departureDate, price, []))} 
+            <button onClick={() => {
+                setSelectedFlight(new Flight("", "", departureLocation, destination, calendarValue?.toLocaleString()!.split(",")[0]!, applyAddDays(calendarValue!, 1)?.toLocaleString()!.split(",")[0]!, price, []))
+                navigate("/select-seats");
+            }} 
                     key={index} 
                     className={`rounded-xl cursor-pointer shadow border border-b bg-white border-neutral-300 mb-2 flex flex-col w-full text-left px-10 py-4 hover:border-b-neutral-600 duration-100 ease-linear`}>
                 <div className="flex justify-between">
-                    <h1 className="text-blue-500 text-xl font-semibold">{flight?.departureLocation!.city}</h1>
+                    <h1 className="text-blue-500 text-xl font-semibold">{departureLocation!.city}</h1>
                     <IoAirplane className="text-neutral-700 text-2xl"/>
-                    <h1 className="text-blue-500 text-xl font-semibold">{flight?.destination!.city}</h1>
+                    <h1 className="text-blue-500 text-xl font-semibold">{destination!.city}</h1>
                 </div>
 
                 <div className="flex justify-between text-neutral-500 text-sm">
-                    <p>{flight?.departureLocation.airport}</p>
-                    <p>{flight?.destination.airport}</p>
+                    <p>{departureLocation.airport}</p>
+                    <p>{destination.airport}</p>
                 </div>
 
                 <div className="flex justify-between text-neutral-700 ">
-                    <p>{flight?.departureDate}g</p>
-                    <p>g</p>
+                    <p>{calendarValue?.toLocaleString()!.split(",")[0]}</p>
+                    <p>{applyAddDays(calendarValue!, 1)?.toLocaleString()!.split(",")[0]}</p>
                 </div>
                 
                 <div className="py-4">
@@ -56,7 +79,7 @@ const FlightListWidget = () => {
             <div className="border-b pb-2 w-full">
                 <h1 className="text-xl font-semibold text-neutral-800">Showing flights</h1>
                 <div className="flex justify-between">
-                    <p className="text-neutral-700">From: {flight?.departureLocation!.city}&nbsp;&nbsp;To: {flight?.destination!.city}&nbsp;&nbsp;On: {flight?.departureDate!}</p>
+                    <p className="text-neutral-700">From: {departureLocation!.city}&nbsp;&nbsp;To: {destination!.city}&nbsp;&nbsp;On: {calendarValue?.toLocaleString()!.split(",")[0]}</p>
                     <p className="text-neutral-700">(3 results)</p>
                 </div>
             </div>

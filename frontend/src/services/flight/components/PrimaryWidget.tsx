@@ -45,12 +45,12 @@ const PrimaryWidget = () => {
             <div className="w-full h-[250px] bg-white">
                 <div className="h-full flex flex-col relative items-center justify-center">
                     {activeSection === Sections.BookFlight ? (
-                        <div>
+                        <div className="px-2 w-full">
                             {!isSearching ? (
                                 <FlightSettingsWidget/>
                             ) : (
                                 <div className="space-y-4">
-                                    <h1 className="text-neutral-600">Searching for flights...</h1>
+                                    <h1 className="text-center text-neutral-600">Searching for flights...</h1>
                                     <LoadingCircleSpinner/>
                                 </div>
                             )}

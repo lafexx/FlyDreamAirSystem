@@ -1,5 +1,8 @@
-import { Flight } from "../types/Flight";
+import { Flight } from "../services/flight/types/Flight";
 import { createContext, Dispatch, SetStateAction, useContext, useState, useMemo } from "react";
+
+type ValuePiece = Date | null;
+export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export type BookingContextType = {
     flight: Flight                                       // flight query information to use in flight list widget
@@ -14,6 +17,8 @@ export type BookingContextType = {
     setDestination: Dispatch<SetStateAction<{ country: string, city: string, airport: string}>>;
     departureDate: string | null;
     setDepartureDate: Dispatch<SetStateAction<string | null>>;
+    calendarValue: Value;
+    calendarOnChange: Dispatch<SetStateAction<Value>>;
 };
 
 export const BookingContext = createContext<BookingContextType | null>(null);
@@ -27,7 +32,7 @@ export const useBooking = () => {
 }
 
 export const BookingProvider = ({children}: {children: React.ReactNode}) => {
-    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
+    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, []), []);
     const [flight, setFlight] = useState<Flight>(emptyFlight);
 
     const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -36,8 +41,9 @@ export const BookingProvider = ({children}: {children: React.ReactNode}) => {
     const emptyLocation: {country: string, city: string, airport: string} = useMemo(() => ({country: "", city: "", airport: ""}), []);
     const [departureLocation, setDepartureLocation] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
     const [destination, setDestination] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
-
+    
     const [departureDate, setDepartureDate] = useState<string | null>(null);
+    const [calendarValue, calendarOnChange] = useState<Value>(null);
 
     return (
         <BookingContext.Provider value={{flight, setFlight,
@@ -45,7 +51,8 @@ export const BookingProvider = ({children}: {children: React.ReactNode}) => {
                                          selectedFlight, setSelectedFlight,
                                          departureLocation, setDepartureLocation,
                                          destination, setDestination,
-                                         departureDate, setDepartureDate
+                                         departureDate, setDepartureDate,
+                                         calendarValue, calendarOnChange
         }}>
             {children}
         </BookingContext.Provider>
