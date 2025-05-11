@@ -49,6 +49,9 @@ const SelectSeats = () => {
     const navigate = useNavigate();
 
     const addSeatToSelection = (rowIndex: number, columnIndex: number) => {
+        if (seats[rowIndex][columnIndex] === -1) 
+            return;
+
         setSeats((prev) => {
             const newSeats = [...prev];
             newSeats[rowIndex] = [...newSeats[rowIndex]];
