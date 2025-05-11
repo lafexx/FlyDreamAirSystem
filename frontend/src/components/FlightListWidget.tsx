@@ -2,32 +2,16 @@ import { Flight } from "../services/flight/types/Flight";
 import { Value } from "../contexts/BookingContext";
 
 import { getRandomInt } from "../utils/MathUtils";
+import { applyAddDays } from "../services/flight/utils/DateUtils";
+
 import { useBooking } from "../contexts/BookingContext";
 
 import { IoAirplane } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 const FlightListWidget = () => {
-    const { flight, setSelectedFlight, calendarValue, departureLocation, destination } = useBooking();
+    const { flight, setSelectedFlight, calendarValue, departureLocation, setPrice, destination } = useBooking();
     const navigate = useNavigate();
-    
-    function addDays(date: Date, days: number): Date {
-        var result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-    }
-
-    function applyAddDays(value: Value, days: number): Value {
-        if (value instanceof Date) return addDays(value, days);
-        if (Array.isArray(value)) {
-          const [start, end] = value;
-          return [
-            start instanceof Date ? addDays(start, days) : null,
-            end instanceof Date ? addDays(end, days) : null,
-          ];
-        }
-        return null;
-    }
     
     const renderFlights = () => {
         if (!flight)
@@ -41,6 +25,7 @@ const FlightListWidget = () => {
     
         return prices.map((price, index) => (
             <button onClick={() => {
+                setPrice(price);
                 setSelectedFlight(new Flight("", "", departureLocation, destination, calendarValue?.toLocaleString()!.split(",")[0]!, applyAddDays(calendarValue!, 1)?.toLocaleString()!.split(",")[0]!, price, []))
                 navigate("/select-seats");
             }} 

@@ -19,6 +19,10 @@ export type BookingContextType = {
     setDepartureDate: Dispatch<SetStateAction<string | null>>;
     calendarValue: Value;
     calendarOnChange: Dispatch<SetStateAction<Value>>;
+    addons: Map<string, number>;
+    setAddons: Dispatch<SetStateAction<Map<string, number>>>;
+    price: number;
+    setPrice: Dispatch<SetStateAction<number>>;
 };
 
 export const BookingContext = createContext<BookingContextType | null>(null);
@@ -41,9 +45,10 @@ export const BookingProvider = ({children}: {children: React.ReactNode}) => {
     const emptyLocation: {country: string, city: string, airport: string} = useMemo(() => ({country: "", city: "", airport: ""}), []);
     const [departureLocation, setDepartureLocation] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
     const [destination, setDestination] = useState<{ country: string, city: string, airport: string }>(emptyLocation);
-    
     const [departureDate, setDepartureDate] = useState<string | null>(null);
     const [calendarValue, calendarOnChange] = useState<Value>(null);
+    const [addons, setAddons] = useState<Map<string, number>>(new Map());
+    const [price, setPrice] = useState<number>(0);
 
     return (
         <BookingContext.Provider value={{flight, setFlight,
@@ -52,7 +57,9 @@ export const BookingProvider = ({children}: {children: React.ReactNode}) => {
                                          departureLocation, setDepartureLocation,
                                          destination, setDestination,
                                          departureDate, setDepartureDate,
-                                         calendarValue, calendarOnChange
+                                         calendarValue, calendarOnChange,
+                                         addons, setAddons,
+                                         price, setPrice
         }}>
             {children}
         </BookingContext.Provider>

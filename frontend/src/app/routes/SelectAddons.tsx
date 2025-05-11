@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useBooking } from "../../contexts/BookingContext";
+
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
@@ -75,6 +77,8 @@ const SelectAddons = () => {
         return total.toFixed(2);
     };
 
+    const {setAddons} = useBooking();
+
     const navigate = useNavigate();
 
     return (
@@ -122,7 +126,9 @@ const SelectAddons = () => {
                                                     <p className="inline text-neutral-800">x{value}</p>
                                                 </div>
                                                 <div>
-                                                    <p>A${({...foodAddons, ...drinkAddons}[key].price * value).toFixed(2)}</p>
+                                                    <p>
+                                                        A${({...foodAddons, ...drinkAddons}[key].price * value).toFixed(2)}
+                                                    </p>
                                                 </div>
                                             </li>
                                         ))}
@@ -137,7 +143,8 @@ const SelectAddons = () => {
                             <h1 className="text-2xl">Total: A${calculateTotal()}</h1>
                             
                             <button onClick={() => {
-                                navigate("/login-prompt")
+                                setAddons(addedItems);
+                                navigate("/login-prompt");
                             }} className="w-full py-2 bg-blue-500 hover:bg-blue-400 duration-200 ease-linear rounded-lg text-white font-semibold text-lg">
                                 Next
                             </button>

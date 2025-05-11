@@ -10,14 +10,18 @@ import ManageFlight from "./routes/ManageFlight";
 import FlightList from "./routes/FlightList";
 import SelectAddons from "./routes/SelectAddons";
 import LoginPrompt from "./routes/LoginPrompt";
+import FlightOverview from "./routes/FlightOverview";
 
+import { AuthProvider } from "../contexts/AuthContext";
 import { BookingProvider } from "../contexts/BookingContext";
 
 export const ContextProvider = ({children}: {children: React.ReactNode}) => {
   return (
-    <BookingProvider>
-      {children}
-    </BookingProvider>
+    <AuthProvider>
+      <BookingProvider>
+        {children}
+      </BookingProvider>
+    </AuthProvider>
   );
 }
 
@@ -35,6 +39,7 @@ function App() {
         <Route path="/booking-confirmation" element={<BookingConfirmation/>}/>
         <Route path="/select-addons" element={<SelectAddons/>}/>
         <Route path="/login-prompt" element={<LoginPrompt/>}/>
+        <Route path="/flight-overview" element={<FlightOverview/>}/>
       </Routes>
     </ContextProvider>
   );

@@ -6,7 +6,7 @@ interface SignupRequest {
     password: string;
 }
 
-const authBaseEndpoint = "https://localhost:7082/Auth";
+const authBaseEndpoint = "http://localhost:5278/Auth";
 
 export async function Signup(request: SignupRequest): Promise<boolean> {
     try {

@@ -5,7 +5,7 @@ import SignupWidget from "../../services/auth/components/SignupWidget";
 const Signup = () => {
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden ">
-            <div className="fixed inset-0 h-screen bg-neutral-100 blur-sm -z-10" />
+            <div className="fixed inset-0 h-screen bg-[#fffffffc] blur-sm -z-10" />
 
             <Navbar/>
     

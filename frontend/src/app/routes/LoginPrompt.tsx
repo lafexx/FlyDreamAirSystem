@@ -1,8 +1,12 @@
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../contexts/AuthContext";
+
 const LoginPrompt = () => {
+    const {setRedirectedFromBooking} = useAuth();
     const navigate = useNavigate();
     
     return (
@@ -16,7 +20,10 @@ const LoginPrompt = () => {
                     <h1 className="text-3xl text-neutral-700">Save flight</h1>
                     <p className="text-neutral-500">If you would like to be able to manage and view all of your flights in one place, please login below.</p>
                     <div className="flex justify-center">
-                        <button onClick={() => navigate("/login")} className="bg-blue-500 text-white font-semibold rounded-lg px-10 py-2.5 hover:bg-blue-400 duration-200 ease-linear">
+                        <button onClick={() => {
+                            setRedirectedFromBooking(true);
+                            navigate("/login");
+                        }} className="bg-blue-500 text-white font-semibold rounded-lg px-10 py-2.5 hover:bg-blue-400 duration-200 ease-linear">
                             Login
                         </button>
                     </div>
@@ -28,7 +35,7 @@ const LoginPrompt = () => {
                     <hr className="flex-grow border-t border-neutral-400" />
                 </div>
 
-                <button className="bg-blue-500 rounded-lg px-10 py-2.5 text-white font-semibold hover:bg-blue-400 duration-200 ease-linear">
+                <button onClick={() => navigate("/flight-overview")} className="bg-blue-500 rounded-lg px-10 py-2.5 text-white font-semibold hover:bg-blue-400 duration-200 ease-linear">
                     Continue without logging in
                 </button>
             </div>

@@ -3,10 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { Login } from '../api/AuthInterface';
 
+import { useAuth } from '../../../contexts/AuthContext';
+
 import { isEmptyOrWhitespace } from '../../../utils/StringUtils';
 
 const LoginWidget = () => {
     const navigate = useNavigate();
+
+    const {redirectedFromBooking} = useAuth();
 
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
@@ -37,7 +41,13 @@ const LoginWidget = () => {
             
         setIsDisabled(false);
         localStorage.setItem("currentUser", request.username);
-        navigate("/");
+        if (!redirectedFromBooking) {
+            navigate("/");
+            return;
+        }
+
+        navigate("/flight-overview");
+        return;
     };
 
     return (
