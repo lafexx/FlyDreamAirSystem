@@ -3,12 +3,10 @@ import Footer from "../../components/Footer";
 
 import { useBooking } from "../../contexts/BookingContext";
 
-import { applyAddDays } from "../../services/flight/utils/DateUtils";
-
 import { IoAirplane } from "react-icons/io5";
 
 const FlightOverview = () => {
-    const { addons, departureLocation, destination, calendarValue, price } = useBooking();
+    const { flight } = useBooking();
     
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
@@ -26,19 +24,19 @@ const FlightOverview = () => {
                     <div className="row-start-1 col-start-1 col-span-2">
                         <div className={`rounded-xl cursor-pointer shadow border border-b bg-white border-neutral-300 mb-2 flex flex-col w-full text-left px-10 py-4 hover:border-b-neutral-600 duration-100 ease-linear`}>
                             <div className="flex justify-between">
-                                <h1 className="text-blue-500 text-xl font-semibold">{departureLocation!.city}</h1>
+                                <h1 className="text-blue-500 text-xl font-semibold">{flight.departureLocation!.city}</h1>
                                 <IoAirplane className="text-neutral-700 text-2xl"/>
-                                <h1 className="text-blue-500 text-xl font-semibold">{destination!.city}</h1>
+                                <h1 className="text-blue-500 text-xl font-semibold">{flight.destination!.city}</h1>
                             </div>
 
                             <div className="flex justify-between text-neutral-500 text-sm">
-                                <p>{departureLocation.airport}</p>
-                                <p>{destination.airport}</p>
+                                <p>{flight.departureLocation.airport}</p>
+                                <p>{flight.destination.airport}</p>
                             </div>
 
                             <div className="flex justify-between text-neutral-700 ">
-                                <p>{calendarValue?.toLocaleString()!.split(",")[0]}</p>
-                                <p>{applyAddDays(calendarValue!, 1)?.toLocaleString()!.split(",")[0]}</p>
+                                <p>{flight.departureDate}</p>
+                                <p>{flight.arrivalDate}</p>
                             </div>
                         </div>
                     </div>

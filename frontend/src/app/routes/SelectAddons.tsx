@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Flight } from "../../services/flight/types/Flight";
+
 import { useBooking } from "../../contexts/BookingContext";
 
 import Navbar from "../../components/Navbar";
@@ -77,7 +79,7 @@ const SelectAddons = () => {
         return total.toFixed(2);
     };
 
-    const {setAddons} = useBooking();
+    const {setFlight} = useBooking();
 
     const navigate = useNavigate();
 
@@ -143,7 +145,13 @@ const SelectAddons = () => {
                             <h1 className="text-2xl">Total: A${calculateTotal()}</h1>
                             
                             <button onClick={() => {
-                                setAddons(addedItems);
+                                setFlight((prev) => {
+                                    const newFlight: Flight = new Flight(prev);
+                                    const addons: Map<string, number> = addedItems;
+                                    newFlight.addons = addons;
+                                    return newFlight;
+                                })
+                                
                                 navigate("/login-prompt");
                             }} className="w-full py-2 bg-blue-500 hover:bg-blue-400 duration-200 ease-linear rounded-lg text-white font-semibold text-lg">
                                 Next

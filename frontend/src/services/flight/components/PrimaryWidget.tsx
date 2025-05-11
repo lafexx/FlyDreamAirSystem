@@ -56,7 +56,7 @@ const PrimaryWidget = () => {
                             )}
                         </div>
                     ) : (
-                        <h1>hi</h1>
+                        <h1>manage flights</h1>
                     )}
                 </div>
             </div>

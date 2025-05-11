@@ -40,9 +40,8 @@ export const renderSeats = (seats: number[][], addSeatToSelection?: (rowIndex: n
 };
 
 const SelectSeats = () => {
-    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", "", 0, []), []);
-    const [flight, setFlight] = useState<Flight>(emptyFlight); 
-    const {selectedFlight} = useBooking();
+    const emptyFlight: Flight = useMemo(() =>  new Flight(), []);
+    const {flight, setFlight} = useBooking();
 
     const [seats, setSeats] = useState<number[][]>([]); // 6x6 matrix
     const [reservedSeats, setReservedSeats] = useState<number>(0);
@@ -78,14 +77,14 @@ const SelectSeats = () => {
     };
 
     const generateRandomSeatData = () => {
-        let _seats: number[][] = [];
+        const _seats: number[][] = [];
         let _reservedSeats = 0;
 
         for (let i = 0; i < 6; i++) {
             _seats[i] = [];
 
             for (let j = 0; j < 6; j++) {
-                let rand: number = getRandomInt(1, 4);
+                const rand: number = getRandomInt(1, 4);
                 // -1 = reserved
                 // 0  = empty
                 // 1  = selected by user
@@ -107,31 +106,6 @@ const SelectSeats = () => {
         return `${aisleMap[x]}${y}`;
     }
 
-    const checkout = async () => {
-        if (flight) {
-            const currentUser: string | null = localStorage.getItem("currentUser");
-
-            if (!currentUser) {
-                console.warn("invalid user information");
-                return;
-            }
-                
-            flight.username = currentUser;
-            flight.seats = seats;
-            flight.price = flight.price! * selectedSeats.length;
-                
-            const res: boolean = await BookFlight(flight);
-            if (!res) {
-                console.warn("Failed to book flight.");
-                return;
-            }
-
-            console.log("Successfully booked flight.");
-            localStorage.setItem(`${currentUser}:flight`, JSON.stringify(flight));
-            navigate("/booking-confirmation");
-        }
-    };
-
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
             <div className="fixed inset-0 h-screen bg-[#fffffffc] blur-sm -z-10" />
@@ -140,7 +114,7 @@ const SelectSeats = () => {
             <div className="flex flex-grow flex-col relative h-full items-center justify-center space-y-10">
                 <div className="text-center space-y-2 px-10">
                     <h1 className="text-4xl text-center text-neutral-600 font-semibold">Select your seats</h1>
-                    <p className="text-neutral-500">{`Flight: ${selectedFlight.departureLocation.city} to ${selectedFlight.destination.city} on ${selectedFlight.departureDate}`}</p>
+                    <p className="text-neutral-500">{`Flight: ${flight.departureLocation.city} to ${flight.destination.city} on ${flight.departureDate}`}</p>
                     <p className="text-center text-neutral-500">({36 - reservedSeats} available)</p>
                 </div>
 
@@ -155,15 +129,15 @@ const SelectSeats = () => {
                             <ul className="py-2">
                                 <li className="text-neutral-600">
                                     <p className="inline">From: </p>
-                                    <p className="inline text-neutral-700">{selectedFlight.departureLocation.city}</p>
+                                    <p className="inline text-neutral-700">{flight.departureLocation.city}</p>
                                 </li>
                                 <li className="text-neutral-600">
                                     <p className="inline">To: </p>
-                                    <p className="inline text-neutral-700">{selectedFlight.destination.city}</p>
+                                    <p className="inline text-neutral-700">{flight.destination.city}</p>
                                 </li>
                                 <li className="text-neutral-600">
                                     <p className="inline">Departure Date: </p>
-                                    <p className="inline text-neutral-700">{selectedFlight.departureDate}</p>
+                                    <p className="inline text-neutral-700">{flight.departureDate}</p>
                                 </li>
                             </ul>
 
@@ -181,10 +155,14 @@ const SelectSeats = () => {
                         </div>
 
                         <div className="flex justify-center mt-auto">
-                            <button onClick={() => navigate("/select-addons")} disabled={selectedSeats.length === 0 ? true : false} 
+                            <button onClick={() => {
+                                flight.seats = seats;
+                                flight.price = flight.price! * selectedSeats.length;
+                                navigate("/select-addons");
+                            }} disabled={selectedSeats.length === 0 ? true : false} 
                                     className={`bg-blue-500 w-full shadow drop-shadow rounded-2xl px-10 py-1 text-neutral-200 duration-200 ease-linear ${selectedSeats.length  === 0 ? "opacity-[0.5]" : "hover:bg-blue-400 "}`}>
                                 <p className="drop-shadow">Confirm</p>
-                                <p className="drop-shadow">${selectedFlight.price * selectedSeats.length}</p>
+                                <p className="drop-shadow">${flight.price * selectedSeats.length}</p>
                             </button>
                         </div>
                     </div>

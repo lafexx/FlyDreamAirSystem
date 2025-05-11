@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+import { Flight } from "../services/flight/types/Flight";
+import { Value } from "../contexts/BookingContext";
+
 import Calendar from 'react-calendar';
 import '../../node_modules/react-calendar/dist/Calendar.css';
 
@@ -7,10 +10,13 @@ import { PiAirplaneTakeoffFill } from "react-icons/pi";
 import { PiAirplaneLandingFill } from "react-icons/pi";
 import { MdOutlineDateRange } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+
 import { useBooking } from "../contexts/BookingContext";
 
+import { applyAddDays } from "../services/flight/utils/DateUtils";
+
 const FlightSettingsWidget = () => {
-    const { setIsSearching, departureLocation, setDepartureLocation, destination, setDestination, departureDate, setDepartureDate, calendarValue, calendarOnChange } = useBooking();
+    const { setIsSearching, flight, setFlight } = useBooking();
 
     const [departureLocationDropdownEnabled, setDepartureLocationDropdownEnabled] = useState<boolean>(false);
     const [destinationDropdownEnabled, setDestinationDropdownEnabled] = useState<boolean>(false);
@@ -74,24 +80,43 @@ const FlightSettingsWidget = () => {
         }
     ];
 
+    const [calendarValue, calendarOnChange] = useState<Value>();
+
     useEffect(() => {
-        if (calendarValue) {
-            setDepartureDate(calendarValue?.toLocaleString()!.split(",")[0]);
+        if (!flight.departureDate) {
+            setFlight((prev) => {
+                const newFlight: Flight = new Flight(prev);
+                const departureDate: string | undefined = calendarValue?.toLocaleString()!.split(",")[0];
+                const arrivalDate: string | undefined = applyAddDays(calendarValue!, 1)?.toLocaleString()!.split(",")[0];
+                
+                if (departureDate && arrivalDate) {
+                    newFlight.departureDate = departureDate
+                    newFlight.arrivalDate = arrivalDate;
+                }
+
+                return newFlight;
+            })
         }
 
         if (departureDateDropdownEnabled) {
             setDepartureDateDropdownEnabled((prev) => !prev);
         }
-    }, [departureLocation, destination, calendarValue]);
+    }, [flight, calendarValue]);
 
     const renderDepartureLocations = () => {
         return locations.map((location, index) => (
             <button onClick={() => {
-                setDepartureLocation({
-                    country: location.country,
-                    city: location.city,
-                    airport: location.airport
-                });
+                setFlight((prev) => {
+                    const newFlight: Flight = new Flight(prev);
+                    const departureLocation: {country: string, city: string, airport: string} = {
+                        country: location.country,
+                        city: location.city,
+                        airport: location.airport
+                    };
+                    newFlight.departureLocation = departureLocation;
+                    return newFlight;
+                })
+
                 setDepartureLocationDropdownEnabled((prev) => !prev);
             }} key={index} 
                     className={`cursor-pointer rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
@@ -104,11 +129,19 @@ const FlightSettingsWidget = () => {
     const renderDestinationLocations = () => {
         return locations.map((location, index) => (
             <button onClick={() => {
-                setDestination({
-                    country: location.country,
-                    city: location.city,
-                    airport: location.airport
+                setFlight((prev) => {
+                    const newFlight: Flight = new Flight(prev);
+                    const destination: {country: string, city: string, airport: string} = {
+                        country: location.country,
+                        city: location.city,
+                        airport: location.airport, 
+                    };
+                    
+                    newFlight.destination = destination;
+
+                    return newFlight;
                 });
+
                 setDestinationDropdownEnabled((prev) => !prev)
             }} key={index} 
                     className={`cursor-pointer rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
@@ -119,8 +152,8 @@ const FlightSettingsWidget = () => {
     };
 
     const searchFlights = () => {
-        if (departureLocation && destination && departureDate) {
-            if (departureLocation.airport !== destination.airport) {
+        if (flight.departureLocation && flight.destination && flight.departureDate) {
+            if (flight.departureLocation.airport !== flight.destination.airport) {
                 setIsSearching(true);
             }
         }
@@ -139,7 +172,7 @@ const FlightSettingsWidget = () => {
                         }} className="flex justify-between h-[70px] w-full border cursor-pointer shadow border-neutral-500  p-4 space-x-4 items-center">
                             <div className="space-x-4">
                                 <PiAirplaneTakeoffFill className="inline text-neutral-700 text-2xl"/>
-                                <h1 className="inline text-xs text-neutral-600">{departureLocation.country !== ""  ? `${departureLocation.airport}, ${departureLocation.city}, ${departureLocation.country}` : `Select departure location...`}</h1>
+                                <h1 className="inline text-xs text-neutral-600">{flight.departureLocation.country !== ""  ? `${flight.departureLocation.airport}, ${flight.departureLocation.city}, ${flight.departureLocation.country}` : `Select departure location...`}</h1>
                             </div>
                         </button>
                     </div>
@@ -153,7 +186,7 @@ const FlightSettingsWidget = () => {
                         }} className="flex justify-between w-full border cursor-pointer shadow border-neutral-500 h-[70px] p-4 space-x-4 items-center">
                             <div className="space-x-4">
                                 <PiAirplaneLandingFill className="inline text-neutral-700 text-2xl"/>
-                                <h1 className="inline text-xs text-neutral-600">{destination.country !== ""  ? `${destination.airport}, ${destination.city}, ${destination.country}` : `Select destination...`}</h1>
+                                <h1 className="inline text-xs text-neutral-600">{flight.destination.country !== ""  ? `${flight.destination.airport}, ${flight.destination.city}, ${flight.destination.country}` : `Select destination...`}</h1>
                             </div>
                         </button>
                     </div>
@@ -167,7 +200,7 @@ const FlightSettingsWidget = () => {
                         }} className="flex justify-between w-full border cursor-pointer shadow border-neutral-500 h-[70px] p-4 space-x-4 items-center">
                             <div className="space-x-4">
                                 <MdOutlineDateRange className="inline text-neutral-700 text-2xl"/>
-                                <h1 className="inline text-sm text-neutral-600">{departureDate !== null ? departureDate : `Select departure date...`}</h1>
+                                <h1 className="inline text-sm text-neutral-600">{flight.departureDate !== null ? flight.departureDate : `Select departure date...`}</h1>
                             </div>
                         </button>
                     </div>
@@ -205,7 +238,7 @@ const FlightSettingsWidget = () => {
 
                 <div className="flex justify-center pt-7">
                     <button
-                        disabled={departureLocation.country == "" || destination.country == "" || departureDate == null}
+                        disabled={flight.departureLocation.country == "" || flight.destination.country == "" || flight.departureDate == null}
                         onClick={() => searchFlights()} className="bg-blue-600 disabled:opacity-50 p-3 rounded-2xl shadow drop-shadow text-white px-15 not-disabled:hover:bg-blue-500 duration-100 ease-linear not-disabled:cursor-pointer">
                         Search Flights
                     </button>
