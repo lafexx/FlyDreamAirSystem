@@ -1,16 +1,26 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
 import { useBooking } from "../../contexts/BookingContext";
 
-import { IoAirplane } from "react-icons/io5";
-
 import { renderSeats } from "./SelectSeats";
-
 import { foodAddons, drinkAddons } from "./SelectAddons";
+
+import { IoAirplane } from "react-icons/io5";
 
 const FlightOverview = () => {
     const { flight } = useBooking();
+
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        if (!flight.departureLocation.airport) {
+            navigate("/");
+        }
+    }, []);
     
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">

@@ -101,6 +101,11 @@ const SelectSeats = () => {
     };
 
     useEffect(() => {
+        if (!flight.departureLocation.airport)  {
+            navigate("/");
+            return;
+        }
+        
         setSeats(generateRandomSeatData());
     }, []);
 

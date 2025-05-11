@@ -4,10 +4,20 @@ import Footer from "../../components/Footer";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
+import { useBooking } from "../../contexts/BookingContext";
+import { useEffect } from "react";
 
 const LoginPrompt = () => {
     const {setRedirectedFromBooking} = useAuth();
     const navigate = useNavigate();
+    const {flight} = useBooking();
+
+    useEffect(() => {
+        if (!flight.departureLocation.airport) {
+            navigate("/");
+            return;
+        }
+    }, []);
     
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">

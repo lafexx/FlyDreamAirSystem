@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Flight } from "../../services/flight/types/Flight";
@@ -79,9 +79,16 @@ const SelectAddons = () => {
         return total.toFixed(2);
     };
 
-    const {setFlight} = useBooking();
+    const {flight, setFlight} = useBooking();
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!flight.departureLocation.airport) {
+            navigate("/");
+            return;
+        }
+    }, []);
 
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
