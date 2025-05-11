@@ -101,7 +101,7 @@ const FlightSettingsWidget = () => {
         if (departureDateDropdownEnabled) {
             setDepartureDateDropdownEnabled((prev) => !prev);
         }
-    }, [flight, calendarValue]);
+    }, [calendarValue]);
 
     const renderDepartureLocations = () => {
         return locations.map((location, index) => (
@@ -172,7 +172,7 @@ const FlightSettingsWidget = () => {
                         }} className="flex justify-between h-[70px] w-full border cursor-pointer shadow border-neutral-500  p-4 space-x-4 items-center">
                             <div className="space-x-4">
                                 <PiAirplaneTakeoffFill className="inline text-neutral-700 text-2xl"/>
-                                <h1 className="inline text-xs text-neutral-600">{flight.departureLocation.country !== ""  ? `${flight.departureLocation.airport}, ${flight.departureLocation.city}, ${flight.departureLocation.country}` : `Select departure location...`}</h1>
+                                <h1 className="inline text-xs text-neutral-600">{flight.departureLocation.country  ? `${flight.departureLocation.airport}, ${flight.departureLocation.city}, ${flight.departureLocation.country}` : `Select departure location...`}</h1>
                             </div>
                         </button>
                     </div>
@@ -186,7 +186,7 @@ const FlightSettingsWidget = () => {
                         }} className="flex justify-between w-full border cursor-pointer shadow border-neutral-500 h-[70px] p-4 space-x-4 items-center">
                             <div className="space-x-4">
                                 <PiAirplaneLandingFill className="inline text-neutral-700 text-2xl"/>
-                                <h1 className="inline text-xs text-neutral-600">{flight.destination.country !== ""  ? `${flight.destination.airport}, ${flight.destination.city}, ${flight.destination.country}` : `Select destination...`}</h1>
+                                <h1 className="inline text-xs text-neutral-600">{flight.destination.country ? `${flight.destination.airport}, ${flight.destination.city}, ${flight.destination.country}` : `Select destination...`}</h1>
                             </div>
                         </button>
                     </div>
@@ -200,7 +200,7 @@ const FlightSettingsWidget = () => {
                         }} className="flex justify-between w-full border cursor-pointer shadow border-neutral-500 h-[70px] p-4 space-x-4 items-center">
                             <div className="space-x-4">
                                 <MdOutlineDateRange className="inline text-neutral-700 text-2xl"/>
-                                <h1 className="inline text-sm text-neutral-600">{flight.departureDate !== null ? flight.departureDate : `Select departure date...`}</h1>
+                                <h1 className="inline text-sm text-neutral-600">{flight.departureDate ? flight.departureDate : `Select departure date...`}</h1>
                             </div>
                         </button>
                     </div>

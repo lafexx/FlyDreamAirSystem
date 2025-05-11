@@ -8,7 +8,6 @@ import { Flight } from "../../services/flight/types/Flight";
 
 import { getRandomInt } from "../../utils/MathUtils";
 
-import { BookFlight } from "../../services/flight/api/FlightInterface";
 import { useBooking } from "../../contexts/BookingContext";
 
 export const aisleMap: Record<number, [string]> = {

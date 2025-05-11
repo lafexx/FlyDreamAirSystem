@@ -8,13 +8,13 @@ import { useBooking } from "../../contexts/BookingContext";
 const FlightList = () => {
     const navigate = useNavigate();
 
-    const {departureLocation} = useBooking();
+    const {flight} = useBooking();
 
     useEffect(() => {
-        if (departureLocation.country == "") {
+        if (flight.departureLocation.country == "") {
             navigate("/");
         }
-    }, [departureLocation]);
+    }, [flight]);
 
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">

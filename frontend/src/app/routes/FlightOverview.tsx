@@ -5,6 +5,10 @@ import { useBooking } from "../../contexts/BookingContext";
 
 import { IoAirplane } from "react-icons/io5";
 
+import { renderSeats } from "./SelectSeats";
+
+import { foodAddons, drinkAddons } from "./SelectAddons";
+
 const FlightOverview = () => {
     const { flight } = useBooking();
     
@@ -20,9 +24,9 @@ const FlightOverview = () => {
                     <p className="text-neutral-500">Showing current flight information</p>
                 </div>
 
-                <div className="grid grid-cols-2 grid-rows-2 gap-4 bg-blue-500 w-full max-w-[800px]">
+                <div className="grid grid-cols-2 grid-rows-[auto_auto] gap-2 w-full max-w-[900px] scale-[85%]">
                     <div className="row-start-1 col-start-1 col-span-2">
-                        <div className={`rounded-xl cursor-pointer shadow border border-b bg-white border-neutral-300 mb-2 flex flex-col w-full text-left px-10 py-4 hover:border-b-neutral-600 duration-100 ease-linear`}>
+                        <div className={`rounded-xl shadow border border-b bg-white border-neutral-300 mb-2 flex flex-col w-full text-left px-10 py-4`}>
                             <div className="flex justify-between">
                                 <h1 className="text-blue-500 text-xl font-semibold">{flight.departureLocation!.city}</h1>
                                 <IoAirplane className="text-neutral-700 text-2xl"/>
@@ -42,11 +46,48 @@ const FlightOverview = () => {
                     </div>
 
                     <div className="row-start-2 col-start-1 col-span-1">
-                        <h1>hi</h1>
+                        <div className="bg-white shadow drop-shadow rounded-xl min-w-[400px] w-full min-h-[430px] p-4 h-full">
+                            <h1 className="text-neutral-600 text-2xl font-semibold">Selected Seats</h1>
+                            <div className="pt-4 w-full h-full flex justify-center">
+                                {(() => {
+                                if (flight && flight.seats) {
+                                    return renderSeats(flight.seats ?? [], undefined);
+                                }
+                            })()}
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="row-start-2 col-start-2 col-span-1">
-                        <h1>hi</h1>
+                    <div className="row-start-2 col-start-2 col-span-1 bg-white shadow drop-shadow rounded-xl p-4 space-y-2">
+                        <h1 className="text-neutral-700 text-2xl font-semibold">Your addons</h1>
+                        <div className="w-full  overflow-auto flex h-[275px]">
+                            {flight.addons.size > 0 ? (
+                                <ul className="w-full overflow-auto">
+                                    {[...flight.addons.entries()].map(([key, value]) => (
+                                        <li className="text-neutral-700 w-full flex justify-between" key={key}>
+                                            <div>
+                                                <p className="inline">- {key} </p>
+                                                <p className="inline text-neutral-800">x{value}</p>
+                                            </div>
+                                            <div>
+                                                <p>
+                                                    A${({...foodAddons, ...drinkAddons}[key].price * value).toFixed(2)}
+                                                </p>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <div className="w-full flex justify-center">
+                                    <p className="text-neutral-500 pt-4">You haven't added anything.</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <button className="bg-blue-500 w-full rounded-lg py-2.5 px-10 hover:bg-blue-400 duration-200 ease-linear shadow">
+                            <p className="text-white">Proceed to Checkout</p>
+                            <p className="text-white font-bold">A${flight.price}</p>
+                        </button>
                     </div>
                 </div>
             </div>

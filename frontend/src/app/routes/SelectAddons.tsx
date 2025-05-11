@@ -11,27 +11,27 @@ import Footer from "../../components/Footer";
 import Carousel from "../../components/Carousel";
 import Item from "../../services/flight/components/Item";
 
+export const foodAddons: Record<string, {price: number, image: string}> = {
+    "Soup": {price: 9.95, image: "../../../soup.png"},
+    "Pizza": {price: 12.55, image: "../../../pizza.png"},
+    "Burger": {price: 10.99, image: "../../../burger.png"},
+    "Sushi": {price: 18.00, image: "../../../sushi.png"},
+    "Salad": {price: 9.25, image: "../../../salad.png"},
+    "Pasta": {price: 13.75, image: "../../../pasta.png"},
+    "Ice Cream": {price: 6.55, image: "../../../icecream.png"}
+};
+
+export const drinkAddons: Record<string, { price: number, image: string }> = {
+    "Coffee": { price: 3.95, image: "../../../coffee.png" },
+    "Tea": { price: 2.95, image: "../../../tea.png" },
+    "Coke": { price: 1.99, image: "../../../soda.png" },
+    "Milkshake": { price: 4.50, image: "../../../milkshake.png" },
+    "Smoothie": { price: 5.25, image: "../../../smoothie.png" },
+    "Water": { price: 0.00, image: "../../../water.png" },
+    "Lemonade": { price: 2.50, image: "../../../lemonade.png" }
+};
+
 const SelectAddons = () => {
-    const foodAddons: Record<string, {price: number, image: string}> = {
-        "Soup": {price: 9.95, image: "../../../soup.png"},
-        "Pizza": {price: 12.55, image: "../../../pizza.png"},
-        "Burger": {price: 10.99, image: "../../../burger.png"},
-        "Sushi": {price: 18.00, image: "../../../sushi.png"},
-        "Salad": {price: 9.25, image: "../../../salad.png"},
-        "Pasta": {price: 13.75, image: "../../../pasta.png"},
-        "Ice Cream": {price: 6.55, image: "../../../icecream.png"}
-    };
-
-    const drinkAddons: Record<string, { price: number, image: string }> = {
-        "Coffee": { price: 3.95, image: "../../../coffee.png" },
-        "Tea": { price: 2.95, image: "../../../tea.png" },
-        "Coke": { price: 1.99, image: "../../../soda.png" },
-        "Milkshake": { price: 4.50, image: "../../../milkshake.png" },
-        "Smoothie": { price: 5.25, image: "../../../smoothie.png" },
-        "Water": { price: 0.00, image: "../../../water.png" },
-        "Lemonade": { price: 2.50, image: "../../../lemonade.png" }
-    };
-
     const [addedItems, setAddedItems] = useState<Map<string, number>>(new Map());
 
     const addCallback = (itemName: string) => {
@@ -148,7 +148,9 @@ const SelectAddons = () => {
                                 setFlight((prev) => {
                                     const newFlight: Flight = new Flight(prev);
                                     const addons: Map<string, number> = addedItems;
+                                    const newPrice: number = newFlight.price + Number(calculateTotal());
                                     newFlight.addons = addons;
+                                    newFlight.price = newPrice;
                                     return newFlight;
                                 })
                                 

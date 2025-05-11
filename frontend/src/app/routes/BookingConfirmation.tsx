@@ -67,7 +67,7 @@ const BookingConfirmation = () => {
                             {(() => {
                                 if (flight) {
                                     if (flight.seats) {
-                                        return renderSeats(flight?.seats!, undefined);
+                                        return renderSeats(flight.seats, undefined);
                                     }
                                 }
                             })()}
