@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -72,7 +73,9 @@ const SelectAddons = () => {
         });
 
         return total.toFixed(2);
-    }
+    };
+
+    const navigate = useNavigate();
 
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
@@ -110,24 +113,32 @@ const SelectAddons = () => {
                             <h1 className="text-2xl">Your addons:</h1>
 
                             <div className="w-full  overflow-auto flex h-[275px]">
-                                <ul className="w-full overflow-auto">
-                                    {[...addedItems.entries()].map(([key, value]) => (
-                                        <li className="text-neutral-700 w-full flex justify-between" key={key}>
-                                            <div>
-                                                <p className="inline">- {key} </p>
-                                                <p className="inline text-neutral-800">x{value}</p>
-                                            </div>
-                                            <div>
-                                                <p>A${({...foodAddons, ...drinkAddons}[key].price * value).toFixed(2)}</p>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
+                                {addedItems.size > 0 ? (
+                                    <ul className="w-full overflow-auto">
+                                        {[...addedItems.entries()].map(([key, value]) => (
+                                            <li className="text-neutral-700 w-full flex justify-between" key={key}>
+                                                <div>
+                                                    <p className="inline">- {key} </p>
+                                                    <p className="inline text-neutral-800">x{value}</p>
+                                                </div>
+                                                <div>
+                                                    <p>A${({...foodAddons, ...drinkAddons}[key].price * value).toFixed(2)}</p>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div className="w-full flex justify-center">
+                                        <p className="text-neutral-500 pt-4">You haven't added anything.</p>
+                                    </div>
+                                )}
                             </div>
 
                             <h1 className="text-2xl">Total: A${calculateTotal()}</h1>
                             
-                            <button className="w-full py-2 bg-blue-500 hover:bg-blue-400 duration-200 ease-linear rounded-lg text-white font-semibold text-lg">
+                            <button onClick={() => {
+                                navigate("/login-prompt")
+                            }} className="w-full py-2 bg-blue-500 hover:bg-blue-400 duration-200 ease-linear rounded-lg text-white font-semibold text-lg">
                                 Next
                             </button>
                         </div>

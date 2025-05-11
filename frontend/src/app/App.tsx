@@ -9,6 +9,7 @@ import BookingConfirmation from "./routes/BookingConfirmation";
 import ManageFlight from "./routes/ManageFlight";
 import FlightList from "./routes/FlightList";
 import SelectAddons from "./routes/SelectAddons";
+import LoginPrompt from "./routes/LoginPrompt";
 
 import { BookingProvider } from "../contexts/BookingContext";
 
@@ -33,6 +34,7 @@ function App() {
         <Route path="/select-seats" element={<SelectSeats/>}/>
         <Route path="/booking-confirmation" element={<BookingConfirmation/>}/>
         <Route path="/select-addons" element={<SelectAddons/>}/>
+        <Route path="/login-prompt" element={<LoginPrompt/>}/>
       </Routes>
     </ContextProvider>
   );
