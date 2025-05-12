@@ -18,6 +18,21 @@ const FlightConfirmation = () => {
             navigate("/");
         }
     }, [flight.departureLocation.airport, navigate]);
+
+    const onCheckout = () => {
+        const checkout = async () => {
+            // hit endpoint to book flight 
+            const flightId: string = "returned-flight-id";
+          
+            // if successful
+            navigate(`/booking-confirmation/${flightId}`); // return flight id from the api call 
+
+            // if unsuccessful
+            navigate("/");
+        };
+
+        checkout();
+    }
     
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
@@ -26,7 +41,7 @@ const FlightConfirmation = () => {
             <Navbar />
 
             <div className="flex flex-grow flex-col relative h-full items-center justify-center">
-                <FlightOverviewWidget flightId={undefined} _flight={flight}/>
+                <FlightOverviewWidget _flight={flight} checkoutCallback={onCheckout}/>
             </div>
 
             <div className="absolute bottom-0 left-0 w-full -z-10 pointer-events-none">

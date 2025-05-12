@@ -24,13 +24,13 @@ namespace backend.Services.Auth
             var json = await File.ReadAllTextAsync(usersFilePath);
             var users = JsonConvert.DeserializeObject<List<User>>(json) ?? new List<User>();
 
-            User newUser = new(request.username, request.email, request.password);
+            User newUser = new(request.Username, request.Email, request.Password);
 
-            var user = users.FirstOrDefault(u => u.username == request.username);
+            var user = users.FirstOrDefault(u => u.username == request.Username);
             if (user != null)
                 return new BadRequestObjectResult(new { message = "A user with the same username already exists!" });
 
-            user = users.FirstOrDefault(u => u.email == request.email);
+            user = users.FirstOrDefault(u => u.email == request.Email);
             if (user != null)
                 return new BadRequestObjectResult(new { message = "A user with the same email already exists!" });
 
@@ -52,7 +52,7 @@ namespace backend.Services.Auth
             var json = await File.ReadAllTextAsync(usersFilePath);
             var users = JsonConvert.DeserializeObject<List<User>>(json) ?? new List<User>();
 
-            var user = users.FirstOrDefault(u => u.username == request.username && u.password == request.password);
+            var user = users.FirstOrDefault(u => u.username == request.Username && u.password == request.Password);
             if (user == null)
                 return new UnauthorizedObjectResult(new { message = "INvalid username or password." });
            

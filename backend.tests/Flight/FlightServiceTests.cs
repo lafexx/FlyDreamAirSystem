@@ -77,7 +77,7 @@ namespace backend.tests.Flight
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
-            Assert.All(flights, f => Assert.Equal(username, f.username));
+            Assert.All(flights, f => Assert.Equal(username, f.Username));
         }
 
         [Fact]

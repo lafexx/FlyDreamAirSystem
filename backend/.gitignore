@@ -36,3 +36,7 @@ secrets.env
 
 .pfx
 cert.pfx
+
+# data files
+users.json
+flights.json

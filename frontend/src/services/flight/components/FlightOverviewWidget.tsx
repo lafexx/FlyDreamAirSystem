@@ -6,7 +6,17 @@ import { renderSeats } from "../../../app/routes/SelectSeats";
 
 import { IoAirplane } from "react-icons/io5";
 
-const FlightOverviewWidget = ({flightId = undefined, _flight = null}: {flightId: string | undefined, _flight: Flight | null}) => {
+interface FlightOverviewProps {
+    flightId?: string | undefined;
+    _flight?: Flight | null;
+    checkoutCallback?: () => void;
+}
+
+const FlightOverviewWidget: React.FC<FlightOverviewProps> = ({
+    flightId = undefined,
+    _flight = null,
+    checkoutCallback = () => {},
+}) => {
     const emptyFlight: Flight = useMemo(() => new Flight(), []);
     const [displayedFlight, setDisplayedFlight] = useState<Flight>(emptyFlight);
     
@@ -88,9 +98,9 @@ const FlightOverviewWidget = ({flightId = undefined, _flight = null}: {flightId:
                     </div>
 
                     {(!flightId && _flight) && (
-                        <button className="bg-blue-500 w-full rounded-lg py-2.5 px-10 hover:bg-blue-400 duration-200 ease-linear shadow">
-                        <p className="text-white">Proceed to Checkout</p>
-                        <p className="text-white font-bold">A${displayedFlight.price}</p>
+                        <button onClick={() => checkoutCallback()} className="bg-blue-500 w-full rounded-lg py-2.5 px-10 hover:bg-blue-400 duration-200 ease-linear shadow">
+                            <p className="text-white">Proceed to Checkout</p>
+                            <p className="text-white font-bold">A${displayedFlight.price}</p>
                         </button>
                     )}
                 </div>

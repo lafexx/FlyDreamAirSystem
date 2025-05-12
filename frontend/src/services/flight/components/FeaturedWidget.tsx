@@ -16,9 +16,6 @@ const FeaturedWidget = () => {
                         alt="Sydney"
                         className="w-full h-full object-cover blur-[1px]"
                     />
-                    {/* <button className="cursor-pointer absolute bottom-2 left-2 w-[130px] border-1 border-blue-100 bg-blue-600 hover:bg-blue-500 duration-100 ease-linear text-white px-4 py-1 rounded-xl">
-                        View Flights
-                    </button> */}
                 </div>
 
                 <div className="w-[250px] h-[300px] border-2 border-neutral-300 shadow drop-shadow rounded-xl overflow-hidden relative">
@@ -34,9 +31,6 @@ const FeaturedWidget = () => {
                         alt="Ho Chi Minh"
                         className="w-full h-full object-cover blur-[1px]"
                     />
-                    {/* <button className="cursor-pointer absolute  bottom-2 left-2 w-[130px] border-1 border-blue-100 bg-blue-600 hover:bg-blue-500 duration-200 ease-linear text-white px-4 py-1 rounded-xl">
-                        View Flights
-                    </button> */}
                 </div>
 
                 <div className="w-[250px] h-[300px] border-2 border-neutral-300 shadow drop-shadow rounded-xl overflow-hidden relative">
@@ -52,9 +46,6 @@ const FeaturedWidget = () => {
                         alt="Tokyo"
                         className="w-full h-full object-cover blur-[1px]"
                     />
-                    {/* <button className="cursor-pointer absolute bottom-2 left-2 w-[130px] border-1 border-blue-100 bg-blue-600 hover:bg-blue-500 duration-200 ease-linear text-white px-4 py-1 rounded-xl">
-                        View Flights
-                    </button> */}
                 </div>
             </div>
         </div>

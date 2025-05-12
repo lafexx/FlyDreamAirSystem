@@ -46,9 +46,9 @@ namespace backend.tests.Auth
         {
             SignupRequest request = new SignupRequest
             {
-                username = "test_username",
-                email = "test_username@test.com",
-                password = "testpassword123"
+                Username = "test_username",
+                Email = "test_username@test.com",
+                Password = "testpassword123"
             };
 
             IActionResult result = await _auth.Signup(request);
@@ -63,9 +63,9 @@ namespace backend.tests.Auth
         {
             SignupRequest request = new SignupRequest
             {
-                username = "unique_username",
-                email = "test_username@test.com",
-                password = "testpassword123"
+                Username = "unique_username",
+                Email = "test_username@test.com",
+                Password = "testpassword123"
             };
 
             IActionResult result = await _auth.Signup(request);
@@ -80,9 +80,9 @@ namespace backend.tests.Auth
         {
             SignupRequest request = new SignupRequest
             {
-                username = "unique_username",
-                email = "unique_username@test.com",
-                password = "uniquepassword123"
+                Username = "unique_username",
+                Email = "unique_username@test.com",
+                Password = "uniquepassword123"
             };
 
             IActionResult result = await _auth.Signup(request);
