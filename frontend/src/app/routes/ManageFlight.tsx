@@ -90,7 +90,6 @@ const ManageFlight = () => {
                                     <p className="inline">{flight.destination.city}</p>
                                 </div>
                                 <p className="text-neutral-600">{flight.departureDate}</p>
-                                <p className="text-neutral-600">{flight.airline} Airline</p>   
                             </div>
 
                             <div>
@@ -102,7 +101,7 @@ const ManageFlight = () => {
                             {(() => {
                                 if (flight) {
                                     if (flight.seats) {
-                                        return renderSeats(flight?.seats!, undefined);
+                                        return renderSeats(flight.seats, undefined);
                                     }
                                 }
                             })()}

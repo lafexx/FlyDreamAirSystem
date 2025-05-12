@@ -21,7 +21,7 @@ const FlightOverview = () => {
                 <Navbar />
 
                 <div className="flex flex-grow flex-col relative h-full items-center justify-center">
-                    <FlightOverviewWidget flightId={flightId}/>
+                    <FlightOverviewWidget flightId={flightId} _flight={null}/>
                 </div>
 
                 <div className="absolute bottom-0 left-0 w-full -z-10 pointer-events-none">
