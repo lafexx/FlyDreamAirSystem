@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
     const navigate = useNavigate();
+    const auth = useAuth();
 
     return (
         <div className='w-full bg-white shadow p-5 flex items-center justify-between'>
@@ -14,9 +16,11 @@ const Navbar = () => {
                 </h1>
             </button>
 
-            <button onClick={() => navigate("/login")} type='submit' className="text-white bg-blue-600 rounded-xl hover:bg-blue-500 text-lg px-8 py-1.5 text-center inline-flex items-center duration-200 ease-linear flex-shrink-0">
-                LOGIN
-            </button>
+            {auth.username == "" && (
+                <button onClick={() => navigate("/login")} type='submit' className="text-white bg-blue-600 rounded-xl hover:bg-blue-500 text-lg px-8 py-1.5 text-center inline-flex items-center duration-200 ease-linear flex-shrink-0">
+                    LOGIN
+                </button>
+            )}
         </div>
     );
 }

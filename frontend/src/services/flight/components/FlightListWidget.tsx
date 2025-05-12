@@ -1,8 +1,7 @@
-import { Flight } from "../services/flight/types/Flight";
+import { Flight } from "../types/Flight";
 
-import { getRandomInt } from "../utils/MathUtils";
-
-import { useBooking } from "../contexts/BookingContext";
+import { getRandomInt } from "../../../utils/MathUtils";
+import { useBooking } from "../../../contexts/BookingContext";
 
 import { IoAirplane } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";

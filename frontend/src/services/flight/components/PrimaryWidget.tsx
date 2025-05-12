@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import FlightSettingsWidget from "../../../components/FlightSettingsWidget";
+import FlightSettingsWidget from "./FlightSettingsWidget";
+import ManageFlightsWidget from "./ManageFlightsWidget";
 import LoadingCircleSpinner from "../../../components/animations/LoadingCircleSpinner";
 
 import { FaSuitcase } from "react-icons/fa";
@@ -42,7 +43,7 @@ const PrimaryWidget = () => {
                     </button>
             </div>
 
-            <div className="w-full h-[250px] bg-white">
+            <div className="w-full h-[300px] bg-white">
                 <div className="h-full flex flex-col relative items-center justify-center">
                     {activeSection === Sections.BookFlight ? (
                         <div className="px-2 w-full">
@@ -56,7 +57,7 @@ const PrimaryWidget = () => {
                             )}
                         </div>
                     ) : (
-                        <h1>manage flights</h1>
+                        <ManageFlightsWidget/>
                     )}
                 </div>
             </div>

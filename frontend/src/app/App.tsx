@@ -3,14 +3,14 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./routes/Login";
 import Signup from "./routes/Signup";
 import Home from "./routes/Home";
-import ManageFlights from "./routes/ManageFlights";
+// import ManageFlights from "./routes/ManageFlights";
 import SelectSeats from "./routes/SelectSeats";
-import BookingConfirmation from "./routes/BookingConfirmation";
-import ManageFlight from "./routes/ManageFlight";
+// import BookingConfirmation from "./routes/BookingConfirmation";
+// import ManageFlight from "./routes/ManageFlight";
 import FlightList from "./routes/FlightList";
 import SelectAddons from "./routes/SelectAddons";
 import LoginPrompt from "./routes/LoginPrompt";
-import FlightOverview from "./routes/FlightOverview";
+import FlightConfirmation from "./routes/FlightConfirmation";
 
 import { AuthProvider } from "../contexts/AuthContext";
 import { BookingProvider } from "../contexts/BookingContext";
@@ -33,13 +33,14 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/flight-list" element={<FlightList/>}/>
-        <Route path="/manage-flights" element={<ManageFlights/>}/>
-        <Route path="/manage-flights/:flightId" element={<ManageFlight/>}/>
+        {/* <Route path="/manage-flights" element={<ManageFlights/>}/>
+        <Route path="/manage-flights/:flightId" element={<ManageFlight/>}/> */}
         <Route path="/select-seats" element={<SelectSeats/>}/>
-        <Route path="/booking-confirmation" element={<BookingConfirmation/>}/>
+        {/* <Route path="/booking-confirmation" element={<BookingConfirmation/>}/> */}
         <Route path="/select-addons" element={<SelectAddons/>}/>
         <Route path="/login-prompt" element={<LoginPrompt/>}/>
-        <Route path="/flight-overview" element={<FlightOverview/>}/>
+        <Route path="/flight-overview" element={<FlightConfirmation/>}/>
+        <Route path="/flight/:flightId" element={<></>}/>
       </Routes>
     </ContextProvider>
   );

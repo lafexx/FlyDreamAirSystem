@@ -1,29 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
-import { Flight } from "../../services/flight/types/Flight";
-
-import { getStoredData } from "../../utils/ObjUtils";
-
 import { renderSeats } from "./SelectSeats";
+import { useBooking } from "../../contexts/BookingContext";
 
 const BookingConfirmation = () => {
     const navigate = useNavigate();
-
-    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
-    const [flight, setFlight] = useState<Flight>(emptyFlight);
+    const {flight} = useBooking();
 
     useEffect(() => {
-        if (!localStorage.getItem("currentUser")) {
-            navigate("/login");
-        }  
-
-        const storedFlight = getStoredData<Flight>(`${localStorage.getItem("currentUser")}:flight`);
-        if (storedFlight) {
-            setFlight(storedFlight);
+        if (flight.departureLocation.airport == "") {
+            navigate("/");
+            return;
         }
     }, []);
 
@@ -54,8 +45,7 @@ const BookingConfirmation = () => {
                                     <p className="inline">{">"}</p>
                                     <p className="inline">{flight?.destination?.city}</p>
                                 </div>
-                                <p className="text-neutral-600">{flight?.departureDate}</p>
-                                <p className="text-neutral-600">{flight?.airline} Airline</p>   
+                                <p className="text-neutral-600">{flight?.departureDate}</p>   
                             </div>
 
                             <div>

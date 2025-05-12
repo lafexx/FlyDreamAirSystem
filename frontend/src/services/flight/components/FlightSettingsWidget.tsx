@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 
-import { Flight } from "../services/flight/types/Flight";
-import { Value } from "../contexts/BookingContext";
+import { Value } from "../../../contexts/BookingContext";
+import { Flight } from "../types/Flight";
 
 import Calendar from 'react-calendar';
-import '../../node_modules/react-calendar/dist/Calendar.css';
+import '../../../../node_modules/react-calendar/dist/Calendar.css';
 
 import { PiAirplaneTakeoffFill } from "react-icons/pi";
 import { PiAirplaneLandingFill } from "react-icons/pi";
 import { MdOutlineDateRange } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 
-import { useBooking } from "../contexts/BookingContext";
+import { useBooking } from "../../../contexts/BookingContext";
 
-import { applyAddDays } from "../services/flight/utils/DateUtils";
+import { applyAddDays } from "../utils/DateUtils";
 
 const FlightSettingsWidget = () => {
     const { setIsSearching, flight, setFlight } = useBooking();

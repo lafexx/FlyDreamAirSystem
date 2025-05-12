@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../contexts/AuthContext";
+
 import { Flight } from "../../services/flight/types/Flight";
 
 import { useBooking } from "../../contexts/BookingContext";
@@ -80,6 +82,7 @@ const SelectAddons = () => {
     };
 
     const {flight, setFlight} = useBooking();
+    const auth = useAuth();
 
     const navigate = useNavigate();
 
@@ -161,7 +164,12 @@ const SelectAddons = () => {
                                     return newFlight;
                                 })
                                 
-                                navigate("/login-prompt");
+                                if (auth.username == "") {
+                                    navigate("/login-prompt");
+                                    return;
+                                }
+
+                                navigate("/flight-overview");
                             }} className="w-full py-2 bg-blue-500 hover:bg-blue-400 duration-200 ease-linear rounded-lg text-white font-semibold text-lg">
                                 Next
                             </button>

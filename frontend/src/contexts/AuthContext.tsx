@@ -1,4 +1,5 @@
-import { createContext, useState, Dispatch, SetStateAction, useContext } from "react";
+import { createContext, useState, Dispatch, SetStateAction, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 export type AuthContextType = {
     username: string;
@@ -19,6 +20,12 @@ export const useAuth = () => {
 export const AuthProvider = ({children}: {children: React.ReactNode}) => {
     const [username, setUsername] = useState<string>(localStorage.getItem("currentUser") ?? "");
     const [redirectedFromBooking, setRedirectedFromBooking] = useState<boolean>(false);
+
+    const location = useLocation();
+
+    useEffect(() => {
+        setUsername(localStorage.getItem("currentUser") ?? "");
+    }, [location]);
 
     return (
         <AuthContext.Provider value={{username,

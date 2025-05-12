@@ -1,6 +1,6 @@
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import FlightListWidget from "../../components/FlightListWidget";
+import FlightListWidget from "../../services/flight/components/FlightListWidget";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBooking } from "../../contexts/BookingContext";
