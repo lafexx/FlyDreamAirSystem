@@ -24,13 +24,9 @@ namespace backend.Services.Auth
             var json = await File.ReadAllTextAsync(usersFilePath);
             var users = JsonConvert.DeserializeObject<List<User>>(json) ?? new List<User>();
 
-            User newUser = new(request.Username, request.Email, request.Password);
+            User newUser = new(request.FirstName, request.LastName, request.Email, request.Password);
 
-            var user = users.FirstOrDefault(u => u.username == request.Username);
-            if (user != null)
-                return new BadRequestObjectResult(new { message = "A user with the same username already exists!" });
-
-            user = users.FirstOrDefault(u => u.email == request.Email);
+            var user = users.FirstOrDefault(u => u.Email == request.Email);
             if (user != null)
                 return new BadRequestObjectResult(new { message = "A user with the same email already exists!" });
 
@@ -50,11 +46,11 @@ namespace backend.Services.Auth
                 File.WriteAllText(usersFilePath, "[]");
 
             var json = await File.ReadAllTextAsync(usersFilePath);
-            var users = JsonConvert.DeserializeObject<List<User>>(json) ?? new List<User>();
+            var users = JsonConvert.DeserializeObject<List<User>>(json) ?? [];
 
-            var user = users.FirstOrDefault(u => u.username == request.Username && u.password == request.Password);
+            var user = users.FirstOrDefault(u => u.Email == request.Email && u.Password == request.Password);
             if (user == null)
-                return new UnauthorizedObjectResult(new { message = "INvalid username or password." });
+                return new UnauthorizedObjectResult(new { message = "Invalid username or password." });
            
             return new OkObjectResult(new { message = "Login successful." });
         }

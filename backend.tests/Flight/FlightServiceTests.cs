@@ -39,12 +39,14 @@ namespace backend.tests.Flight
             // Arrange
             var request = new BookFlightRequest
             {
+                id = "",
                 username = "test_username",
-                departureLocation = new Location { country = "France", city = "Paris", airport = "Charles de Gaulle" },
-                destination = new Location { country = "USA", city = "Boston", airport = "Logan International Airport" },
+                departureLocation = new Location { Country = "France", City = "Paris", Airport = "Charles de Gaulle" },
+                destination = new Location { Country = "USA", City = "Boston", Airport = "Logan International Airport" },
                 departureDate = "01/05/2025",
+                arrivalDate = "02/05/2025",
                 price = 1500.0,
-                airline = "Air France",
+                addons = [],
                 seats = [
                     [0, 0, 0, 0, 0, 0],
                     [0, 0, 0, 0, 0, 0],
@@ -61,7 +63,7 @@ namespace backend.tests.Flight
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
-            Assert.Contains("Successfully booked", result.Value.ToString());
+            Assert.Contains("Successfully booked", result.Value is not null ? result.Value.ToString() : "");
         }
 
         [Fact]
@@ -72,7 +74,7 @@ namespace backend.tests.Flight
 
             // Act
             var result = await _flightService.GetBookedFlightsByUsername(username) as OkObjectResult;
-            var flights = Assert.IsAssignableFrom<List<backend.Models.Flight>>(result.Value);
+            var flights = Assert.IsAssignableFrom<List<backend.Models.Flight>>(result?.Value);
 
             // Assert
             Assert.NotNull(result);
@@ -93,10 +95,10 @@ namespace backend.tests.Flight
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
-            Assert.Contains("successfully cancelled", result.Value.ToString());
+            Assert.Contains("successfully cancelled", result?.Value?.ToString());
 
             var checkResult = await _flightService.GetFlightByUsernameAndId(username, flightIdToCancel) as OkObjectResult;
-            Assert.Null(checkResult.Value); 
+            Assert.Null(checkResult?.Value); 
         }
     }
 }

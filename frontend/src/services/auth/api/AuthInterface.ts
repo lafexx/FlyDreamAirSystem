@@ -1,7 +1,8 @@
 import axios from "axios";
 
 interface SignupRequest {
-    username: string;
+    firstname: string;
+    lastname: string;
     email: string;
     password: string;
 }
@@ -22,7 +23,7 @@ export async function Signup(request: SignupRequest): Promise<boolean> {
 }
 
 interface LoginRequest {
-    username: string;
+    email: string;
     password: string;
 }
 

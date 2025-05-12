@@ -2,15 +2,17 @@
 {
     public class User
     {
-        public User(string username, string email, string password)
+        public User(string firstname, string lastname, string email, string password)
         {
-            this.username = username;
-            this.email = email;
-            this.password = password;
+            FirstName = firstname;
+            LastName = lastname;
+            Email = email;
+            Password = password;
         }
 
-        public string username { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

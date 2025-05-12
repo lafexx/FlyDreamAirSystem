@@ -41,29 +41,13 @@ namespace backend.tests.Auth
             File.WriteAllText(usersFilePath, "[{\"username\": \"test_username\", \"email\": \"test_username@test.com\", \"password\": \"testpassword123\"}]");
         }
 
-        [Fact(DisplayName = "rejects a sign up request if the requested username is already taken")]
-        public async Task Signup_RejectsIfUsernameIsTaken()
-        {
-            SignupRequest request = new SignupRequest
-            {
-                Username = "test_username",
-                Email = "test_username@test.com",
-                Password = "testpassword123"
-            };
-
-            IActionResult result = await _auth.Signup(request);
-
-            BadRequestObjectResult badReq = Assert.IsType<BadRequestObjectResult>(result);
-            dynamic value = badReq.Value;
-            Assert.Equal("A user with the same username already exists!", value.message);
-        }
-
         [Fact(DisplayName = "rejects a sign up request if the requested email is already taken")]
         public async Task Signup_RejectsIfEmailIsTaken()
         {
             SignupRequest request = new SignupRequest
             {
-                Username = "unique_username",
+                FirstName = "bob",
+                LastName = "john",
                 Email = "test_username@test.com",
                 Password = "testpassword123"
             };
@@ -71,8 +55,8 @@ namespace backend.tests.Auth
             IActionResult result = await _auth.Signup(request);
 
             BadRequestObjectResult badReq = Assert.IsType<BadRequestObjectResult>(result);
-            dynamic value = badReq.Value;
-            Assert.Equal("A user with the same email already exists!", value.message);
+            dynamic? value = badReq.Value;
+            Assert.Equal("A user with the same email already exists!", value is null ? "" : value.message);
         }
 
         [Fact(DisplayName = "successfully signs a user up if the request is valid")]
@@ -80,7 +64,8 @@ namespace backend.tests.Auth
         {
             SignupRequest request = new SignupRequest
             {
-                Username = "unique_username",
+                FirstName = "bob",
+                LastName = "john",
                 Email = "unique_username@test.com",
                 Password = "uniquepassword123"
             };
@@ -88,8 +73,8 @@ namespace backend.tests.Auth
             IActionResult result = await _auth.Signup(request);
 
             OkObjectResult okRes = Assert.IsType<OkObjectResult>(result);
-            dynamic value = okRes.Value;
-            Assert.Equal("Sucessfully registered user.", value.message);
+            dynamic? value = okRes.Value;
+            Assert.Equal("Sucessfully registered user.", value is null ? "" : value.message);
         }
     }
 }
