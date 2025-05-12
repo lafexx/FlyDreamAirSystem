@@ -46,7 +46,6 @@ const BookedFlightList = () => {
                 <div className='flex items-center space-x-5'>
                     <div>
                         <h1 className="text-end text-neutral-800 font-semibold">${flight.price}</h1>
-                        <p className="text-sm text-neutral-600">{flight.airline} Airline</p>
                     </div>
                     <BsThreeDotsVertical className='text-3xl text-neutral-700 hover:text-neutral-800'/>
                 </div>

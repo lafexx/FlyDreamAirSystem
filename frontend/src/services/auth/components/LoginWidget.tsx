@@ -14,7 +14,7 @@ const LoginWidget = () => {
 
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
-    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     
     const handleSubmit = async (event: React.FormEvent) => {
@@ -22,11 +22,11 @@ const LoginWidget = () => {
         setIsDisabled(true);
     
         const request = {
-            username,
+            email,
             password
         }
 
-        if (isEmptyOrWhitespace(username) || isEmptyOrWhitespace(password) || username.includes(":")) {
+        if (isEmptyOrWhitespace(email) || isEmptyOrWhitespace(password) || email.includes(":")) {
             console.log("invalid username or password");
             setIsDisabled(false);
             return;
@@ -40,7 +40,7 @@ const LoginWidget = () => {
         }
             
         setIsDisabled(false);
-        localStorage.setItem("currentUser", request.username);
+        localStorage.setItem("currentUser", request.email);
         if (!redirectedFromBooking) {
             navigate("/");
             return;
@@ -57,14 +57,14 @@ const LoginWidget = () => {
 
                     <div className="rounded-3xl space-y-4 w-full flex flex-col items-center ">
                         <div className='max-w-[400px] w-full'>
-                            <label htmlFor="username" className={`block mb-2 text-sm text-neutral-700`}>Username</label>
+                            <label htmlFor="email" className={`block mb-2 text-sm text-neutral-700`}>Email</label>
                             <input
-                                type="text"
-                                id="username"
+                                type="email"
+                                id="email"
                                 className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
-                                placeholder={`Enter username...`}
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder={`Enter email...`}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 required
                                 disabled={isDisabled}
                             />

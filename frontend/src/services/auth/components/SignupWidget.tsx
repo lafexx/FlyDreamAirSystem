@@ -10,7 +10,8 @@ const SignupWidget = () => {
 
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
-    const [username, setUsername] = useState<string>("");
+    const [firstName, setFirstName] = useState<string>("");
+    const [lastName, setLastName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     
@@ -19,13 +20,14 @@ const SignupWidget = () => {
         setIsDisabled(true);
     
         const request = {
-            username,
+            firstName,
+            lastName,
             email,
             password
         }
     
-        if (isEmptyOrWhitespace(username) || isEmptyOrWhitespace(email) || isEmptyOrWhitespace(password)) {
-            console.log("invalid username, password, or email");
+        if (isEmptyOrWhitespace(firstName) || isEmptyOrWhitespace(lastName) || isEmptyOrWhitespace(email) || isEmptyOrWhitespace(password)) {
+            console.log("invalid first name, last name, password, or email");
             setIsDisabled(false);
             return;
         }
@@ -49,14 +51,28 @@ const SignupWidget = () => {
 
                     <div className="rounded-3xl space-y-4 w-full flex flex-col items-center">
                         <div className='max-w-[400px] w-full'>
-                            <label htmlFor="username" className={`block mb-2 text-sm text-neutral-700`}>Username</label>
+                            <label htmlFor="firstName" className={`block mb-2 text-sm text-neutral-700`}>First Name</label>
                             <input
                                 type="text"
-                                id="username"
+                                id="firstName"
                                 className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
-                                placeholder={`Enter username...`}
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder={`Enter first name...`}
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required
+                                disabled={isDisabled}
+                            />
+                        </div>
+
+                        <div className='max-w-[400px] w-full'>
+                            <label htmlFor="lastName" className={`block mb-2 text-sm text-neutral-700`}>Last Name</label>
+                            <input
+                                type="text"
+                                id="lastName"
+                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
+                                placeholder={`Enter last name...`}
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
                                 required
                                 disabled={isDisabled}
                             />

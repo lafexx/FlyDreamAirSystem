@@ -1,8 +1,8 @@
 import axios from "axios";
 
 interface SignupRequest {
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
 }
