@@ -43,26 +43,19 @@ export async function GetBookedFlights(username: string): Promise<Flight[]> {
 export async function GetFlightById(flightId: string): Promise<Flight | null> {
     try {
         const response = await axios.get<Flight>(`${flightBaseEndpoint}/${flightId}`);
-        if (response.data) 
-            return response.data;
-        else
-            return null;
-    } catch (e) {
-        console.warn(e);
-        return null;
-    }
-}
+        const data = response.data;
+        if (!data) return null;
 
-export async function GetFlightByUsernameAndId(username: string, flightId: string): Promise<Flight | null> {
-    try {
-        const response = await axios.get<Flight>(`${flightBaseEndpoint}/${username}/${flightId}`);
-        if (response.data)
-            return response.data;
-        else 
-            return null;
+        const addonsObj = data.addons as unknown as Record<string, number>;
+        const addons = new Map<string, number>(Object.entries(addonsObj));
+
+        return {
+            ...data,
+            addons
+        };
     } catch (e) {
         console.warn(e);
-        return null;
+         return null;
     }
 }
 

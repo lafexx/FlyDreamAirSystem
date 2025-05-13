@@ -5,9 +5,8 @@ import { foodAddons, drinkAddons } from "../../../app/routes/SelectAddons";
 import { renderSeats } from "../../../app/routes/SelectSeats";
 
 import { IoAirplane } from "react-icons/io5";
-import { GetFlightById, GetFlightByUsernameAndId } from "../api/FlightInterface";
+import { GetFlightById } from "../api/FlightInterface";
 
-import { useAuth } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 interface FlightOverviewProps {
@@ -26,7 +25,6 @@ const FlightOverviewWidget: React.FC<FlightOverviewProps> = ({
     const emptyFlight: Flight = useMemo(() => new Flight(), []);
     const [displayedFlight, setDisplayedFlight] = useState<Flight>(emptyFlight);
 
-    const auth = useAuth();
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -36,18 +34,12 @@ const FlightOverviewWidget: React.FC<FlightOverviewProps> = ({
         else if (flightId && !_flight) {
             const getFlightInformation = async () => {
                 let flight: Flight | null = null;
-
-                if (auth.username != "") {
-                    flight = await GetFlightByUsernameAndId(auth.username, flightId);
-                } else {
-                    flight = await GetFlightById(flightId);
-                }
+                flight = await GetFlightById(flightId);
                 
                 if (!flight) {
                     navigate("/");
                     return;
                 }
-
                 setDisplayedFlight(flight);
             };
 
