@@ -5,10 +5,15 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
 import { useBooking } from "../../contexts/BookingContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 import FlightOverviewWidget from "../../services/flight/components/FlightOverviewWidget";
+import { BookFlight } from "../../services/flight/api/FlightInterface";
+
+import { Flight } from "../../services/flight/types/Flight";
 
 const FlightConfirmation = () => {
+    const auth = useAuth();
     const { flight } = useBooking();
 
     const navigate = useNavigate();
@@ -21,14 +26,24 @@ const FlightConfirmation = () => {
 
     const onCheckout = () => {
         const checkout = async () => {
-            // hit endpoint to book flight 
-            const flightId: string = "returned-flight-id";
+            const newFlight: Flight = flight;
+            const flightId: string = await BookFlight(({
+                username: auth.username,
+                departureLocation: newFlight.departureLocation,
+                destination: newFlight.destination,
+                departureDate: newFlight.departureDate,
+                arrivalDate: newFlight.arrivalDate,
+                price: newFlight.price,
+                addons: Object.fromEntries(newFlight.addons),
+                seats: newFlight.seats
+            }));
           
-            // if successful
-            navigate(`/booking-confirmation/${flightId}`); // return flight id from the api call 
+            if (flightId == "") {
+                navigate("/");
+                return;
+            }
 
-            // if unsuccessful
-            navigate("/");
+            navigate(`/booking-confirmation/${flightId}`);
         };
 
         checkout();

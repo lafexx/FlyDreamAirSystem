@@ -20,14 +20,15 @@ namespace backend.Services.Flight
         public async Task<IActionResult> BookFlight(BookFlightRequest request)
         {
             var flights = await LoadFlights();
+            Guid flightId = Guid.NewGuid();
 
-            Models.Flight newFlight = new(Guid.NewGuid(), request.username, request.departureLocation, request.destination, request.departureDate, request.arrivalDate, request.price, request.addons, request.seats);
+            Models.Flight newFlight = new(flightId, request.username, request.departureLocation, request.destination, request.departureDate, request.arrivalDate, request.price, request.addons, request.seats);
             flights.Add(newFlight);
 
             var updatedJson = JsonConvert.SerializeObject(flights, Formatting.Indented);
             await File.WriteAllTextAsync(flightsFilePath, updatedJson);
 
-            return new OkObjectResult(new { message = "Successfully booked flight." });
+            return new OkObjectResult(flightId.ToString());
         }
 
         public async Task<IActionResult> GetBookedFlightsByUsername(string username)

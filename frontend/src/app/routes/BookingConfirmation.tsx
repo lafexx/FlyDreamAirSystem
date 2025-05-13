@@ -32,9 +32,10 @@ const BookingConfirmation = () => {
                 <div className="flex flex-grow flex-col relative h-full items-center justify-center space-y-5 px-10">
                     <div className="font-semibold text-center space-y-2">
                         <h1 className="text-4xl text-center text-neutral-600">Thank you</h1>
-                        <p className="text-neutral-500 font-normal">Your flight has been succesfully booked. Your flight reference number is <b>{flightId}</b>. You can view and manage your flight(s) from the flight management window on the home page.</p>
-                        <div className="flex justify-center space-x-10">
-                            <button onClick={() => navigate("/manage-flights")} className="text-neutral-500 hover:text-blue-400 underline duration-200 ease-linear">Return home</button>
+                        <p className="text-neutral-500 font-normal">Your flight has been succesfully booked.</p>
+                        <p className="text-neutral-500 font-normal">Flight reference number (FRN): <b>{flightId}</b>.</p>
+                        <div className="flex justify-center space-x-10 pt-6">
+                            <button onClick={() => navigate("/")} className="text-neutral-500 hover:text-blue-400 underline duration-200 ease-linear">Return home</button>
                         </div>
                     </div>
                 </div>

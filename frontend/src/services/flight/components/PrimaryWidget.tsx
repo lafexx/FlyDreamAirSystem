@@ -44,9 +44,9 @@ const PrimaryWidget = () => {
             </div>
 
             <div className="w-full h-[300px] bg-white">
-                <div className="h-full flex flex-col relative items-center justify-center">
+                <div className="w-full h-full">
                     {activeSection === Sections.BookFlight ? (
-                        <div className="px-2 w-full">
+                        <div className="px-2 w-full h-full flex flex-col relative items-center justify-center">
                             {!isSearching ? (
                                 <FlightSettingsWidget/>
                             ) : (

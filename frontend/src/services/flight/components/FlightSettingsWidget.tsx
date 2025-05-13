@@ -102,7 +102,7 @@ const FlightSettingsWidget = () => {
         if (departureDateDropdownEnabled) {
             setDepartureDateDropdownEnabled((prev) => !prev);
         }
-    }, [calendarValue, flight.departureDate, departureDateDropdownEnabled, setFlight]);
+    }, [calendarValue]);
 
     const renderDepartureLocations = () => {
         return locations.map((location, index) => (
@@ -162,7 +162,7 @@ const FlightSettingsWidget = () => {
 
     const renderWidget = () => {
         return (
-            <div>
+            <div className="w-full">
                 <div className="flex justify-between space-x-4">
                     <div className="w-full h-full">
                         <h1>From</h1>

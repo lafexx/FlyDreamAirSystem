@@ -39,7 +39,6 @@ namespace backend.tests.Flight
             // Arrange
             var request = new BookFlightRequest
             {
-                id = "",
                 username = "test_username",
                 departureLocation = new Location { Country = "France", City = "Paris", Airport = "Charles de Gaulle" },
                 destination = new Location { Country = "USA", City = "Boston", Airport = "Logan International Airport" },
@@ -63,7 +62,6 @@ namespace backend.tests.Flight
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
-            Assert.Contains("Successfully booked", result.Value is not null ? result.Value.ToString() : "");
         }
 
         [Fact]

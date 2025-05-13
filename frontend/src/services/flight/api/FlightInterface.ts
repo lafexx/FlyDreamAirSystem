@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Flight } from "../types/Flight";
 
-const flightBaseEndpoint = "https://localhost:7082/Flights";
+const flightBaseEndpoint = "http://localhost:5278/Flights";
 
 interface BookFlightRequest {
     username: string;
@@ -10,19 +10,20 @@ interface BookFlightRequest {
     departureDate: string;
     arrivalDate: string;
     price: number;
+    addons: { [key: string]: number };
     seats: number[][];
 }
 
-export async function BookFlight(request: BookFlightRequest): Promise<boolean> {
+export async function BookFlight(request: BookFlightRequest): Promise<string> {
     try {
-        const response = await axios.post(`${flightBaseEndpoint}/book`, request);
+        const response = await axios.post<string>(`${flightBaseEndpoint}/book`, request);
         if (response)
-            return true;
+            return response.data;
         else
-            return false;
+            return "";
     } catch (e) {
         console.warn(e);
-        return false;
+        return "";
     }
 }
 

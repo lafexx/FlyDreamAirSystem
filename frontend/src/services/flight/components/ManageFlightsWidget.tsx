@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
+import { GetBookedFlights } from "../api/FlightInterface";
+import { Flight } from "../types/Flight";
+import { IoAirplane } from "react-icons/io5";
 
 const ManageFlightsWidget = () => {
     const navigate = useNavigate();
     const auth = useAuth();
 
     const [flightId, setFlightId] = useState<string>("");
+    const [bookedFlights, setBookedFlights] = useState<Flight[]>([]);
 
     const onSearch = () => {
         if (flightId.length === 36) {
@@ -15,9 +19,45 @@ const ManageFlightsWidget = () => {
         }
     };
 
+    const renderFlights = () => {
+        return bookedFlights.map((flight, index) => (
+            <button key={index} className="w-full bg-white border-neutral-300 shadow drop-shadow rounded-lg p-2">
+                <div className={`flex flex-col w-full text-left px-10 py-4`}>
+                        <div className="flex justify-between">
+                            <h1 className="text-blue-500 text-xl font-semibold">{flight.departureLocation!.city}</h1>
+                            <IoAirplane className="text-neutral-700 text-2xl"/>
+                            <h1 className="text-blue-500 text-xl font-semibold">{flight.destination!.city}</h1>
+                        </div>
+
+                        <div className="flex justify-between text-neutral-500 text-sm">
+                            <p>{flight.departureLocation.airport}</p>
+                            <p>{flight.destination.airport}</p>
+                        </div>
+
+                        <div className="flex justify-between text-neutral-700 ">
+                            <p>{flight.departureDate}</p>
+                            <p>{flight.arrivalDate}</p>
+                        </div>
+                    </div>
+            </button>
+        ));
+    }
+
+    useEffect(() => {
+        if (auth.username == "")
+            return;
+        
+        const getBookedFlights = async () => {
+            const response: Flight[] = await GetBookedFlights(auth.username);
+            setBookedFlights(response);
+        };
+
+        getBookedFlights();
+    }, [auth.username]);
+
     return (
         <div className="w-full px-4">
-            {auth.username == "" && (
+            {auth.username == "" ? (
                 <div>
                     <div className="space-y-2 relative">
                         <h1 className="text-neutral-500 text-lg">View flight information via reference number</h1>
@@ -46,6 +86,13 @@ const ManageFlightsWidget = () => {
                                 Login
                             </button>
                         </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="p-4">
+                    <h1 className="text-neutral-700 text-2xl">Your flights</h1>
+                    <div className="space-y-2 overflow-auto h-[200px]">
+                        {renderFlights()}
                     </div>
                 </div>
             )}
