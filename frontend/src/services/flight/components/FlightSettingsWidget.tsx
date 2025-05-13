@@ -84,20 +84,18 @@ const FlightSettingsWidget = () => {
     const [calendarValue, calendarOnChange] = useState<Value>();
 
     useEffect(() => {
-        if (!flight.departureDate) {
-            setFlight((prev) => {
-                const newFlight: Flight = new Flight(prev);
-                const departureDate: string | undefined = calendarValue?.toLocaleString()!.split(",")[0];
-                const arrivalDate: string | undefined = applyAddDays(calendarValue!, 1)?.toLocaleString()!.split(",")[0];
-                
-                if (departureDate && arrivalDate) {
-                    newFlight.departureDate = departureDate
-                    newFlight.arrivalDate = arrivalDate;
-                }
+        setFlight((prev) => {
+            const newFlight: Flight = new Flight(prev);
+            const departureDate: string | undefined = calendarValue?.toLocaleString()!.split(",")[0];
+            const arrivalDate: string | undefined = applyAddDays(calendarValue!, 1)?.toLocaleString()!.split(",")[0];
+            
+            if (departureDate && arrivalDate) {
+                newFlight.departureDate = departureDate
+                newFlight.arrivalDate = arrivalDate;
+            }
 
-                return newFlight;
-            })
-        }
+            return newFlight;
+        });
 
         if (departureDateDropdownEnabled) {
             setDepartureDateDropdownEnabled((prev) => !prev);

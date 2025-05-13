@@ -52,15 +52,14 @@ const ManageFlightsWidget = () => {
     }
 
     useEffect(() => {
-        if (auth.username == "")
-            return;
-        
-        const getBookedFlights = async () => {
-            const response: Flight[] = await GetBookedFlights(auth.username);
-            setBookedFlights(response);
-        };
-
-        getBookedFlights();
+        if (auth.username) {
+            const getBookedFlights = async () => {
+                const response: Flight[] = await GetBookedFlights(auth.username);
+                setBookedFlights(response);
+            };
+    
+            getBookedFlights();
+        }
     }, [auth.username]);
 
     return (

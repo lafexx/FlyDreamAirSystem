@@ -29,7 +29,7 @@ export async function BookFlight(request: BookFlightRequest): Promise<string> {
 
 export async function GetBookedFlights(username: string): Promise<Flight[]> {
     try {
-        const response = await axios.get<Flight[]>(`${flightBaseEndpoint}/${username}`);
+        const response = await axios.get<Flight[]>(`${flightBaseEndpoint}/user/${username}`);
         if (response)
             return response.data;
         else
@@ -37,6 +37,19 @@ export async function GetBookedFlights(username: string): Promise<Flight[]> {
     } catch (e) {
         console.warn(e);
         return [];
+    }
+}
+
+export async function GetFlightById(flightId: string): Promise<Flight | null> {
+    try {
+        const response = await axios.get<Flight>(`${flightBaseEndpoint}/${flightId}`);
+        if (response.data) 
+            return response.data;
+        else
+            return null;
+    } catch (e) {
+        console.warn(e);
+        return null;
     }
 }
 

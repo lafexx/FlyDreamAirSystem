@@ -23,16 +23,22 @@ namespace backend.Controllers
             return await _flightService.BookFlight(request);
         }
 
-        [HttpGet("{username}")]
-        public async Task<IActionResult> GetBookedFlights([FromRoute] string username)
+        [HttpGet("user/{email}")]
+        public async Task<IActionResult> GetBookedFlights([FromRoute] string email)
         {
-            return await _flightService.GetBookedFlightsByUsername(username);
+            return await _flightService.GetBookedFlightsByUsername(email);
         }
 
         [HttpGet("{username}/{flightId}")]
-        public async Task<IActionResult> GetFlightById([FromRoute] string username, [FromRoute] string flightId)
+        public async Task<IActionResult> GetFlightByUsernameAndId([FromRoute] string username, [FromRoute] string flightId)
         {
             return await _flightService.GetFlightByUsernameAndId(username, flightId);
+        }
+
+        [HttpGet("{flightId}")]
+        public async Task<IActionResult> GetFlightById([FromRoute] string flightId)
+        {
+            return await _flightService.GetFlightById(flightId);
         }
 
         [HttpDelete("cancel/{username}/{flightId}")]

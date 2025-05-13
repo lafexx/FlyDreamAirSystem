@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace backend.Services.Flight
 {
-    public class FlightService: IFlightService
+    public class FlightService : IFlightService
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private const string flightsFileName = "flights.json";
@@ -47,12 +47,20 @@ namespace backend.Services.Flight
             return new OkObjectResult(flight);
         }
 
+        public async Task<IActionResult> GetFlightById(string flightId)
+        {
+            Guid _flightId = Guid.Parse(flightId);
+            var flights = await LoadFlights();
+            var flight = flights.FirstOrDefault(f => f.Id == _flightId);
+            return new OkObjectResult(flight);
+        }
+
         public async Task<IActionResult> CancelFlight(string username, string flightId)
         {
             Guid _flightId = Guid.Parse(flightId);
 
             var flights = await LoadFlights();
-            flights = flights .Where(f => !(f.Username == username && f.Id == _flightId)).ToList();
+            flights = flights.Where(f => !(f.Username == username && f.Id == _flightId)).ToList();
 
             var updatedJson = JsonConvert.SerializeObject(flights, Formatting.Indented);
             await File.WriteAllTextAsync(flightsFilePath, updatedJson);

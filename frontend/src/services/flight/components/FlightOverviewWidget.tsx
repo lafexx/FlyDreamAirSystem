@@ -5,7 +5,7 @@ import { foodAddons, drinkAddons } from "../../../app/routes/SelectAddons";
 import { renderSeats } from "../../../app/routes/SelectSeats";
 
 import { IoAirplane } from "react-icons/io5";
-import { GetFlightByUsernameAndId } from "../api/FlightInterface";
+import { GetFlightById, GetFlightByUsernameAndId } from "../api/FlightInterface";
 
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -35,7 +35,13 @@ const FlightOverviewWidget: React.FC<FlightOverviewProps> = ({
         }
         else if (flightId && !_flight) {
             const getFlightInformation = async () => {
-                const flight: Flight | null = await GetFlightByUsernameAndId(auth.username, flightId);
+                let flight: Flight | null = null;
+
+                if (auth.username != "") {
+                    flight = await GetFlightByUsernameAndId(auth.username, flightId);
+                } else {
+                    flight = await GetFlightById(flightId);
+                }
                 
                 if (!flight) {
                     navigate("/");
