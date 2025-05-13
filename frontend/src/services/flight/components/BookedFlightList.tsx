@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import { Flight } from '../../../types/Flight';
+import { Flight } from '../types/Flight';
 import { GetBookedFlights } from '../api/FlightInterface';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +37,7 @@ const BookedFlightList = () => {
             <button 
                 onClick={() => navigate(`/manage-flights/${flight.id}`)}
                 key={index} 
-                className={`${index % 2 === 0 ? "bg-neutral-300" : "bg-neutral-400"} p-2 flex flex-col w-full text-left hover:scale-[101%] hover:border-b duration-200 ease-linear rounded-xl`}>
+                className={`rounded-xl shadow border border-b border-neutral-300 mb-2 p-2 flex flex-col w-full text-left hover:border-b-neutral-600 duration-100 ease-linear`}>
             <div className="flex justify-between">
                 <div>
                     <h1 className="text-neutral-800 font-semibold">{flight.departureLocation.city} {">"} {flight.destination.city}</h1>
@@ -46,7 +46,6 @@ const BookedFlightList = () => {
                 <div className='flex items-center space-x-5'>
                     <div>
                         <h1 className="text-end text-neutral-800 font-semibold">${flight.price}</h1>
-                        <p className="text-sm text-neutral-600">{flight.airline} Airline</p>
                     </div>
                     <BsThreeDotsVertical className='text-3xl text-neutral-700 hover:text-neutral-800'/>
                 </div>

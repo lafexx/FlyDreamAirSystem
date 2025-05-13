@@ -1,17 +1,15 @@
 ﻿using backend.Models;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Newtonsoft.Json;
 
 namespace backend.Services.Flight
 {
-    public class FlightService: IFlightService
+    public class FlightService : IFlightService
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private const string flightsFileName = "flights.json";
         private readonly string flightsFilePath;
-
 
         public FlightService(IWebHostEnvironment webHostEnvironment)
         {
@@ -22,20 +20,21 @@ namespace backend.Services.Flight
         public async Task<IActionResult> BookFlight(BookFlightRequest request)
         {
             var flights = await LoadFlights();
+            Guid flightId = Guid.NewGuid();
 
-            Models.Flight newFlight = new(Guid.NewGuid(), request.username, request.departureLocation, request.destination, request.departureDate, request.price, request.airline, request.seats);
+            Models.Flight newFlight = new(flightId, request.username, request.departureLocation, request.destination, request.departureDate, request.arrivalDate, request.price, request.addons, request.seats);
             flights.Add(newFlight);
 
             var updatedJson = JsonConvert.SerializeObject(flights, Formatting.Indented);
             await File.WriteAllTextAsync(flightsFilePath, updatedJson);
 
-            return new OkObjectResult(new { message = "Successfully booked flight." });
+            return new OkObjectResult(flightId.ToString());
         }
 
         public async Task<IActionResult> GetBookedFlightsByUsername(string username)
         {
             var flights = await LoadFlights();
-            List<Models.Flight> userFlights = flights.Where(f => f.username == username).ToList();
+            List<Models.Flight> userFlights = flights.Where(f => f.Username == username).ToList();
 
             return new OkObjectResult(userFlights);
         }
@@ -44,16 +43,24 @@ namespace backend.Services.Flight
         {
             Guid _flightId = Guid.Parse(flightId);
             var flights = await LoadFlights();
-            var flight = flights.FirstOrDefault(f => f.id == _flightId && f.username == username);
+            var flight = flights.FirstOrDefault(f => f.Id == _flightId && f.Username == username);
             return new OkObjectResult(flight);
         }
 
-        public async Task<IActionResult> CancelFlight(string username, string flightId)
+        public async Task<IActionResult> GetFlightById(string flightId)
+        {
+            Guid _flightId = Guid.Parse(flightId);
+            var flights = await LoadFlights();
+            var flight = flights.FirstOrDefault(f => f.Id == _flightId);
+            return new OkObjectResult(flight);
+        }
+
+        public async Task<IActionResult> CancelFlight(string flightId)
         {
             Guid _flightId = Guid.Parse(flightId);
 
             var flights = await LoadFlights();
-            flights = flights .Where(f => !(f.username == username && f.id == _flightId)).ToList();
+            flights = flights.Where(f => !(f.Id == _flightId)).ToList();
 
             var updatedJson = JsonConvert.SerializeObject(flights, Formatting.Indented);
             await File.WriteAllTextAsync(flightsFilePath, updatedJson);

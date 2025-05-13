@@ -1,12 +1,13 @@
 import axios from "axios";
 
 interface SignupRequest {
-    username: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
 }
 
-const authBaseEndpoint = "https://localhost:7082/Auth";
+const authBaseEndpoint = "http://localhost:5278/Auth";
 
 export async function Signup(request: SignupRequest): Promise<boolean> {
     try {
@@ -22,7 +23,7 @@ export async function Signup(request: SignupRequest): Promise<boolean> {
 }
 
 interface LoginRequest {
-    username: string;
+    email: string;
     password: string;
 }
 

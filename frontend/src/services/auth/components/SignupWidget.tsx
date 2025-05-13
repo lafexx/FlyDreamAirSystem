@@ -10,7 +10,8 @@ const SignupWidget = () => {
 
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
-    const [username, setUsername] = useState<string>("");
+    const [firstName, setFirstName] = useState<string>("");
+    const [lastName, setLastName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     
@@ -19,13 +20,14 @@ const SignupWidget = () => {
         setIsDisabled(true);
     
         const request = {
-            username,
+            firstName,
+            lastName,
             email,
             password
         }
     
-        if (isEmptyOrWhitespace(username) || isEmptyOrWhitespace(email) || isEmptyOrWhitespace(password)) {
-            console.log("invalid username, password, or email");
+        if (isEmptyOrWhitespace(firstName) || isEmptyOrWhitespace(lastName) || isEmptyOrWhitespace(email) || isEmptyOrWhitespace(password)) {
+            console.log("invalid first name, last name, password, or email");
             setIsDisabled(false);
             return;
         }
@@ -44,19 +46,33 @@ const SignupWidget = () => {
 
     return (
         <div className='w-full p-5 flex justify-center'>
-            <form onSubmit={handleSubmit} className='flex flex-col items-center space-y-12 w-full h-full'>
+            <form onSubmit={handleSubmit} className='flex flex-col items-center space-y-12 w-full h-full max-w-[400px] rounded-lg bg-[#f3f3f3] px-5 py-15 shadow'>
                     <h1 className='text-4xl text-neutral-600 font-semibold text-center'>Sign up</h1>
 
                     <div className="rounded-3xl space-y-4 w-full flex flex-col items-center">
                         <div className='max-w-[400px] w-full'>
-                            <label htmlFor="username" className={`block mb-2 text-sm text-neutral-700`}>Username</label>
+                            <label htmlFor="firstName" className={`block mb-2 text-sm text-neutral-700`}>First Name</label>
                             <input
                                 type="text"
-                                id="username"
+                                id="firstName"
                                 className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
-                                placeholder={`Enter username...`}
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder={`Enter first name...`}
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required
+                                disabled={isDisabled}
+                            />
+                        </div>
+
+                        <div className='max-w-[400px] w-full'>
+                            <label htmlFor="lastName" className={`block mb-2 text-sm text-neutral-700`}>Last Name</label>
+                            <input
+                                type="text"
+                                id="lastName"
+                                className={`rounded-xl bg-transparent border-[1.75px] border-neutral-400 placeholder-neutral-500 text-neutral-600 block w-full p-2.5 text-sm`}
+                                placeholder={`Enter last name...`}
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
                                 required
                                 disabled={isDisabled}
                             />
@@ -94,14 +110,14 @@ const SignupWidget = () => {
                     <div className='flex justify-center text-center rounded-3xl'>
                             <div className='space-y-2'>
                                 <button type='submit'
-                                        className="text-white bg-[#11111185] hover:bg-blue-400 rounded-lg text-lg px-14 py-2.5 text-center inline-flex items-center duration-200 ease-linear"
+                                        className="text-white bg-blue-600 hover:bg-blue-500 rounded-xl text-lg px-14 py-2.5 text-center inline-flex items-center duration-200 ease-linear"
                                         disabled={isDisabled}
                                 >
                                     Signup
                                 </button>
                     
                                 <div>
-                                    <button className={`text-neutral-400 hover:text-blue-400 duration-200 ease-linear`}
+                                    <button className={`text-neutral-600 hover:text-blue-400 duration-200 ease-linear`}
                                             onClick={() => navigate("/login")}
                                             disabled={isDisabled}
                                     >

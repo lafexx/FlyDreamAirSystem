@@ -6,13 +6,13 @@
 
         public Location(string country, string city, string airport)
         {
-            this.country = country;
-            this.city = city;
-            this.airport = airport;
+            this.Country = country;
+            this.City = city;
+            this.Airport = airport;
         }
 
-        public string country { get; set; }
-        public string city { get; set; }
-        public string airport { get; set; }
+        public required string Country { get; set; }
+        public required string City { get; set; }
+        public required string Airport { get; set; }
     }
 }

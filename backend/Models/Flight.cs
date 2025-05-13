@@ -4,26 +4,27 @@ namespace backend.Models
 {
     public class Flight
     {
-        public Flight(Guid id, string username, Location departureLocation, Location destination, string departureDate, double price, string airline, int[][] seats)
+        public Flight(Guid id, string username, Location departureLocation, Location destination, string departureDate, string arrivalDate, double price, Dictionary<string, int> addons, int[][] seats)
         {
-            this.id = id;
-            this.username = username;
-            this.departureLocation = departureLocation;
-            this.destination = destination;
-            this.departureDate = departureDate;
-            this.price = price;
-            this.airline = airline;
-            this.seats = seats;
+            Id = id;
+            Username = username;
+            DepartureLocation = departureLocation;
+            Destination = destination;
+            DepartureDate = departureDate;
+            ArrivalDate = arrivalDate;
+            Price = price;
+            Addons = addons;
+            Seats = seats;
         }
 
-        public Guid id { get; set; }
-        public string username { get; set; }
-
-        public Location departureLocation { get; set; }
-        public Location destination { get; set; }
-        public string departureDate { get; set; }
-        public double price { get; set; }
-        public string airline { get; set; }
-        public int[][] seats { get; set; }
+        public Guid Id { get; set; }
+        public string Username { get; set; }
+        public Location DepartureLocation { get; set; }
+        public Location Destination { get; set; }
+        public string DepartureDate { get; set; }
+        public string ArrivalDate {get; set;}
+        public double Price { get; set; }
+        public Dictionary<string, int> Addons {get; set;}
+        public int[][] Seats { get; set; }
     }
 }

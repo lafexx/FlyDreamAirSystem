@@ -4,12 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
-import { Flight } from "../../types/Flight";
+import { Flight } from "../../services/flight/types/Flight";
 
-import { getStoredData } from "../../utils/ObjUtils";
 import { getRandomInt } from "../../utils/MathUtils";
 
-import { BookFlight } from "../../services/flight/api/FlightInterface";
+import { useBooking } from "../../contexts/BookingContext";
 
 export const aisleMap: Record<number, [string]> = {
     0: ["A"],
@@ -28,7 +27,7 @@ export const renderSeats = (seats: number[][], addSeatToSelection?: (rowIndex: n
                     if (addSeatToSelection) {
                         addSeatToSelection(rowIndex, columnIndex);
                     }
-                }} key={columnIndex} className={`${state === -1 ? "bg-red-400" : state === 0 ? "bg-neutral-200" : "bg-emerald-500"} hover:scale-[110%] shadow rounded-xl w-[50px] h-[50px] duration-200 ease-linear`}>
+                }} key={columnIndex} className={`${state === -1 ? "bg-red-400" : state === 0 ? "bg-neutral-200" : "bg-emerald-400"} hover:scale-[110%] shadow rounded-xl w-[50px] h-[50px] duration-200 ease-linear`}>
                    
                     <div className="h-full flex flex-col flex-grow relative justify-center items-center">
                         <p className="text-center drop-shadow text-neutral-700">{aisleMap[rowIndex]}{columnIndex}</p>
@@ -40,8 +39,8 @@ export const renderSeats = (seats: number[][], addSeatToSelection?: (rowIndex: n
 };
 
 const SelectSeats = () => {
-    const emptyFlight: Flight = useMemo(() =>  new Flight("", "", {country: "", city: "", airport: ""}, {country: "", city: "", airport: ""}, "", 0, "", []), []);
-    const [flight, setFlight] = useState<Flight>(emptyFlight); 
+    const emptyFlight: Flight = useMemo(() =>  new Flight(), []);
+    const {flight, setFlight} = useBooking();
 
     const [seats, setSeats] = useState<number[][]>([]); // 6x6 matrix
     const [reservedSeats, setReservedSeats] = useState<number>(0);
@@ -50,6 +49,9 @@ const SelectSeats = () => {
     const navigate = useNavigate();
 
     const addSeatToSelection = (rowIndex: number, columnIndex: number) => {
+        if (seats[rowIndex][columnIndex] === -1) 
+            return;
+
         setSeats((prev) => {
             const newSeats = [...prev];
             newSeats[rowIndex] = [...newSeats[rowIndex]];
@@ -77,14 +79,14 @@ const SelectSeats = () => {
     };
 
     const generateRandomSeatData = () => {
-        let _seats: number[][] = [];
+        const _seats: number[][] = [];
         let _reservedSeats = 0;
 
         for (let i = 0; i < 6; i++) {
             _seats[i] = [];
 
             for (let j = 0; j < 6; j++) {
-                let rand: number = getRandomInt(1, 4);
+                const rand: number = getRandomInt(1, 4);
                 // -1 = reserved
                 // 0  = empty
                 // 1  = selected by user
@@ -99,11 +101,11 @@ const SelectSeats = () => {
     };
 
     useEffect(() => {
-        const storedFlight = getStoredData<Flight>(`${localStorage.getItem("currentUser")}:flight`);
-        if (storedFlight) {
-            setFlight(storedFlight);
+        if (!flight.departureLocation.airport)  {
+            navigate("/");
+            return;
         }
-
+        
         setSeats(generateRandomSeatData());
     }, []);
 
@@ -111,66 +113,38 @@ const SelectSeats = () => {
         return `${aisleMap[x]}${y}`;
     }
 
-    const checkout = async () => {
-        if (flight) {
-            const currentUser: string | null = localStorage.getItem("currentUser");
-
-            if (!currentUser) {
-                console.warn("invalid user information");
-                return;
-            }
-                
-            flight.username = currentUser;
-            flight.seats = seats;
-            flight.price = flight.price! * selectedSeats.length;
-                
-            const res: boolean = await BookFlight(flight);
-            if (!res) {
-                console.warn("Failed to book flight.");
-                return;
-            }
-
-            console.log("Successfully booked flight.");
-            localStorage.setItem(`${currentUser}:flight`, JSON.stringify(flight));
-            navigate("/booking-confirmation");
-        }
-    };
-
     return (
-        <div className="min-h-screen flex flex-col relative overflow-hidden bg-neutral-200">
+        <div className="min-h-screen flex flex-col relative overflow-hidden">
+            <div className="fixed inset-0 h-screen bg-[#fffffffc] blur-sm -z-10" />
             <Navbar/>
     
             <div className="flex flex-grow flex-col relative h-full items-center justify-center space-y-10">
                 <div className="text-center space-y-2 px-10">
                     <h1 className="text-4xl text-center text-neutral-600 font-semibold">Select your seats</h1>
-                    <p className="text-neutral-500">{`Flight: ${flight.departureLocation.city} to ${flight.destination.city} on ${flight.departureDate} via ${flight.airline} Airline`}</p>
+                    <p className="text-neutral-500">{`Flight: ${flight.departureLocation.city} to ${flight.destination.city} on ${flight.departureDate}`}</p>
                     <p className="text-center text-neutral-500">({36 - reservedSeats} available)</p>
                 </div>
 
                 <div className="grid grid-rows-1 grid-cols-[auto_auto] h-full gap-2">
-                    <div className="bg-neutral-300 min-h-[375px] flex justify-center rounded-xl shadow p-4">
+                    <div className="bg-white drop-shadow min-h-[375px] flex justify-center rounded-xl shadow p-4">
                         {renderSeats(seats, addSeatToSelection)}
                     </div>
 
-                    <div className="bg-neutral-300 rounded-xl shadow p-4 min-w-[300px] flex flex-col justify-between">
+                    <div className="bg-white drop-shadow rounded-xl shadow p-4 min-w-[300px] flex flex-col justify-between">
                         <div>
                             <h1 className="text-2xl text-neutral-700 font-semibold border-b pb-2 drop-shadow">Your flight</h1>
                             <ul className="py-2">
                                 <li className="text-neutral-600">
                                     <p className="inline">From: </p>
-                                    <p className="inline text-neutral-700">{flight?.departureLocation?.city}</p>
+                                    <p className="inline text-neutral-700">{flight.departureLocation.city}</p>
                                 </li>
                                 <li className="text-neutral-600">
                                     <p className="inline">To: </p>
-                                    <p className="inline text-neutral-700">{flight?.destination?.city}</p>
+                                    <p className="inline text-neutral-700">{flight.destination.city}</p>
                                 </li>
                                 <li className="text-neutral-600">
                                     <p className="inline">Departure Date: </p>
-                                    <p className="inline text-neutral-700">{flight?.departureDate}</p>
-                                </li>
-                                <li className="text-neutral-600">
-                                    <p className="inline">Airline: </p>
-                                    <p className="inline text-neutral-700">{flight?.airline} Airline</p>
+                                    <p className="inline text-neutral-700">{flight.departureDate}</p>
                                 </li>
                             </ul>
 
@@ -188,14 +162,22 @@ const SelectSeats = () => {
                         </div>
 
                         <div className="flex justify-center mt-auto">
-                            <button onClick={() => checkout()} disabled={selectedSeats.length === 0 ? true : false} 
-                                    className={`bg-blue-400 w-full shadow drop-shadow rounded-xl px-10 py-1 text-neutral-200 duration-200 ease-linear ${selectedSeats.length  === 0 ? "opacity-[0.5]" : "hover:bg-blue-500 "}`}>
-                                <p className="drop-shadow">Checkout</p>
-                                <p className="drop-shadow">${flight?.price! * selectedSeats.length}</p>
+                            <button onClick={() => {
+                                flight.seats = seats;
+                                flight.price = flight.price! * selectedSeats.length;
+                                navigate("/select-addons");
+                            }} disabled={selectedSeats.length === 0 ? true : false} 
+                                    className={`bg-blue-500 w-full shadow drop-shadow rounded-2xl px-10 py-1 text-neutral-200 duration-200 ease-linear ${selectedSeats.length  === 0 ? "opacity-[0.5]" : "hover:bg-blue-400 "}`}>
+                                <p className="drop-shadow">Confirm</p>
+                                <p className="drop-shadow">${flight.price * selectedSeats.length}</p>
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div className="absolute bottom-0 left-0 w-full -z-10 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 190"><path fill="#4385f0" fill-opacity="1" d="M0,96L80,101.3C160,107,320,117,480,122.7C640,128,800,128,960,112C1120,96,1280,64,1360,48L1440,32L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
             </div>
 
             <div className="pb-4">

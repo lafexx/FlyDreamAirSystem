@@ -1,20 +1,26 @@
-const Item = ({ itemName, itemPrice }: { itemName: string, itemPrice: number }) => {
+const Item = ({ name, price, image, addCallback, removeCallback }: { name: string, price: number, image: string, addCallback: (itemName: string) => void, removeCallback: (itemName: string) => void  }) => {
     return (
-        <div className="bg-neutral-300 rounded-lg space-y-3 p-4">
+        <div className="bg-white shadow drop-shadow w-[180px] rounded-lg space-y-3 p-4">
             <div className="flex justify-between">
-                <h1 className="font-semibold text-neutral-800">{itemName}</h1>
-                <p className="text-neutral-800">${itemPrice}</p>
+                <h1 className="font-semibold text-neutral-800">{name}</h1>
+                <p className="text-neutral-800">A${price}</p>
             </div>
 
             <div className="flex justify-center">
-                <div className="bg-neutral-500 rounded-sm w-full  min-h-[100px]">
-                    <p className="h-full flex flex-grow relative justify-center items-center text-neutral-300">image of {itemName}</p>
+                <div className="w-full min-h-[165px]">
+                    <img className="w-full h-full" src={image} alt={name} />
                 </div>
             </div>
 
-            <button className="w-full bg-neutral-200 hover:bg-blue-400 hover:text-neutral-200 text-neutral-700 rounded-lg py-1 duration-200 ease-linear">
-                Purchase
-            </button>
+            <div className="w-full flex justify-end gap-2">
+                <button onClick={() => addCallback(name)} className="w-full bg-emerald-500 rounded-xl hover:bg-emerald-400 text-neutral-200 py-1 duration-200 ease-linear max-w-[40px]">
+                    +
+                </button>
+
+                <button onClick={() => removeCallback(name)} className="w-full bg-red-500 rounded-xl hover:bg-red-400 text-neutral-200 py-1 duration-200 ease-linear max-w-[40px]">
+                    -
+                </button>
+            </div>
         </div>
     );
 }
