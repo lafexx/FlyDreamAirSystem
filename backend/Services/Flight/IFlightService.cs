@@ -9,6 +9,6 @@ namespace backend.Services.Flight
         Task<IActionResult> GetBookedFlightsByUsername(string username);
         Task<IActionResult> GetFlightByUsernameAndId(string username, string flightId);
         Task<IActionResult> GetFlightById(string flightId);
-        Task<IActionResult> CancelFlight(string username, string flightId);
+        Task<IActionResult> CancelFlight(string flightId);
     }
 }

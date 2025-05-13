@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
 import FlightOverviewWidget from "../../services/flight/components/FlightOverviewWidget";
 
 import Navbar from "../../components/Navbar";
@@ -8,14 +7,13 @@ import { CancelFlight } from "../../services/flight/api/FlightInterface";
 
 const FlightOverview = () => {
     const { flightId } = useParams();
-    const auth = useAuth();
     const navigate = useNavigate();
 
     const onCancel = async () => {
         if (!flightId)
             return;
 
-        const result: boolean = await CancelFlight(auth.username, flightId);
+        const result: boolean = await CancelFlight(flightId);
         if (!result)
             return;
 

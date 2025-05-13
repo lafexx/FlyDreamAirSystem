@@ -55,12 +55,12 @@ namespace backend.Services.Flight
             return new OkObjectResult(flight);
         }
 
-        public async Task<IActionResult> CancelFlight(string username, string flightId)
+        public async Task<IActionResult> CancelFlight(string flightId)
         {
             Guid _flightId = Guid.Parse(flightId);
 
             var flights = await LoadFlights();
-            flights = flights.Where(f => !(f.Username == username && f.Id == _flightId)).ToList();
+            flights = flights.Where(f => !(f.Id == _flightId)).ToList();
 
             var updatedJson = JsonConvert.SerializeObject(flights, Formatting.Indented);
             await File.WriteAllTextAsync(flightsFilePath, updatedJson);

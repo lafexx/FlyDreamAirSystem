@@ -66,9 +66,9 @@ export async function GetFlightByUsernameAndId(username: string, flightId: strin
     }
 }
 
-export async function CancelFlight(username: string, flightId: string): Promise<boolean> {
+export async function CancelFlight(flightId: string): Promise<boolean> {
     try {
-        const response = await axios.delete(`${flightBaseEndpoint}/cancel/${username}/${flightId}`);
+        const response = await axios.delete(`${flightBaseEndpoint}/cancel/${flightId}`);
         if (response)
             return true;
         else

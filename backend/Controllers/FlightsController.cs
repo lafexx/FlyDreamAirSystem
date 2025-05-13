@@ -41,10 +41,10 @@ namespace backend.Controllers
             return await _flightService.GetFlightById(flightId);
         }
 
-        [HttpDelete("cancel/{username}/{flightId}")]
-        public async Task<IActionResult> CancelFlight([FromRoute] string username, [FromRoute] string flightId)
+        [HttpDelete("cancel/{flightId}")]
+        public async Task<IActionResult> CancelFlight([FromRoute] string flightId)
         {
-            return await _flightService.CancelFlight(username, flightId);
+            return await _flightService.CancelFlight(flightId);
         }
     }
 }
