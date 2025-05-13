@@ -5,27 +5,47 @@ import { foodAddons, drinkAddons } from "../../../app/routes/SelectAddons";
 import { renderSeats } from "../../../app/routes/SelectSeats";
 
 import { IoAirplane } from "react-icons/io5";
+import { GetFlightByUsernameAndId } from "../api/FlightInterface";
+
+import { useAuth } from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface FlightOverviewProps {
     flightId?: string | undefined;
     _flight?: Flight | null;
     checkoutCallback?: () => void;
+    cancellationCallback?: () => void;
 }
 
 const FlightOverviewWidget: React.FC<FlightOverviewProps> = ({
     flightId = undefined,
     _flight = null,
     checkoutCallback = () => {},
+    cancellationCallback = () => {},
 }) => {
     const emptyFlight: Flight = useMemo(() => new Flight(), []);
     const [displayedFlight, setDisplayedFlight] = useState<Flight>(emptyFlight);
+
+    const auth = useAuth();
+    const navigate = useNavigate();
     
     useEffect(() => {
         if (!flightId && _flight) {
             setDisplayedFlight(_flight);
         }
         else if (flightId && !_flight) {
-            // query endpoint for flight information
+            const getFlightInformation = async () => {
+                const flight: Flight | null = await GetFlightByUsernameAndId(auth.username, flightId);
+                
+                if (!flight) {
+                    navigate("/");
+                    return;
+                }
+
+                setDisplayedFlight(flight);
+            };
+
+            getFlightInformation();
         }
     }, [_flight, flightId]);
 
@@ -101,6 +121,13 @@ const FlightOverviewWidget: React.FC<FlightOverviewProps> = ({
                         <button onClick={() => checkoutCallback()} className="bg-blue-500 w-full rounded-lg py-2.5 px-10 hover:bg-blue-400 duration-200 ease-linear shadow">
                             <p className="text-white">Proceed to Checkout</p>
                             <p className="text-white font-bold">A${displayedFlight.price}</p>
+                        </button>
+                    )}
+
+                    {(flightId && !_flight) && (
+                        <button onClick={() => cancellationCallback()} className="bg-red-500 cursor-pointer w-full rounded-lg py-2 px-10 hover:bg-red-400 duration-100 ease-linear shadow">
+                            <p className="text-white">Cancel Flight</p>
+                            <p className="text-white font-bold">A$200 Fee</p>
                         </button>
                     )}
                 </div>

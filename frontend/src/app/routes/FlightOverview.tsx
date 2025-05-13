@@ -1,12 +1,26 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import FlightOverviewWidget from "../../services/flight/components/FlightOverviewWidget";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { CancelFlight } from "../../services/flight/api/FlightInterface";
 
 const FlightOverview = () => {
     const { flightId } = useParams();
+    const auth = useAuth();
     const navigate = useNavigate();
+
+    const onCancel = async () => {
+        if (!flightId)
+            return;
+
+        const result: boolean = await CancelFlight(auth.username, flightId);
+        if (!result)
+            return;
+
+        navigate("/");
+    };
 
     const renderWidget = () => {
         if (!flightId) {
@@ -21,7 +35,7 @@ const FlightOverview = () => {
                 <Navbar />
 
                 <div className="flex flex-grow flex-col relative h-full items-center justify-center">
-                    <FlightOverviewWidget flightId={flightId}/>
+                    <FlightOverviewWidget flightId={flightId} cancellationCallback={onCancel}/>
                 </div>
 
                 <div className="absolute bottom-0 left-0 w-full -z-10 pointer-events-none">

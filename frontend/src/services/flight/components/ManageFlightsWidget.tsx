@@ -20,13 +20,21 @@ const ManageFlightsWidget = () => {
     };
 
     const renderFlights = () => {
+        if (bookedFlights.length === 0) {
+            return(
+                <div className="w-full h-full flex flex-col grow relative items-center justify-center">
+                    <h1 className="text-neutral-500">You do not have any booked flights!</h1>
+                </div>
+            );
+        }
+
         return bookedFlights.map((flight, index) => (
-            <button key={index} className="w-full bg-white border-neutral-300 shadow drop-shadow rounded-lg p-2">
-                <div className={`flex flex-col w-full text-left px-10 py-4`}>
+            <button onClick={() => navigate(`/flight/${flight.id}`)}  key={index} className="w-full cursor-pointer hover:border-b hover:border-b-neutral-700 duration-200 ease-linear bg-white border-neutral-300 shadow drop-shadow rounded-lg p-2">
+                <div className={`flex flex-col w-full text-left px-10 py-2`}>
                         <div className="flex justify-between">
-                            <h1 className="text-blue-500 text-xl font-semibold">{flight.departureLocation!.city}</h1>
-                            <IoAirplane className="text-neutral-700 text-2xl"/>
-                            <h1 className="text-blue-500 text-xl font-semibold">{flight.destination!.city}</h1>
+                            <h1 className="text-blue-500 text-lg font-semibold">{flight.departureLocation!.city}</h1>
+                            <IoAirplane className="text-neutral-700 text-xl"/>
+                            <h1 className="text-blue-500 text-lg font-semibold">{flight.destination!.city}</h1>
                         </div>
 
                         <div className="flex justify-between text-neutral-500 text-sm">
