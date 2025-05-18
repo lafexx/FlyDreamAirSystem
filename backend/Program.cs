@@ -28,12 +28,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseCors("Default");
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
+app.UseCors("Default");
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
