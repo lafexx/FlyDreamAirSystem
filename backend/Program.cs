@@ -19,7 +19,7 @@ builder.Services.AddCors(context =>
 
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IFlightService, FlightService>();
-    
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

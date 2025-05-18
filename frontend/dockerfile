@@ -1,13 +1,18 @@
-FROM node:alpine
+# building
+FROM node:18-alpine AS builder
 
 WORKDIR /frontend
-
 COPY package.json package-lock.json ./
 RUN npm install
-
-RUN npm rebuild esbuild
-
 COPY . .
+RUN npm run build
+
+# serving
+FROM node:18-alpine
+
+RUN npm install -g serve
+WORKDIR /frontend
+COPY --from=builder /frontend/dist ./dist
 
 EXPOSE 5173
-CMD ["npm", "run", "dev"]
+CMD ["serve", "-s", "dist", "-l", "5173"]

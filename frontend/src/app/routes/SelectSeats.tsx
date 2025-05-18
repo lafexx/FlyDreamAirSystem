@@ -1,10 +1,8 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-
-import { Flight } from "../../services/flight/types/Flight";
 
 import { getRandomInt } from "../../utils/MathUtils";
 
@@ -39,8 +37,7 @@ export const renderSeats = (seats: number[][], addSeatToSelection?: (rowIndex: n
 };
 
 const SelectSeats = () => {
-    const emptyFlight: Flight = useMemo(() =>  new Flight(), []);
-    const {flight, setFlight} = useBooking();
+    const {flight} = useBooking();
 
     const [seats, setSeats] = useState<number[][]>([]); // 6x6 matrix
     const [reservedSeats, setReservedSeats] = useState<number>(0);

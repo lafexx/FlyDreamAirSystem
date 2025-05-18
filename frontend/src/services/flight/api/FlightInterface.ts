@@ -1,8 +1,6 @@
 import axios from "axios";
 import { Flight } from "../types/Flight";
-
-const flightBaseEndpoint = "http://localhost:5278/Flights";
-
+import { API_BASE_URL } from "../../../config";
 interface BookFlightRequest {
     username: string;
     departureLocation: {country: string, city: string, airport: string};
@@ -16,7 +14,7 @@ interface BookFlightRequest {
 
 export async function BookFlight(request: BookFlightRequest): Promise<string> {
     try {
-        const response = await axios.post<string>(`${flightBaseEndpoint}/book`, request);
+        const response = await axios.post<string>(`${API_BASE_URL}/Flights/book`, request);
         if (response)
             return response.data;
         else
@@ -29,7 +27,7 @@ export async function BookFlight(request: BookFlightRequest): Promise<string> {
 
 export async function GetBookedFlights(username: string): Promise<Flight[]> {
     try {
-        const response = await axios.get<Flight[]>(`${flightBaseEndpoint}/user/${username}`);
+        const response = await axios.get<Flight[]>(`${API_BASE_URL}/Flights/user/${username}`);
         if (response)
             return response.data;
         else
@@ -42,7 +40,7 @@ export async function GetBookedFlights(username: string): Promise<Flight[]> {
 
 export async function GetFlightById(flightId: string): Promise<Flight | null> {
     try {
-        const response = await axios.get<Flight>(`${flightBaseEndpoint}/${flightId}`);
+        const response = await axios.get<Flight>(`${API_BASE_URL}/Flights/${flightId}`);
         const data = response.data;
         if (!data) return null;
 
@@ -61,7 +59,7 @@ export async function GetFlightById(flightId: string): Promise<Flight | null> {
 
 export async function CancelFlight(flightId: string): Promise<boolean> {
     try {
-        const response = await axios.delete(`${flightBaseEndpoint}/cancel/${flightId}`);
+        const response = await axios.delete(`${API_BASE_URL}/Flights/cancel/${flightId}`);
         if (response)
             return true;
         else

@@ -41,6 +41,7 @@ export const useBooking = () => {
 
 export const BookingProvider = ({children}: {children: React.ReactNode}) => {
     const emptyFlight: Flight = useMemo(() =>  new Flight(
+        null,
         "",                                     // id
         "",                                     // username
         {country: "", city: "", airport: ""},   // departureLocation

@@ -6,7 +6,7 @@ services:
     ports:
       - "5278:5278"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:5278
   
   frontend:
