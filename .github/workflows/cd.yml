@@ -34,14 +34,6 @@ jobs:
           username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
-      - name: Build and push frontend container image to ACR
-        uses: docker/build-push-action@v6
-        with:
-          context: ./frontend
-          push: true
-          tags: ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.REGISTRY_NAME }}/frontend:${{ github.sha }}
-          file: ./frontend/dockerfile
-
       - name: Build and push backend container image to ACR
         uses: docker/build-push-action@v6
         with:
@@ -72,14 +64,22 @@ jobs:
           BACKEND_URL=$(az containerapp show --name ${{ env.CONTAINER_APP_NAME_BACKEND }} --resource-group ${{ env.RESOURCE_GROUP }} --query "properties.configuration.ingress.fqdn" -o tsv)
           echo "backend_url=$BACKEND_URL" >> $GITHUB_OUTPUT
 
+      - name: Build and push frontend container image to ACR
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.REGISTRY_NAME }}/frontend:${{ github.sha }}
+          file: ./frontend/dockerfile
+          build-args: |
+            VITE_API_URL=https://${{ steps.get-backend-url.outputs.backend_url }}
+
       - name: Deploy frontend to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
           imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.REGISTRY_NAME }}/frontend:${{ github.sha }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           containerAppName: ${{ env.CONTAINER_APP_NAME_FRONTEND }}
-          environmentVariables: |
-            VITE_API_URL=https://${{ steps.get-backend-url.outputs.backend_url }}
 
       - name: Get frontend container app URL
         id: get-frontend-url
