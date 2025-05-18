@@ -81,26 +81,13 @@ jobs:
           environmentVariables: |
             VITE_API_URL=https://${{ steps.get-backend-url.outputs.backend_url }}
 
-      - name: Create deployment record
-        id: create_deployment
-        uses: peter-evans/create-deployment@v1
-        with:
-          environment: production
-          description: "Deploy backend container app"
-          transient_environment: false
-          auto_merge: false
-          production_environment: true
+      - name: Get frontend container app URL
+        id: get-frontend-url
+        run: |
+          FRONTEND_URL=$(az containerapp show --name ${{ env.CONTAINER_APP_NAME_FRONTEND }} --resource-group ${{ env.RESOURCE_GROUP }} --query "properties.configuration.ingress.fqdn" -o tsv)
+          echo "frontend_url=$FRONTEND_URL" >> $GITHUB_OUTPUT
 
-      - name: Mark deployment as successful
-        if: ${{ success() }}
-        uses: peter-evans/deployment-status@v1
-        with:
-          deployment_id: ${{ steps.create_deployment.outputs.deployment_id }}
-          state: success
-
-      - name: Mark deployment as failed
-        if: ${{ failure() }}
-        uses: peter-evans/deployment-status@v1
-        with:
-          deployment_id: ${{ steps.create_deployment.outputs.deployment_id }}
-          state: failure
+      - name: Add frontend container app URL to step summary
+        run: |
+          echo "### 🌐 FlyDreamAir Site" >> $GITHUB_STEP_SUMMARY
+          echo "https://${{ steps.get-frontend-url.outputs.frontend_url }}" >> $GITHUB_STEP_SUMMARY
