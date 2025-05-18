@@ -8,6 +8,11 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
     env:
       REGISTRY_NAME: flydreamair
       AZURE_CONTAINER_REGISTRY: flydreamair.azurecr.io
