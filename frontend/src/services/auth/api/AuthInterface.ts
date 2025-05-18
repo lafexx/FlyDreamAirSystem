@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_BASE_URL } from "../../../config";
 
 interface SignupRequest {
     firstName: string;
@@ -7,11 +8,9 @@ interface SignupRequest {
     password: string;
 }
 
-const authBaseEndpoint = "http://localhost:5278/Auth";
-
 export async function Signup(request: SignupRequest): Promise<boolean> {
     try {
-        const response = await axios.post(`${authBaseEndpoint}/signup`, request);
+        const response = await axios.post(`${API_BASE_URL}/Auth/signup`, request);
         if (response)
             return true;
         else
@@ -29,7 +28,7 @@ interface LoginRequest {
 
 export async function Login(request: LoginRequest) {
     try {
-        const response = await axios.post(`${authBaseEndpoint}/login`, request);
+        const response = await axios.post(`${API_BASE_URL}/Auth/login`, request);
         if (response)
             return true;
         else 

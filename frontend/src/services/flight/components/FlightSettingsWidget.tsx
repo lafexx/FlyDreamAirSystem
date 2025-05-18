@@ -4,7 +4,6 @@ import { Value } from "../../../contexts/BookingContext";
 import { Flight } from "../types/Flight";
 
 import Calendar from 'react-calendar';
-// @ts-expect-error no need to declare a module for *.css files due to scope
 import '../../../../node_modules/react-calendar/dist/Calendar.css';
 
 import { PiAirplaneTakeoffFill } from "react-icons/pi";
