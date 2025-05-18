@@ -32,6 +32,7 @@ jobs:
       - name: Build and push frontend container image to ACR
         uses: docker/build-push-action@v6
         with:
+          context: ./frontend
           push: true
           tags: ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.REGISTRY_NAME }}/frontend:${{ github.sha }}
           file: ./frontend/dockerfile
@@ -39,6 +40,7 @@ jobs:
       - name: Build and push backend container image to ACR
         uses: docker/build-push-action@v6
         with:
+          context: ./backend
           push: true
           tags: ${{ env.AZURE_CONTAINER_REGISTRY }}/${{ env.REGISTRY_NAME }}/backend:${{ github.sha }}
           file: ./backend/dockerfile
