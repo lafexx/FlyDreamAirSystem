@@ -10,6 +10,7 @@ import SelectAddons from "./routes/SelectAddons";
 import LoginPrompt from "./routes/LoginPrompt";
 import FlightConfirmation from "./routes/FlightConfirmation";
 import FlightOverview from "./routes/FlightOverview";
+import Checkout from "./routes/Checkout";
 
 import { AuthProvider } from "../contexts/AuthContext";
 import { BookingProvider } from "../contexts/BookingContext";
@@ -38,6 +39,7 @@ function App() {
         <Route path="/login-prompt" element={<LoginPrompt/>}/>
         <Route path="/flight-overview" element={<FlightConfirmation/>}/>
         <Route path="/flight/:flightId" element={<FlightOverview/>}/>
+        <Route path="/checkout" element={<Checkout/>}/>
       </Routes>
     </ContextProvider>
   );

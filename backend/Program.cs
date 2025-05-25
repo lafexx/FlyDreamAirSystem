@@ -13,7 +13,7 @@ builder.Services.AddCors(context =>
 {
     context.AddPolicy("Default", policy =>
     {
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        policy.WithOrigins(Environment.GetEnvironmentVariable("ASPNETCORE_FRONTEND_ORIGIN") ?? "http://localhost:5173").AllowAnyMethod().AllowAnyHeader();
     });
 });
 

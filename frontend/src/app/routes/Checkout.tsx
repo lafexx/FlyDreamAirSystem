@@ -1,24 +1,8 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import CheckoutWidget from "../../services/flight/components/CheckoutWidget";
 
-import { useBooking } from "../../contexts/BookingContext";
-
-import FlightOverviewWidget from "../../services/flight/components/FlightOverviewWidget";
-
-const FlightConfirmation = () => {
-    const { flight } = useBooking();
-
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        if (!flight.departureLocation.airport) {
-            navigate("/");
-        }
-    }, [flight.departureLocation.airport, navigate]);
-    
+const Checkout = () => {
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
             <div className="fixed inset-0 h-screen bg-[#fffffffc] blur-sm -z-10" />
@@ -26,7 +10,7 @@ const FlightConfirmation = () => {
             <Navbar />
 
             <div className="flex flex-grow flex-col relative h-full items-center justify-center">
-                <FlightOverviewWidget _flight={flight} checkoutCallback={() => navigate("/checkout")}/>
+                <CheckoutWidget/>
             </div>
 
             <div className="absolute bottom-0 left-0 w-full -z-10 pointer-events-none">
@@ -38,6 +22,6 @@ const FlightConfirmation = () => {
             </div>
         </div>
     );
-}
+};
 
-export default FlightConfirmation;
+export default Checkout;

@@ -49,6 +49,7 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+        # setting the frontend origin to a placeholder value since it'll have to be injected after the frontend
       - name: Deploy backend to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
@@ -57,6 +58,7 @@ jobs:
           containerAppName: ${{ env.CONTAINER_APP_NAME_BACKEND }}
           environmentVariables: |
             ASPNETCORE_ENVIRONMENT=Production
+            ASPNETCORE_FRONTEND_ORIGIN=https://placeholder.local
 
       - name: Get backend container app URL
         id: get-backend-url
@@ -86,6 +88,13 @@ jobs:
         run: |
           FRONTEND_URL=$(az containerapp show --name ${{ env.CONTAINER_APP_NAME_FRONTEND }} --resource-group ${{ env.RESOURCE_GROUP }} --query "properties.configuration.ingress.fqdn" -o tsv)
           echo "frontend_url=$FRONTEND_URL" >> $GITHUB_OUTPUT
+
+      - name: Update backend CORS origin with frontend URL
+        run: |
+          az containerapp update \
+            --name ${{ env.CONTAINER_APP_NAME_BACKEND }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --set-env-vars ASPNETCORE_FRONTEND_ORIGIN=https://${{ steps.get-frontend-url.outputs.frontend_url }}
 
       - name: Add frontend container app URL to step summary
         run: |
