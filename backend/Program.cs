@@ -30,8 +30,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("Default");
 
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.UseStaticFiles();
