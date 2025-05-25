@@ -24,7 +24,7 @@ namespace backend.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request) 
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             return await _authService.Login(request);
         }
