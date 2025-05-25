@@ -9,7 +9,7 @@ const Home = () => {
             <div className="fixed inset-0 h-screen bg-[#fffffffc] blur-sm -z-10" />
             <Navbar/>
     
-            <div className="flex flex-grow flex-col relative h-full items-center justify-center space-y-15 pb-25">
+            <div className="flex flex-grow flex-col relative h-full items-center justify-center scale-[80%]">
                 <div className="space-y-10 w-full max-w-[900px]">
                     <FeaturedWidget/>
                     <PrimaryWidget/>

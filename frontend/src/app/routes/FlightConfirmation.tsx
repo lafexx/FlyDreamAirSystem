@@ -5,15 +5,10 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
 import { useBooking } from "../../contexts/BookingContext";
-import { useAuth } from "../../contexts/AuthContext";
 
 import FlightOverviewWidget from "../../services/flight/components/FlightOverviewWidget";
-import { BookFlight } from "../../services/flight/api/FlightInterface";
-
-import { Flight } from "../../services/flight/types/Flight";
 
 const FlightConfirmation = () => {
-    const auth = useAuth();
     const { flight } = useBooking();
 
     const navigate = useNavigate();
@@ -24,30 +19,30 @@ const FlightConfirmation = () => {
         }
     }, [flight.departureLocation.airport, navigate]);
 
-    const onCheckout = () => {
-        const checkout = async () => {
-            const newFlight: Flight = flight;
-            const flightId: string = await BookFlight(({
-                username: auth.username,
-                departureLocation: newFlight.departureLocation,
-                destination: newFlight.destination,
-                departureDate: newFlight.departureDate,
-                arrivalDate: newFlight.arrivalDate,
-                price: newFlight.price,
-                addons: Object.fromEntries(newFlight.addons),
-                seats: newFlight.seats
-            }));
+    // const onCheckout = () => {
+    //     const checkout = async () => {
+    //         const newFlight: Flight = flight;
+    //         const flightId: string = await BookFlight(({
+    //             username: auth.username,
+    //             departureLocation: newFlight.departureLocation,
+    //             destination: newFlight.destination,
+    //             departureDate: newFlight.departureDate,
+    //             arrivalDate: newFlight.arrivalDate,
+    //             price: newFlight.price,
+    //             addons: Object.fromEntries(newFlight.addons),
+    //             seats: newFlight.seats
+    //         }));
           
-            if (flightId == "") {
-                navigate("/");
-                return;
-            }
+    //         if (flightId == "") {
+    //             navigate("/");
+    //             return;
+    //         }
 
-            navigate(`/booking-confirmation/${flightId}`);
-        };
+    //         navigate(`/booking-confirmation/${flightId}`);
+    //     };
 
-        checkout();
-    }
+    //     checkout();
+    // }
     
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
@@ -56,7 +51,7 @@ const FlightConfirmation = () => {
             <Navbar />
 
             <div className="flex flex-grow flex-col relative h-full items-center justify-center">
-                <FlightOverviewWidget _flight={flight} checkoutCallback={onCheckout}/>
+                <FlightOverviewWidget _flight={flight} checkoutCallback={() => navigate("/checkout")}/>
             </div>
 
             <div className="absolute bottom-0 left-0 w-full -z-10 pointer-events-none">
