@@ -1,7 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import Tooltip from "../../../components/Tooltip";
 import { TooltipType } from "../../../components/Tooltip";
+
 import { FaInfoCircle } from "react-icons/fa";
+
+import { Flight } from "../types/Flight";
+
+import { BookFlight } from "../api/FlightInterface";
+
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useBooking } from "../../../contexts/BookingContext";
 
 const CheckoutWidget = () => {
     const [firstName, setFirstName] = useState<string>("");
@@ -24,9 +34,48 @@ const CheckoutWidget = () => {
     
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
+    const navigate = useNavigate();
+    const auth = useAuth();
+    const { flight } = useBooking();
+
+    useEffect(() => {
+        if (flight.departureLocation.city == "") {
+            navigate("/");
+            return;
+        }
+    }, [flight]);
+
     const onCheckout = () => {
         setIsDisabled(true);
-    };
+
+        if (firstNameInvalid || lastNameInvalid || emailInvalid) {
+            setIsDisabled(false);
+            return;
+        }
+ 
+        const checkout = async () => {
+            const newFlight: Flight = flight;
+            const flightId: string = await BookFlight(({
+                username: auth.username,
+                departureLocation: newFlight.departureLocation,
+                destination: newFlight.destination,
+                departureDate: newFlight.departureDate,
+                arrivalDate: newFlight.arrivalDate,
+                price: newFlight.price,
+                addons: Object.fromEntries(newFlight.addons),
+                seats: newFlight.seats
+            }));
+          
+            if (flightId == "") {
+                navigate("/");
+                return;
+            }
+
+            navigate(`/booking-confirmation/${flightId}`);
+        };
+
+        checkout();
+    }
 
     const handleExpirationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       let input = e.target.value.replace(/\D/g, "").slice(0, 4); // MMYY
@@ -37,14 +86,13 @@ const CheckoutWidget = () => {
     
       setExpirationDate(input);
     
-      // Run validation only when 4 digits are entered
       if (input.length === 5) {
         const [mmStr, yyStr] = input.split("/");
         const month = parseInt(mmStr, 10);
-        const year = parseInt("20" + yyStr, 10); // Convert YY to 20YY
+        const year = parseInt("20" + yyStr, 10);
     
         const now = new Date();
-        const thisMonth = now.getMonth() + 1; // JS months are 0-based
+        const thisMonth = now.getMonth() + 1;
         const thisYear = now.getFullYear();
     
         if (month < 1 || month > 12) {
@@ -52,10 +100,10 @@ const CheckoutWidget = () => {
         } else if (year < thisYear || (year === thisYear && month < thisMonth)) {
           setExpError("Card is expired");
         } else {
-          setExpError(""); // Valid
+          setExpError("");
         }
       } else {
-        setExpError(""); // Clear error while typing
+        setExpError("");
       }
     };
 
@@ -90,7 +138,7 @@ const CheckoutWidget = () => {
     };
         
     return (
-        <div className="bg-white shadow drop-shadow rounded-xl w-full max-w-[600px] p-10 scale-[90%]">
+        <div className="bg-white shadow drop-shadow rounded-xl w-full max-w-[600px] p-10 scale-[80%]">
             <form onSubmit={(e) => {
                 e.preventDefault();
                 onCheckout();
@@ -265,7 +313,7 @@ const CheckoutWidget = () => {
                 <div className="flex justify-end pt-6">
                     <button disabled={isDisabled} type="submit" className="bg-blue-600 rounded-lg disabled:opacity-50 space-x-1 text-white py-2 text-sm px-16 hover:bg-blue-500 duration-200 ease-linear">
                         <p className="">Book flight</p>
-                        <p className="font-bold">A$0000.00</p>
+                        <p className="font-bold">A${flight.price}</p>
                     </button>
                 </div>
             </form>

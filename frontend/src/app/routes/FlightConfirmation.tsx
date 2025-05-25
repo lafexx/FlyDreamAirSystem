@@ -18,31 +18,6 @@ const FlightConfirmation = () => {
             navigate("/");
         }
     }, [flight.departureLocation.airport, navigate]);
-
-    // const onCheckout = () => {
-    //     const checkout = async () => {
-    //         const newFlight: Flight = flight;
-    //         const flightId: string = await BookFlight(({
-    //             username: auth.username,
-    //             departureLocation: newFlight.departureLocation,
-    //             destination: newFlight.destination,
-    //             departureDate: newFlight.departureDate,
-    //             arrivalDate: newFlight.arrivalDate,
-    //             price: newFlight.price,
-    //             addons: Object.fromEntries(newFlight.addons),
-    //             seats: newFlight.seats
-    //         }));
-          
-    //         if (flightId == "") {
-    //             navigate("/");
-    //             return;
-    //         }
-
-    //         navigate(`/booking-confirmation/${flightId}`);
-    //     };
-
-    //     checkout();
-    // }
     
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
